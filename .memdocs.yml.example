@@ -1,0 +1,57 @@
+version: 2
+
+# Scope policy (controls memory granularity)
+policies:
+  default_scope: file          # file | module | repo
+  max_files_without_force: 150
+
+  # Auto-escalate for important changes
+  escalate_on:
+    - cross_module_changes      # Multi-module = bigger context needed
+    - security_sensitive_paths  # auth/*, security/* = document thoroughly
+    - public_api_signatures     # API changes = team needs to know
+
+# Output configuration (git-committed memory)
+outputs:
+  docs_dir: .memdocs/docs       # Committed to git
+  memory_dir: .memdocs/memory   # Committed to git
+  formats:
+    - json                      # index.json (machine-readable)
+    - yaml                      # symbols.yaml (code map)
+    - markdown                  # summary.md (human-readable)
+
+# Privacy (optional, only enable if handling sensitive data)
+privacy:
+  phi_mode: "off"               # off | standard | strict
+  pii_detection: false
+  redaction_enabled: false
+
+# AI configuration (Claude API)
+ai:
+  provider: anthropic           # anthropic | openai
+  model: claude-sonnet-4-5-20250929  # Claude Sonnet 4.5 (latest)
+  max_tokens: 8192
+  temperature: 0.3              # Lower = more deterministic
+
+# Empathy Framework integration (optional)
+empathy:
+  enabled: true
+  sync_on_review: true          # Auto-sync with Empathy after reviews
+  level: 4                      # Anticipatory Empathy level
+
+# Exclude patterns (don't document these)
+exclude:
+  - node_modules/**
+  - .venv/**
+  - venv/**
+  - __pycache__/**
+  - "*.pyc"
+  - .git/**
+  - dist/**
+  - build/**
+  - "*.log"
+  - "*.db"
+  - coverage/**
+  - htmlcov/**
+  - .pytest_cache/**
+  - "*.egg-info/**"
