@@ -4,7 +4,6 @@ AI-powered summarization using Claude.
 Generates structured documentation from extracted code context.
 """
 
-import json
 import os
 from typing import Any
 
@@ -108,9 +107,7 @@ Generate the YAML now:"""
         self.client = anthropic.Anthropic(api_key=self.api_key)
         self.model = model
 
-    def summarize(
-        self, context: ExtractedContext, scope: ScopeInfo
-    ) -> tuple[DocumentIndex, str]:
+    def summarize(self, context: ExtractedContext, scope: ScopeInfo) -> tuple[DocumentIndex, str]:
         """Generate documentation summary from context.
 
         Args:
@@ -274,6 +271,7 @@ Symbols:
             files_changed = [f.path for f in context.files]
         else:
             from pathlib import Path
+
             files_changed = [Path(f) for f in refs_dict.get("files_changed", [])]
 
         refs = ReferenceSummary(
@@ -294,9 +292,7 @@ Symbols:
             refs=refs,
         )
 
-    def _generate_markdown(
-        self, doc_index: DocumentIndex, context: ExtractedContext
-    ) -> str:
+    def _generate_markdown(self, doc_index: DocumentIndex, context: ExtractedContext) -> str:
         """Generate human-readable markdown summary.
 
         Args:

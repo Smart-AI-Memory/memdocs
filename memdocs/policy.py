@@ -9,7 +9,6 @@ Determines when to expand scope from file → module → repo based on:
 """
 
 from pathlib import Path
-from typing import Any
 
 from memdocs.extract import ExtractedContext
 from memdocs.schemas import DocIntConfig, ScopeInfo, ScopeLevel
@@ -241,8 +240,6 @@ class PolicyEngine:
 
         # Warn if escalated
         if scope.escalated:
-            warnings.append(
-                f"Scope escalated from default due to: {scope.escalation_reason}"
-            )
+            warnings.append(f"Scope escalated from default due to: {scope.escalation_reason}")
 
         return warnings

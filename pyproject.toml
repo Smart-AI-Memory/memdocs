@@ -41,6 +41,7 @@ dependencies = [
     "pygments>=2.17.0",          # Syntax highlighting
     "tiktoken>=0.7.0",           # Token counting
     "python-dotenv>=1.0.0",      # Environment variables
+    "rich>=13.0.0",              # Beautiful terminal formatting
 ]
 
 [project.optional-dependencies]

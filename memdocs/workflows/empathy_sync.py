@@ -173,7 +173,7 @@ class EmpathySyncWorkflow:
         from app.backend.services.empathy_service import EmpathyService
 
         # Read file content
-        with open(file_path, "r", encoding="utf-8") as f:
+        with open(file_path, encoding="utf-8") as f:
             code = f.read()
 
         # Run Empathy analysis
@@ -200,7 +200,7 @@ class EmpathySyncWorkflow:
         import aiohttp
 
         # Read file content
-        with open(file_path, "r", encoding="utf-8") as f:
+        with open(file_path, encoding="utf-8") as f:
             code = f.read()
 
         # Call Empathy API
@@ -363,7 +363,7 @@ async def main():
     if args.file:
         print(f"Analyzing file: {args.file}")
         result = await workflow.analyze_file(args.file, args.language, args.wizard, args.tier)
-        print(f"✓ Analysis complete. Stored in .memdocs/")
+        print("✓ Analysis complete. Stored in .memdocs/")
 
     elif args.module:
         print(f"Analyzing module: {args.module}")

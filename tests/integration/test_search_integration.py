@@ -1,9 +1,9 @@
 """
 Integration tests for search module using real FAISS.
 """
+
 from pathlib import Path
 
-import numpy as np
 import pytest
 
 from memdocs.embeddings import LocalEmbedder

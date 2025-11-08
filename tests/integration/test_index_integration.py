@@ -1,6 +1,7 @@
 """
 Integration tests for index module (MemoryIndexer).
 """
+
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -91,9 +92,7 @@ This feature implements JWT-based authentication for all API endpoints.
             doc_index = DocumentIndex(
                 commit=f"commit{i}",
                 timestamp=datetime.now(timezone.utc),
-                scope=ScopeInfo(
-                    paths=[Path(f"file{i}.py")], level=ScopeLevel.FILE, file_count=1
-                ),
+                scope=ScopeInfo(paths=[Path(f"file{i}.py")], level=ScopeLevel.FILE, file_count=1),
                 features=[FeatureSummary(id=f"feat-{i}", title=title, description=description)],
                 impacts=ImpactSummary(),
                 refs=ReferenceSummary(),

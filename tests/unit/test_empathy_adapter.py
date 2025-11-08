@@ -1,12 +1,12 @@
 """
 Unit tests for empathy_adapter module.
 """
+
 import json
 from datetime import datetime
 from pathlib import Path
 from unittest.mock import Mock, patch
 
-import pytest
 import yaml
 
 
@@ -214,7 +214,7 @@ class TestEmpathyAdapter:
         assert output_file.exists()
 
         # Verify contents
-        with open(output_file, "r") as f:
+        with open(output_file) as f:
             data = json.load(f)
 
         assert data["commit"] == "abc123"
@@ -306,7 +306,7 @@ class TestEmpathyAdapter:
         output_file = memdocs_root / "docs" / "nonexistent" / "symbols.yaml"
         assert output_file.exists()
 
-        with open(output_file, "r") as f:
+        with open(output_file) as f:
             data = yaml.safe_load(f)
 
         assert data["symbols"] == []

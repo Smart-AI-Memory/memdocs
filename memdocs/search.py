@@ -39,8 +39,7 @@ class LocalVectorSearch:
             import faiss
         except ImportError:
             raise ImportError(
-                "faiss not installed. "
-                "Install with: pip install 'memdocs[embeddings]'"
+                "faiss not installed. " "Install with: pip install 'memdocs[embeddings]'"
             )
 
         self.faiss = faiss
@@ -211,7 +210,7 @@ class LocalVectorSearch:
         if not self.metadata_path.exists():
             return {}
 
-        with open(self.metadata_path, "r", encoding="utf-8") as f:
+        with open(self.metadata_path, encoding="utf-8") as f:
             return json.load(f)
 
     def get_stats(self) -> dict[str, Any]:

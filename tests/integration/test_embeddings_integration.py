@@ -1,6 +1,7 @@
 """
 Integration tests for embeddings module using real sentence-transformers.
 """
+
 from pathlib import Path
 
 import pytest

@@ -8,10 +8,8 @@ Responsibilities:
 """
 
 import re
-import subprocess
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any
 
 import git
 from pygments import lexers
@@ -157,9 +155,7 @@ class Extractor:
             dependencies=[],  # TODO: Parse package.json, requirements.txt, etc.
         )
 
-    def extract_context(
-        self, paths: list[Path], commit: str | None = None
-    ) -> ExtractedContext:
+    def extract_context(self, paths: list[Path], commit: str | None = None) -> ExtractedContext:
         """Extract complete context for given paths.
 
         Args:
@@ -363,16 +359,10 @@ class Extractor:
                 )
 
             # class ClassName or interface InterfaceName
-            class_match = re.match(
-                r"^\s*(?:export\s+)?(?:class|interface)\s+(\w+)", line
-            )
+            class_match = re.match(r"^\s*(?:export\s+)?(?:class|interface)\s+(\w+)", line)
             if class_match:
                 name = class_match.group(1)
-                kind = (
-                    SymbolKind.CLASS
-                    if "class" in line
-                    else SymbolKind.INTERFACE
-                )
+                kind = SymbolKind.CLASS if "class" in line else SymbolKind.INTERFACE
                 symbols.append(
                     Symbol(
                         file=file_path,
@@ -416,9 +406,7 @@ class Extractor:
             for match in re.finditer(r"^(?:from|import)\s+([\w.]+)", content, re.MULTILINE):
                 imports.append(match.group(1))
         elif language in ("TypeScript", "JavaScript"):
-            for match in re.finditer(
-                r"^import\s+.*?from\s+['\"](.+?)['\"]", content, re.MULTILINE
-            ):
+            for match in re.finditer(r"^import\s+.*?from\s+['\"](.+?)['\"]", content, re.MULTILINE):
                 imports.append(match.group(1))
 
         return list(set(imports))  # Deduplicate

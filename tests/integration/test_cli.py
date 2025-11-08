@@ -1,6 +1,7 @@
 """
 Integration tests for CLI module.
 """
+
 from pathlib import Path
 from unittest.mock import MagicMock, patch
 
@@ -22,7 +23,7 @@ class TestCLI:
         """Test --help flag."""
         result = cli_runner.invoke(main, ["--help"])
         assert result.exit_code == 0
-        assert "Doc-Intelligence" in result.output
+        assert "MemDocs" in result.output
 
     def test_cli_version(self, cli_runner: CliRunner):
         """Test --version flag."""
@@ -33,7 +34,9 @@ class TestCLI:
     def test_export_command_no_docs(self, cli_runner: CliRunner, temp_repo: Path):
         """Test export command when no docs exist."""
         with cli_runner.isolated_filesystem(temp_dir=temp_repo):
-            result = cli_runner.invoke(export, ["cursor", "--docs-dir", str(temp_repo / ".memdocs" / "docs")])
+            result = cli_runner.invoke(
+                export, ["cursor", "--docs-dir", str(temp_repo / ".memdocs" / "docs")]
+            )
             assert result.exit_code != 0  # Should fail (exit code 1 or 2)
             assert "not found" in result.output.lower()
 
@@ -49,8 +52,10 @@ class TestCLI:
                 export,
                 [
                     "cursor",
-                    "--docs-dir", str(docs_dir),
-                    "--output", str(temp_repo / ".cursorrules"),
+                    "--docs-dir",
+                    str(docs_dir),
+                    "--output",
+                    str(temp_repo / ".cursorrules"),
                 ],
             )
             assert result.exit_code == 0
@@ -74,8 +79,10 @@ class TestCLI:
                 export,
                 [
                     "claude",
-                    "--docs-dir", str(docs_dir),
-                    "--output", str(temp_repo / ".claude-context.md"),
+                    "--docs-dir",
+                    str(docs_dir),
+                    "--output",
+                    str(temp_repo / ".claude-context.md"),
                 ],
             )
             assert result.exit_code == 0
@@ -93,6 +100,7 @@ class TestCLI:
 
         # Create symbols.yaml
         import yaml
+
         symbols_data = {
             "symbols": [
                 {
@@ -112,8 +120,10 @@ class TestCLI:
                 export,
                 [
                     "cursor",
-                    "--docs-dir", str(docs_dir),
-                    "--output", str(temp_repo / ".cursorrules"),
+                    "--docs-dir",
+                    str(docs_dir),
+                    "--output",
+                    str(temp_repo / ".cursorrules"),
                     "--include-symbols",
                 ],
             )
@@ -136,8 +146,10 @@ class TestCLI:
                 export,
                 [
                     "cursor",
-                    "--docs-dir", str(docs_dir),
-                    "--output", str(temp_repo / ".cursorrules"),
+                    "--docs-dir",
+                    str(docs_dir),
+                    "--output",
+                    str(temp_repo / ".cursorrules"),
                     "--no-symbols",
                 ],
             )

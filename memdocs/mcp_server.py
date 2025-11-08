@@ -12,7 +12,7 @@ from typing import Any
 import yaml
 from mcp.server import Server
 from mcp.server.stdio import stdio_server
-from mcp.types import Tool, TextContent
+from mcp.types import TextContent, Tool
 
 from memdocs.embeddings import LocalEmbedder
 from memdocs.search import LocalVectorSearch
@@ -72,13 +72,15 @@ class DocIntMCPServer:
         formatted = []
         for result in results:
             meta = result["metadata"]
-            formatted.append({
-                "score": result["score"],
-                "features": meta.get("features", []),
-                "files": meta.get("file_paths", []),
-                "preview": meta.get("chunk_text", ""),
-                "doc_id": meta.get("doc_id", "unknown"),
-            })
+            formatted.append(
+                {
+                    "score": result["score"],
+                    "features": meta.get("features", []),
+                    "files": meta.get("file_paths", []),
+                    "preview": meta.get("chunk_text", ""),
+                    "doc_id": meta.get("doc_id", "unknown"),
+                }
+            )
 
         return formatted
 
@@ -95,16 +97,14 @@ class DocIntMCPServer:
         if not symbols_file.exists():
             return {"error": "No symbols found. Run 'memdocs review' first."}
 
-        with open(symbols_file, "r", encoding="utf-8") as f:
+        with open(symbols_file, encoding="utf-8") as f:
             symbols = yaml.safe_load(f)
 
         if file_path:
             # Filter to specific file
             return {
                 "symbols": [
-                    s
-                    for s in symbols.get("symbols", [])
-                    if str(s.get("file")) == file_path
+                    s for s in symbols.get("symbols", []) if str(s.get("file")) == file_path
                 ]
             }
 
@@ -125,7 +125,7 @@ class DocIntMCPServer:
             if not doc_file.exists():
                 return {"error": f"Document not found: {doc_id}"}
 
-            with open(doc_file, "r", encoding="utf-8") as f:
+            with open(doc_file, encoding="utf-8") as f:
                 return json.load(f)
         else:
             # Get latest (index.json)
@@ -133,7 +133,7 @@ class DocIntMCPServer:
             if not index_file.exists():
                 return {"error": "No documentation found. Run 'memdocs review' first."}
 
-            with open(index_file, "r", encoding="utf-8") as f:
+            with open(index_file, encoding="utf-8") as f:
                 return json.load(f)
 
     def get_summary(self) -> str:
@@ -186,13 +186,13 @@ class DocIntMCPServer:
             if not file_dir.exists():
                 return {
                     "error": f"No analysis found for file: {file_path}. Run Empathy analysis first.",
-                    "hint": "Use EmpathyService.run_wizard() and empathy_adapter.store_empathy_analysis()"
+                    "hint": "Use EmpathyService.run_wizard() and empathy_adapter.store_empathy_analysis()",
                 }
 
             # Load index.json
             index_file = file_dir / "index.json"
             if index_file.exists():
-                with open(index_file, "r", encoding="utf-8") as f:
+                with open(index_file, encoding="utf-8") as f:
                     index_data = json.load(f)
 
                 # Extract requested data
@@ -220,7 +220,7 @@ class DocIntMCPServer:
                 if file_dir.is_dir():
                     index_file = file_dir / "index.json"
                     if index_file.exists():
-                        with open(index_file, "r", encoding="utf-8") as f:
+                        with open(index_file, encoding="utf-8") as f:
                             index_data = json.load(f)
 
                         file_result = {
@@ -244,7 +244,6 @@ class DocIntMCPServer:
             results["total_files"] = len(results["files"])
 
         return results
-
 
 
 # MCP Server Protocol Implementation using official SDK
@@ -273,18 +272,15 @@ async def serve_mcp() -> None:
                 inputSchema={
                     "type": "object",
                     "properties": {
-                        "query": {
-                            "type": "string",
-                            "description": "Natural language search query"
-                        },
+                        "query": {"type": "string", "description": "Natural language search query"},
                         "k": {
                             "type": "integer",
                             "description": "Number of results to return (default: 5)",
-                            "default": 5
-                        }
+                            "default": 5,
+                        },
                     },
-                    "required": ["query"]
-                }
+                    "required": ["query"],
+                },
             ),
             Tool(
                 name="get_symbols",
@@ -294,10 +290,10 @@ async def serve_mcp() -> None:
                     "properties": {
                         "file_path": {
                             "type": "string",
-                            "description": "Optional: filter to specific file path"
+                            "description": "Optional: filter to specific file path",
                         }
-                    }
-                }
+                    },
+                },
             ),
             Tool(
                 name="get_documentation",
@@ -307,18 +303,15 @@ async def serve_mcp() -> None:
                     "properties": {
                         "doc_id": {
                             "type": "string",
-                            "description": "Optional: specific document ID (commit SHA)"
+                            "description": "Optional: specific document ID (commit SHA)",
                         }
-                    }
-                }
+                    },
+                },
             ),
             Tool(
                 name="get_summary",
                 description="Get human-readable project summary in markdown format",
-                inputSchema={
-                    "type": "object",
-                    "properties": {}
-                }
+                inputSchema={"type": "object", "properties": {}},
             ),
             Tool(
                 name="query_analysis",
@@ -328,17 +321,17 @@ async def serve_mcp() -> None:
                     "properties": {
                         "file_path": {
                             "type": "string",
-                            "description": "Optional: specific file to query"
+                            "description": "Optional: specific file to query",
                         },
                         "query_type": {
                             "type": "string",
                             "description": "Type of analysis: issues, patterns, predictions, empathy, or all",
                             "enum": ["issues", "patterns", "predictions", "empathy", "all"],
-                            "default": "all"
-                        }
-                    }
-                }
-            )
+                            "default": "all",
+                        },
+                    },
+                },
+            ),
         ]
 
     @server.call_tool()
@@ -390,4 +383,5 @@ async def serve_mcp() -> None:
 
 if __name__ == "__main__":
     import asyncio
+
     asyncio.run(serve_mcp())

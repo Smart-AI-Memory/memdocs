@@ -13,11 +13,9 @@ This module provides comprehensive symbol extraction capabilities for:
 """
 
 import ast
-import inspect
 from dataclasses import dataclass
 from enum import Enum
 from pathlib import Path
-from typing import Any, Optional
 
 from .schemas import Symbol, SymbolKind, SymbolsOutput
 
@@ -46,10 +44,10 @@ class ExtractedSymbol:
     kind: SymbolKind
     name: str
     line: int
-    signature: Optional[str] = None
-    doc: Optional[str] = None
-    methods: Optional[list[str]] = None
-    decorators: Optional[list[str]] = None
+    signature: str | None = None
+    doc: str | None = None
+    methods: list[str] | None = None
+    decorators: list[str] | None = None
     is_async: bool = False
     is_property: bool = False
     is_classmethod: bool = False
@@ -94,7 +92,7 @@ class SymbolExtractor:
         }
 
     def extract_from_file(
-        self, file_path: Path, language: Optional[Language] = None
+        self, file_path: Path, language: Language | None = None
     ) -> list[Symbol]:
         """
         Extract symbols from a source file.
@@ -120,7 +118,7 @@ class SymbolExtractor:
 
         # Read file content
         try:
-            with open(file_path, "r", encoding="utf-8") as f:
+            with open(file_path, encoding="utf-8") as f:
                 code = f.read()
         except (FileNotFoundError, PermissionError, UnicodeDecodeError):
             return []
@@ -415,7 +413,7 @@ class SymbolExtractor:
 
 
 def extract_symbols_for_memdocs(
-    file_path: Path, language: Optional[Language] = None
+    file_path: Path, language: Language | None = None
 ) -> SymbolsOutput:
     """
     Convenience function to extract symbols in DocInt format.
@@ -449,7 +447,7 @@ def extract_symbols_for_memdocs(
 
 # Module-level convenience function
 def extract_and_save_symbols(
-    file_path: Path, output_path: Path, language: Optional[Language] = None
+    file_path: Path, output_path: Path, language: Language | None = None
 ) -> None:
     """
     Extract symbols and save to YAML file.

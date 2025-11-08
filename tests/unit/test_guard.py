@@ -1,9 +1,8 @@
 """
 Unit tests for guard module (PII/PHI detection and redaction).
 """
-from pathlib import Path
 
-import pytest
+from pathlib import Path
 
 from memdocs.guard import Guard, create_guard_from_config
 from memdocs.schemas import PHIMode

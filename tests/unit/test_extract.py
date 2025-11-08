@@ -1,9 +1,8 @@
 """
 Unit tests for extract module.
 """
-from pathlib import Path
 
-import pytest
+from pathlib import Path
 
 from memdocs.extract import Extractor
 from memdocs.schemas import SymbolKind

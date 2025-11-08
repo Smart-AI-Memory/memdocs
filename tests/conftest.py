@@ -1,10 +1,10 @@
 """
 Pytest configuration and shared fixtures.
 """
+
 import os
-import tempfile
+from collections.abc import Generator
 from pathlib import Path
-from typing import Generator
 
 import pytest
 
@@ -49,7 +49,7 @@ class Calculator:
 def sample_typescript_file(temp_repo: Path) -> Path:
     """Create a sample TypeScript file for testing."""
     file_path = temp_repo / "sample.ts"
-    content = '''
+    content = """
 export function greet(name: string): string {
     return `Hello, ${name}!`;
 }
@@ -61,7 +61,7 @@ export class User {
         return `Hi, I'm ${this.name}`;
     }
 }
-'''
+"""
     file_path.write_text(content)
     return file_path
 

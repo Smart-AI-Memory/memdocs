@@ -18,7 +18,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-from memdocs.schemas import PHIMode, RedactionEvent
+from memdocs.schemas import PHIMode
 
 
 @dataclass
@@ -41,13 +41,13 @@ class Guard:
             r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b",
             re.IGNORECASE,
         ),
-        "phone": re.compile(
-            r"\b(?:\+?1[-.]?)?\(?([0-9]{3})\)?[-.]?([0-9]{3})[-.]?([0-9]{4})\b"
-        ),
+        "phone": re.compile(r"\b(?:\+?1[-.]?)?\(?([0-9]{3})\)?[-.]?([0-9]{3})[-.]?([0-9]{4})\b"),
         "ssn": re.compile(r"\b\d{3}-\d{2}-\d{4}\b"),
         "credit_card": re.compile(r"\b(?:\d{4}[-\s]?){3}\d{4}\b"),
         "ipv4": re.compile(r"\b(?:[0-9]{1,3}\.){3}[0-9]{1,3}\b"),
-        "api_key": re.compile(r"\b(?:api[_-]?key|token)[:\s=]+['\"]?([a-zA-Z0-9_-]{20,})['\"]?", re.IGNORECASE),
+        "api_key": re.compile(
+            r"\b(?:api[_-]?key|token)[:\s=]+['\"]?([a-zA-Z0-9_-]{20,})['\"]?", re.IGNORECASE
+        ),
         "mrn": re.compile(r"\b(?:MRN|mrn)[:\s#]+([A-Z0-9]{6,})\b"),
     }
 
@@ -125,9 +125,7 @@ class Guard:
         redacted_text = text
         for match in matches_sorted:
             replacement = f"[REDACTED:{match.type.upper()}]"
-            redacted_text = (
-                redacted_text[: match.start] + replacement + redacted_text[match.end :]
-            )
+            redacted_text = redacted_text[: match.start] + replacement + redacted_text[match.end :]
 
         # Log redactions
         self._audit_redactions(doc_id, matches)

@@ -6,11 +6,13 @@ and stores them in git-committed memory.
 """
 
 import json
-import yaml
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
+import yaml
+
+from .index import MemoryIndexer
 from .schemas import (
     DocumentIndex,
     FeatureSummary,
@@ -18,11 +20,7 @@ from .schemas import (
     ReferenceSummary,
     ScopeInfo,
     ScopeLevel,
-    Symbol,
-    SymbolKind,
-    SymbolsOutput,
 )
-from .index import MemoryIndexer
 
 
 class EmpathyAdapter:
@@ -137,7 +135,9 @@ class EmpathyAdapter:
 
         # Process predictions (Level 4 Anticipatory)
         predictions = analysis_results.get("predictions", [])
-        for idx, pred in enumerate(predictions[:3], start=len(features) + 1):  # Add top 3 predictions
+        for idx, pred in enumerate(
+            predictions[:3], start=len(features) + 1
+        ):  # Add top 3 predictions
             features.append(
                 FeatureSummary(
                     id=f"feat-{idx:03d}",
@@ -219,58 +219,72 @@ class EmpathyAdapter:
         ]
 
         for feature in doc_index.features:
-            lines.extend([
-                f"### {feature.title}",
-                "",
-                f"**ID:** {feature.id}",
-                f"**Risk:** {', '.join(feature.risk)}",
-                f"**Tags:** {', '.join(feature.tags)}",
-                "",
-                feature.description or "No description provided.",
-                "",
-            ])
+            lines.extend(
+                [
+                    f"### {feature.title}",
+                    "",
+                    f"**ID:** {feature.id}",
+                    f"**Risk:** {', '.join(feature.risk)}",
+                    f"**Tags:** {', '.join(feature.tags)}",
+                    "",
+                    feature.description or "No description provided.",
+                    "",
+                ]
+            )
 
         # Add impacts
-        lines.extend([
-            "## Impact",
-            "",
-            f"- **APIs affected:** {len(doc_index.impacts.apis)}",
-            f"- **Breaking changes:** {len(doc_index.impacts.breaking_changes)}",
-            f"- **Tests modified:** {doc_index.impacts.tests_modified}",
-            f"- **Migration required:** {'Yes' if doc_index.impacts.migration_required else 'No'}",
-            "",
-        ])
+        lines.extend(
+            [
+                "## Impact",
+                "",
+                f"- **APIs affected:** {len(doc_index.impacts.apis)}",
+                f"- **Breaking changes:** {len(doc_index.impacts.breaking_changes)}",
+                f"- **Tests modified:** {doc_index.impacts.tests_modified}",
+                f"- **Migration required:** {'Yes' if doc_index.impacts.migration_required else 'No'}",
+                "",
+            ]
+        )
 
         # Add predictions (Level 4)
         predictions = analysis_results.get("predictions", [])
         if predictions:
-            lines.extend([
-                "## Predictions (Level 4 Anticipatory)",
-                "",
-            ])
+            lines.extend(
+                [
+                    "## Predictions (Level 4 Anticipatory)",
+                    "",
+                ]
+            )
             for pred in predictions:
-                lines.extend([
-                    f"### {pred.get('title', 'Prediction')}",
-                    "",
-                    f"**Timeframe:** {pred.get('timeframe', 'Unknown')}",
-                    f"**Confidence:** {pred.get('confidence', 'N/A')}",
-                    f"**Impact:** {pred.get('impact', 'Unknown')}",
-                    "",
-                    pred.get("description", "No description."),
-                    "",
-                    f"**Recommendation:** {pred.get('recommendation', 'N/A')}",
-                    "",
-                ])
+                lines.extend(
+                    [
+                        f"### {pred.get('title', 'Prediction')}",
+                        "",
+                        f"**Timeframe:** {pred.get('timeframe', 'Unknown')}",
+                        f"**Confidence:** {pred.get('confidence', 'N/A')}",
+                        f"**Impact:** {pred.get('impact', 'Unknown')}",
+                        "",
+                        pred.get("description", "No description."),
+                        "",
+                        f"**Recommendation:** {pred.get('recommendation', 'N/A')}",
+                        "",
+                    ]
+                )
 
         # Add references
-        lines.extend([
-            "## References",
-            "",
-            f"- **PR:** #{doc_index.refs.pr}" if doc_index.refs.pr else "- **PR:** N/A",
-            f"- **Issues:** {', '.join([f'#{i}' for i in doc_index.refs.issues])}" if doc_index.refs.issues else "- **Issues:** None",
-            f"- **Files changed:** {len(doc_index.refs.files_changed)}",
-            "",
-        ])
+        lines.extend(
+            [
+                "## References",
+                "",
+                f"- **PR:** #{doc_index.refs.pr}" if doc_index.refs.pr else "- **PR:** N/A",
+                (
+                    f"- **Issues:** {', '.join([f'#{i}' for i in doc_index.refs.issues])}"
+                    if doc_index.refs.issues
+                    else "- **Issues:** None"
+                ),
+                f"- **Files changed:** {len(doc_index.refs.files_changed)}",
+                "",
+            ]
+        )
 
         with open(output_file, "w") as f:
             f.write("\n".join(lines))

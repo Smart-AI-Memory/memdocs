@@ -183,7 +183,7 @@ class DocumentIndex(BaseModel):
     """Top-level index.json output."""
 
     model_config = ConfigDict(
-        ser_json_timedelta='iso8601',
+        ser_json_timedelta="iso8601",
     )
 
     commit: str | None = None
@@ -193,7 +193,7 @@ class DocumentIndex(BaseModel):
     impacts: ImpactSummary
     refs: ReferenceSummary
 
-    @field_serializer('timestamp')
+    @field_serializer("timestamp")
     def serialize_datetime(self, dt: datetime, _info) -> str:
         return dt.isoformat()
 
@@ -220,6 +220,6 @@ class ReviewResult(BaseModel):
     duration_ms: float = Field(ge=0)
     redactions: list[RedactionEvent] = Field(default_factory=list)
 
-    @field_serializer('outputs')
+    @field_serializer("outputs")
     def serialize_outputs(self, outputs: dict[str, Path], _info) -> dict[str, str]:
         return {k: str(v) for k, v in outputs.items()}

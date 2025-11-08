@@ -9,8 +9,6 @@ import json
 from pathlib import Path
 from typing import Any
 
-import numpy as np
-
 
 class LocalEmbedder:
     """Generate embeddings locally using sentence-transformers.
@@ -167,7 +165,7 @@ def load_embeddings(embeddings_file: Path) -> tuple[list[list[float]], dict[str,
     if not embeddings_file.exists():
         return [], {}
 
-    with open(embeddings_file, "r", encoding="utf-8") as f:
+    with open(embeddings_file, encoding="utf-8") as f:
         data = json.load(f)
 
     return data.get("embeddings", []), data.get("metadata", {})
