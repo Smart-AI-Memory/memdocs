@@ -1,0 +1,98 @@
+name: Feature Request
+description: Suggest a new feature or enhancement
+title: "[Feature]: "
+labels: ["enhancement", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for suggesting a feature! Please describe your idea in detail.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem Statement
+      description: What problem does this feature solve?
+      placeholder: I'm always frustrated when...
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed Solution
+      description: How would you like this to work?
+      placeholder: Add a command that...
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives Considered
+      description: What other solutions have you considered?
+      placeholder: I could use... but that doesn't work because...
+
+  - type: textarea
+    id: use-case
+    attributes:
+      label: Use Case
+      description: Describe a specific scenario where this would be useful
+      placeholder: |
+        When working on large monorepos...
+        I need to...
+        So that...
+
+  - type: textarea
+    id: examples
+    attributes:
+      label: Examples
+      description: Show examples of how this would work
+      placeholder: |
+        ```bash
+        memdocs review --new-feature value
+        ```
+
+  - type: dropdown
+    id: impact
+    attributes:
+      label: Expected Impact
+      description: Who would benefit from this feature?
+      options:
+        - Just me
+        - Small group of users
+        - Many users
+        - All users
+    validations:
+      required: true
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      description: How important is this to you?
+      options:
+        - Nice to have
+        - Would be helpful
+        - Important
+        - Critical for my workflow
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: contribution
+    attributes:
+      label: Contribution
+      options:
+        - label: I would be willing to help implement this feature
+        - label: I would be willing to test this feature
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checklist
+      options:
+        - label: I have searched existing issues/PRs for similar requests
+          required: true
+        - label: This is a single, focused feature request (not multiple features)
+          required: true
