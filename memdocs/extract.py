@@ -63,6 +63,7 @@ class Extractor:
             repo_path: Path to git repository
         """
         self.repo_path = repo_path
+        self.repo: git.Repo | None
         try:
             self.repo = git.Repo(repo_path)
         except git.InvalidGitRepositoryError:
@@ -92,20 +93,29 @@ class Extractor:
 
         for diff_item in diff_index:
             change_type = diff_item.change_type
-            if change_type == "A":
+            if change_type == "A" and diff_item.b_path:
                 added_files.append(Path(diff_item.b_path))
             elif change_type in ("M", "R"):
-                modified_files.append(Path(diff_item.b_path or diff_item.a_path))
-            elif change_type == "D":
+                path_str = diff_item.b_path or diff_item.a_path
+                if path_str:
+                    modified_files.append(Path(path_str))
+            elif change_type == "D" and diff_item.a_path:
                 deleted_files.append(Path(diff_item.a_path))
 
         all_changed = added_files + modified_files + deleted_files
 
+        # Handle optional author name and message encoding
+        author_name = commit_obj.author.name or "Unknown"
+        message = commit_obj.message
+        if isinstance(message, bytes):
+            message = message.decode("utf-8", errors="replace")
+        message_str = message.strip()
+
         return GitDiff(
             commit=commit_obj.hexsha[:7],
-            author=commit_obj.author.name,
+            author=author_name,
             timestamp=commit_obj.committed_datetime.isoformat(),
-            message=commit_obj.message.strip(),
+            message=message_str,
             added_files=added_files,
             modified_files=modified_files,
             deleted_files=deleted_files,

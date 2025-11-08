@@ -277,7 +277,7 @@ class EmpathySyncWorkflow:
 
         exts = extensions.get(language, [".py"])
 
-        files = []
+        files: list[Path] = []
         for ext in exts:
             files.extend(module_path.rglob(f"*{ext}"))
 

@@ -37,10 +37,12 @@ class MemoryIndexer:
         if use_embeddings:
             try:
                 self.embedder = LocalEmbedder()
+                # LocalEmbedder.dimension is set after model loads, guaranteed to be int
+                dimension_value = self.embedder.dimension if self.embedder.dimension else 384
                 self.search = LocalVectorSearch(
                     index_path=memory_dir / "faiss.index",
                     metadata_path=memory_dir / "faiss_metadata.json",
-                    dimension=self.embedder.dimension,
+                    dimension=dimension_value,
                 )
             except ImportError:
                 # Optional dependency not installed
@@ -60,7 +62,7 @@ class MemoryIndexer:
         Returns:
             Indexing statistics
         """
-        stats = {
+        stats: dict[str, Any] = {
             "chunks": 0,
             "embeddings_generated": 0,
             "indexed": False,

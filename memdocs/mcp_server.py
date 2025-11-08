@@ -7,7 +7,7 @@ Enables Claude Desktop to query project memory stored in .memdocs/
 import json
 import os
 from pathlib import Path
-from typing import Any
+from typing import Any, cast
 
 import yaml
 from mcp.server import Server
@@ -40,10 +40,12 @@ class DocIntMCPServer:
         # Initialize search (if available)
         try:
             self.embedder = LocalEmbedder()
+            # LocalEmbedder.dimension is set after model loads, guaranteed to be int
+            dimension_value = self.embedder.dimension if self.embedder.dimension else 384
             self.search = LocalVectorSearch(
                 index_path=self.memory_dir / "faiss.index",
                 metadata_path=self.memory_dir / "faiss_metadata.json",
-                dimension=self.embedder.dimension,
+                dimension=dimension_value,
             )
             self.search_enabled = True
         except (ImportError, FileNotFoundError):
@@ -98,7 +100,7 @@ class DocIntMCPServer:
             return {"error": "No symbols found. Run 'memdocs review' first."}
 
         with open(symbols_file, encoding="utf-8") as f:
-            symbols = yaml.safe_load(f)
+            symbols = cast(dict[str, Any], yaml.safe_load(f))
 
         if file_path:
             # Filter to specific file
@@ -126,7 +128,7 @@ class DocIntMCPServer:
                 return {"error": f"Document not found: {doc_id}"}
 
             with open(doc_file, encoding="utf-8") as f:
-                return json.load(f)
+                return cast(dict[str, Any], json.load(f))
         else:
             # Get latest (index.json)
             index_file = self.docs_dir / "index.json"
@@ -134,7 +136,7 @@ class DocIntMCPServer:
                 return {"error": "No documentation found. Run 'memdocs review' first."}
 
             with open(index_file, encoding="utf-8") as f:
-                return json.load(f)
+                return cast(dict[str, Any], json.load(f))
 
     def get_summary(self) -> str:
         """Get human-readable summary.
@@ -348,13 +350,13 @@ async def serve_mcp() -> None:
 
             elif name == "get_symbols":
                 file_path = arguments.get("file_path")
-                results = memdocs_server.get_symbols(file_path)
-                return [TextContent(type="text", text=json.dumps(results, indent=2))]
+                symbol_data = memdocs_server.get_symbols(file_path)
+                return [TextContent(type="text", text=json.dumps(symbol_data, indent=2))]
 
             elif name == "get_documentation":
                 doc_id = arguments.get("doc_id")
-                results = memdocs_server.get_documentation(doc_id)
-                return [TextContent(type="text", text=json.dumps(results, indent=2))]
+                doc_data = memdocs_server.get_documentation(doc_id)
+                return [TextContent(type="text", text=json.dumps(doc_data, indent=2))]
 
             elif name == "get_summary":
                 summary = memdocs_server.get_summary()
@@ -363,8 +365,8 @@ async def serve_mcp() -> None:
             elif name == "query_analysis":
                 file_path = arguments.get("file_path")
                 query_type = arguments.get("query_type", "all")
-                results = memdocs_server.query_analysis(file_path, query_type)
-                return [TextContent(type="text", text=json.dumps(results, indent=2))]
+                analysis_data = memdocs_server.query_analysis(file_path, query_type)
+                return [TextContent(type="text", text=json.dumps(analysis_data, indent=2))]
 
             else:
                 error_msg = f"Unknown tool: {name}"

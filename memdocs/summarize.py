@@ -18,6 +18,7 @@ from memdocs.schemas import (
     ReferenceSummary,
     ScopeInfo,
 )
+from memdocs.security import InputValidator, RateLimiter, ConfigValidator
 
 
 class Summarizer:
@@ -98,14 +99,23 @@ Generate the YAML now:"""
             model: Claude model to use
         """
         self.api_key = api_key or os.environ.get("ANTHROPIC_API_KEY")
-        if not self.api_key:
-            raise ValueError(
-                "Anthropic API key required. Set ANTHROPIC_API_KEY environment variable "
-                "or pass api_key parameter. Get your key at: https://console.anthropic.com/"
-            )
+
+        # Validate API key
+        try:
+            self.api_key = InputValidator.validate_api_key(self.api_key or "", allow_empty=False)
+        except Exception as e:
+            raise ValueError(str(e)) from e
+
+        # Validate model name
+        try:
+            self.model = InputValidator.validate_model_name(model)
+        except Exception as e:
+            raise ValueError(str(e)) from e
 
         self.client = anthropic.Anthropic(api_key=self.api_key)
-        self.model = model
+
+        # Initialize rate limiter (50 calls per minute)
+        self.rate_limiter = RateLimiter(max_calls=50, window_seconds=60)
 
     def summarize(self, context: ExtractedContext, scope: ScopeInfo) -> tuple[DocumentIndex, str]:
         """Generate documentation summary from context.
@@ -117,6 +127,9 @@ Generate the YAML now:"""
         Returns:
             Tuple of (DocumentIndex, raw_markdown_summary)
         """
+        # Check rate limit before API call
+        self.rate_limiter.check_rate_limit()
+
         # Build prompt
         prompt = self._build_prompt(context, scope)
 
@@ -132,8 +145,12 @@ Generate the YAML now:"""
             ],
         )
 
-        # Parse response
-        yaml_content = response.content[0].text
+        # Parse response (extract text from first content block)
+        first_block = response.content[0]
+        if hasattr(first_block, "text"):
+            yaml_content = first_block.text
+        else:
+            raise ValueError(f"Unexpected content block type: {type(first_block)}")
 
         # Extract YAML from response (in case Claude adds explanation)
         yaml_content = self._extract_yaml(yaml_content)

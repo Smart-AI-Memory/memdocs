@@ -7,7 +7,7 @@ Index stored in .memdocs/memory/ (git-committed).
 
 import json
 from pathlib import Path
-from typing import Any
+from typing import Any, cast
 
 import numpy as np
 
@@ -211,7 +211,7 @@ class LocalVectorSearch:
             return {}
 
         with open(self.metadata_path, encoding="utf-8") as f:
-            return json.load(f)
+            return cast(dict[str, Any], json.load(f))
 
     def get_stats(self) -> dict[str, Any]:
         """Get index statistics.

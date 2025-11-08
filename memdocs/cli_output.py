@@ -171,14 +171,14 @@ def create_file_tree(root_path: Path, files: list[Path], title: str = "Files") -
         dirs[dir_key].append(file_path)
 
     # Build tree
-    for dir_path, dir_files in sorted(dirs.items()):
-        if dir_path == ".":
+    for dir_key_str, dir_files in sorted(dirs.items()):
+        if dir_key_str == ".":
             # Root level files
             for f in dir_files:
                 tree.add(f"[green]{f.name}")
         else:
             # Directory with files
-            dir_node = tree.add(f"[blue]{dir_path}/")
+            dir_node = tree.add(f"[blue]{dir_key_str}/")
             for f in dir_files:
                 dir_node.add(f"[green]{f.name}")
 
@@ -270,11 +270,12 @@ def format_size(size_bytes: int) -> str:
     Returns:
         Formatted size string
     """
+    size_float = float(size_bytes)
     for unit in ["B", "KB", "MB", "GB"]:
-        if size_bytes < 1024.0:
-            return f"{size_bytes:.1f} {unit}"
-        size_bytes /= 1024.0
-    return f"{size_bytes:.1f} TB"
+        if size_float < 1024.0:
+            return f"{size_float:.1f} {unit}"
+        size_float /= 1024.0
+    return f"{size_float:.1f} TB"
 
 
 # Header
@@ -299,4 +300,4 @@ def print_rule(title: str | None = None, style: str = "blue") -> None:
     """
     from rich.rule import Rule
 
-    console.print(Rule(title=title, style=style))
+    console.print(Rule(title=title or "", style=style))

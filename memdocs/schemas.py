@@ -81,7 +81,7 @@ class OutputsConfig(BaseModel):
     docs_dir: Path = Field(default=Path(".memdocs/docs"))
     memory_dir: Path = Field(default=Path(".memdocs/memory"))
     formats: list[Literal["yaml", "json", "markdown"]] = Field(
-        default_factory=lambda: ["yaml", "json", "markdown"]
+        default_factory=lambda: ["yaml", "json", "markdown"]  # type: ignore[arg-type]
     )
 
 

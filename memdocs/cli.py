@@ -3,6 +3,7 @@ Command-line interface for doc-intelligence.
 """
 
 import json
+import os
 import sys
 import time
 from pathlib import Path
@@ -22,6 +23,7 @@ from memdocs.guard import create_guard_from_config  # noqa: E402
 from memdocs.index import MemoryIndexer  # noqa: E402
 from memdocs.policy import PolicyEngine  # noqa: E402
 from memdocs.schemas import DocIntConfig, SymbolsOutput  # noqa: E402
+from memdocs.security import ConfigValidator, InputValidator, PathValidator  # noqa: E402
 from memdocs.summarize import Summarizer  # noqa: E402
 
 
@@ -37,8 +39,37 @@ def load_config(config_path: Path) -> DocIntConfig:
     if not config_path.exists():
         return DocIntConfig()  # Use defaults
 
-    with open(config_path, encoding="utf-8") as f:
+    # Validate config path
+    try:
+        validated_path = PathValidator.validate_path(config_path)
+    except Exception as e:
+        out.error(f"Invalid config path: {e}")
+        sys.exit(1)
+
+    # Validate file size
+    try:
+        InputValidator.validate_file_size(validated_path, max_size_mb=1.0)
+    except Exception as e:
+        out.error(f"Config file validation failed: {e}")
+        sys.exit(1)
+
+    with open(validated_path, encoding="utf-8") as f:
         config_dict = yaml.safe_load(f)
+
+    # Validate configuration values
+    if config_dict:
+        try:
+            if "policies" in config_dict and "default_scope" in config_dict["policies"]:
+                ConfigValidator.validate_scope_level(config_dict["policies"]["default_scope"])
+
+            if "ai" in config_dict:
+                if "model" in config_dict["ai"]:
+                    InputValidator.validate_model_name(config_dict["ai"]["model"])
+                if "temperature" in config_dict["ai"]:
+                    ConfigValidator.validate_temperature(config_dict["ai"]["temperature"])
+        except Exception as e:
+            out.error(f"Config validation failed: {e}")
+            sys.exit(1)
 
     return DocIntConfig(**config_dict)
 
@@ -68,9 +99,24 @@ def init(force: bool) -> None:
     try:
         out.print_header("MemDocs Initialization")
 
+        # Validate we're in a writable directory
+        cwd = Path.cwd()
+        if not os.access(cwd, os.W_OK):
+            out.error("Current directory is not writable")
+            sys.exit(1)
+
         config_path = Path(".memdocs.yml")
         docs_dir = Path(".memdocs/docs")
         memory_dir = Path(".memdocs/memory")
+
+        # Validate paths are safe (no traversal)
+        try:
+            PathValidator.validate_path(config_path, base_dir=cwd)
+            PathValidator.validate_path(docs_dir, base_dir=cwd)
+            PathValidator.validate_path(memory_dir, base_dir=cwd)
+        except Exception as e:
+            out.error(f"Path validation failed: {e}")
+            sys.exit(1)
 
         # Check if already initialized
         if config_path.exists() and not force:
@@ -540,7 +586,7 @@ def export(format: str, output: Path | None, docs_dir: Path, include_symbols: bo
 
             if symbols_data and "symbols" in symbols_data:
                 symbols_section = "\n\n## 🗺️ Code Map\n\n"
-                symbols_by_file = {}
+                symbols_by_file: dict[str, list[Any]] = {}
 
                 # Group symbols by file
                 for symbol in symbols_data["symbols"]:
@@ -752,7 +798,7 @@ def stats(docs_dir: Path, memory_dir: Path, format: str) -> None:
         out.print_header("MemDocs Statistics")
 
         # Docs stats
-        docs_stats = {
+        docs_stats: dict[str, Any] = {
             "exists": docs_dir.exists(),
             "total_files": 0,
             "formats": [],

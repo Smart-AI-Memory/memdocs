@@ -7,7 +7,7 @@ Model downloads once (~90MB), runs 100% locally.
 
 import json
 from pathlib import Path
-from typing import Any
+from typing import Any, cast
 
 
 class LocalEmbedder:
@@ -86,7 +86,7 @@ class LocalEmbedder:
             convert_to_numpy=True,
         )
 
-        return embeddings.tolist()
+        return cast(list[list[float]], embeddings.tolist())
 
     def embed_query(self, query: str) -> list[float]:
         """Generate embedding for a single query.
@@ -98,7 +98,7 @@ class LocalEmbedder:
             Embedding vector
         """
         embedding = self.model.encode([query], convert_to_numpy=True)
-        return embedding[0].tolist()
+        return cast(list[float], embedding[0].tolist())
 
 
 def chunk_document(text: str, max_tokens: int = 512, overlap: int = 50) -> list[str]:
