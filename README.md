@@ -182,8 +182,12 @@ ai:
 # Privacy (optional, for sensitive codebases)
 privacy:
   phi_mode: "off"               # off | standard | strict
-  pii_detection: false
-  redaction_enabled: false
+  scrub:                        # Types of sensitive data to redact
+    - email
+    - phone
+    - ssn
+    - mrn
+  audit_redactions: true        # Log all redactions for compliance
 
 # Exclude patterns
 exclude:
@@ -216,11 +220,15 @@ memdocs query "database schema"
 ### 2. AI Assistant Context
 
 ```python
-from memdocs import MemoryIndexer
+from pathlib import Path
+from memdocs.index import MemoryIndexer
 import anthropic
 
 # Get project context from MemDocs
-indexer = MemoryIndexer(memory_dir=".memdocs/memory")
+indexer = MemoryIndexer(
+    memory_dir=Path(".memdocs/memory"),
+    use_embeddings=True  # Requires: pip install memdocs[embeddings]
+)
 results = indexer.query_memory("payment processing", k=5)
 
 # Build context for Claude

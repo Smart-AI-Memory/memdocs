@@ -16,6 +16,10 @@ from pygments import lexers
 from pygments.util import ClassNotFound
 
 from memdocs.schemas import Symbol, SymbolKind
+from memdocs.security import InputValidator, ConfigValidator
+
+# Configuration constants
+MAX_FILE_SIZE_MB = 10  # Maximum file size to process (10MB)
 
 
 @dataclass
@@ -110,6 +114,8 @@ class Extractor:
         if isinstance(message, bytes):
             message = message.decode("utf-8", errors="replace")
         message_str = message.strip()
+        # Sanitize commit message to prevent secrets/malicious content exposure
+        message_str = InputValidator.sanitize_output(message_str)
 
         return GitDiff(
             commit=commit_obj.hexsha[:7],
@@ -141,6 +147,16 @@ class Extractor:
             language = lexer.name
         except ClassNotFound:
             language = "unknown"
+
+        # Check file size before reading (prevent DoS from huge files)
+        try:
+            file_size = full_path.stat().st_size
+            max_size_bytes = MAX_FILE_SIZE_MB * 1024 * 1024
+            if file_size > max_size_bytes:
+                # Skip files larger than MAX_FILE_SIZE_MB
+                return None
+        except (OSError, PermissionError):
+            return None
 
         # Read file
         try:

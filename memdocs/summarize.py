@@ -20,6 +20,9 @@ from memdocs.schemas import (
 )
 from memdocs.security import InputValidator, RateLimiter, ConfigValidator
 
+# Configuration constants
+DEFAULT_MAX_TOKENS = 4096  # Default max tokens for Claude API response (schema default)
+
 
 class Summarizer:
     """AI-powered documentation summarizer."""
@@ -117,6 +120,11 @@ Generate the YAML now:"""
         # Initialize rate limiter (50 calls per minute)
         self.rate_limiter = RateLimiter(max_calls=50, window_seconds=60)
 
+    def __repr__(self) -> str:
+        """Return string representation with masked API key for security."""
+        masked_key = "***" + self.api_key[-4:] if len(self.api_key) > 4 else "***"
+        return f"Summarizer(model={self.model!r}, api_key={masked_key!r})"
+
     def summarize(self, context: ExtractedContext, scope: ScopeInfo) -> tuple[DocumentIndex, str]:
         """Generate documentation summary from context.
 
@@ -136,7 +144,7 @@ Generate the YAML now:"""
         # Call Claude
         response = self.client.messages.create(
             model=self.model,
-            max_tokens=4096,
+            max_tokens=DEFAULT_MAX_TOKENS,
             messages=[
                 {
                     "role": "user",

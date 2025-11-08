@@ -6,6 +6,7 @@ Enables Claude Desktop to query project memory stored in .memdocs/
 
 import json
 import os
+import tempfile
 from pathlib import Path
 from typing import Any, cast
 
@@ -16,6 +17,7 @@ from mcp.types import TextContent, Tool
 
 from memdocs.embeddings import LocalEmbedder
 from memdocs.search import LocalVectorSearch
+from memdocs.security import PathValidator
 
 
 class DocIntMCPServer:
@@ -253,10 +255,15 @@ async def serve_mcp() -> None:
     """Run MCP server (stdio protocol for Claude Desktop)."""
     import logging
 
-    logging.basicConfig(level=logging.INFO, filename="/tmp/memdocs-mcp.log")
+    # Use secure temporary file for logging
+    log_file = tempfile.NamedTemporaryFile(
+        mode='w', prefix='memdocs-mcp-', suffix='.log', delete=False
+    )
+    logging.basicConfig(level=logging.INFO, filename=log_file.name)
 
-    # Get repo path from environment or use current directory
-    repo_path = Path(os.environ.get("REPO_PATH", "."))
+    # Get repo path from environment or use current directory, with validation
+    repo_path_str = os.environ.get("REPO_PATH", ".")
+    repo_path = PathValidator.validate_path(Path(repo_path_str))
     memdocs_server = DocIntMCPServer(repo_path)
 
     logging.info(f"MCP server started for repo: {repo_path}")

@@ -9,6 +9,9 @@ import json
 from pathlib import Path
 from typing import Any, cast
 
+# Configuration constants
+DEFAULT_EMBEDDING_BATCH_SIZE = 32  # Batch size for embedding generation
+
 
 class LocalEmbedder:
     """Generate embeddings locally using sentence-transformers.
@@ -81,7 +84,7 @@ class LocalEmbedder:
         # Generate embeddings
         embeddings = self.model.encode(
             texts,
-            batch_size=32,  # Process in batches for efficiency
+            batch_size=DEFAULT_EMBEDDING_BATCH_SIZE,  # Process in batches for efficiency
             show_progress_bar=len(texts) > 10,  # Show progress for large batches
             convert_to_numpy=True,
         )

@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "memdocs"
-version = "2.0.0"
+version = "2.0.0-beta"
 description = "Persistent memory management for AI projects - Git-native documentation intelligence"
 authors = [{name = "Patrick Roebuck", email = "patrick.roebuck@deepstudyai.com"}]
 license = {text = "Apache-2.0"}
@@ -20,7 +20,7 @@ keywords = [
     "developer-tools"
 ]
 classifiers = [
-    "Development Status :: 5 - Production/Stable",
+    "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
     "License :: OSI Approved :: Apache Software License",
     "Programming Language :: Python :: 3",

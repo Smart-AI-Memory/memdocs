@@ -265,7 +265,8 @@ class SymbolExtractor:
                 try:
                     arg_type = ast.unparse(arg.annotation)
                     args.append(f"{arg_name}: {arg_type}")
-                except:
+                except (AttributeError, TypeError, ValueError):
+                    # Fallback if annotation can't be unparsed
                     args.append(arg_name)
             else:
                 args.append(arg_name)
@@ -277,7 +278,8 @@ class SymbolExtractor:
             try:
                 return_type = ast.unparse(node.returns)
                 signature += f" -> {return_type}"
-            except:
+            except (AttributeError, TypeError, ValueError):
+                # Fallback if return type can't be unparsed
                 pass
 
         # Extract docstring
@@ -326,7 +328,8 @@ class SymbolExtractor:
         for base in node.bases:
             try:
                 bases.append(ast.unparse(base))
-            except:
+            except (AttributeError, TypeError, ValueError):
+                # Fallback if base class can't be unparsed
                 pass
 
         if bases:

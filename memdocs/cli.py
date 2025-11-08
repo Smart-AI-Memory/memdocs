@@ -319,11 +319,16 @@ def review(
         # Load configuration
         doc_config = load_config(config)
 
-        # Override config with CLI args
+        # Override config with CLI args (with validation)
         if max_files:
-            doc_config.policies.max_files_without_force = max_files
+            validated_max_files = ConfigValidator.validate_positive_int(
+                max_files, "max_files"
+            )
+            doc_config.policies.max_files_without_force = validated_max_files
         if escalate_on:
-            doc_config.policies.escalate_on = escalate_on.split(",")
+            # Validate and sanitize escalation rules
+            rules = [rule.strip() for rule in escalate_on.split(",") if rule.strip()]
+            doc_config.policies.escalate_on = rules
         if output_dir:
             doc_config.outputs.docs_dir = output_dir / "docs"
             doc_config.outputs.memory_dir = output_dir / "memory"

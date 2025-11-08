@@ -23,8 +23,12 @@ outputs:
 # Privacy (optional, only enable if handling sensitive data)
 privacy:
   phi_mode: "off"               # off | standard | strict
-  pii_detection: false
-  redaction_enabled: false
+  scrub:                        # Types of sensitive data to redact
+    - email
+    - phone
+    - ssn
+    - mrn
+  audit_redactions: true        # Log all redactions for compliance
 
 # AI configuration (Claude API)
 ai:

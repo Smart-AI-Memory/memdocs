@@ -422,7 +422,7 @@ refs:
                 del os.environ["ANTHROPIC_API_KEY"]
 
             # Should raise ValueError
-            with pytest.raises(ValueError, match="Anthropic API key required"):
+            with pytest.raises(ValueError, match="API key is required"):
                 Summarizer()
 
             # Should work with explicit key
