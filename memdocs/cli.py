@@ -10,6 +10,10 @@ from typing import Any
 
 import click
 import yaml
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 from memdocs import __version__
 from memdocs.extract import Extractor
@@ -351,7 +355,7 @@ def _write_memory(config: DocIntConfig, doc_index: Any) -> dict[str, Path]:
 )
 @click.option(
     "--docs-dir",
-    type=click.Path(exists=True, path_type=Path),
+    type=click.Path(path_type=Path),
     default=Path(".memdocs/docs"),
     help="Documentation directory",
 )
@@ -492,7 +496,7 @@ def export(format: str, output: Path | None, docs_dir: Path, include_symbols: bo
 )
 @click.option(
     "--memory-dir",
-    type=click.Path(exists=True, path_type=Path),
+    type=click.Path(path_type=Path),
     default=Path(".memdocs/memory"),
     help="Memory directory",
 )

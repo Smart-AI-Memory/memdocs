@@ -4,12 +4,12 @@ Data schemas and models for doc-intelligence.
 Uses Pydantic for validation and serialization to YAML/JSON.
 """
 
-from datetime import datetime
+from datetime import datetime, timezone
 from enum import Enum
 from pathlib import Path
 from typing import Any, Literal
 
-from pydantic import BaseModel, Field, field_validator
+from pydantic import BaseModel, ConfigDict, Field, field_serializer, field_validator
 
 
 class ScopeLevel(str, Enum):
@@ -96,7 +96,7 @@ class AIConfig(BaseModel):
     """AI provider and model configuration."""
 
     provider: Literal["anthropic", "openai"] = Field(default="anthropic")
-    model: str = Field(default="claude-sonnet-4")
+    model: str = Field(default="claude-sonnet-4-5-20250929")
     embeddings_model: str = Field(default="text-embedding-3-small")
     max_tokens: int = Field(default=4096, ge=1024, le=200000)
 
@@ -182,24 +182,26 @@ class ScopeInfo(BaseModel):
 class DocumentIndex(BaseModel):
     """Top-level index.json output."""
 
+    model_config = ConfigDict(
+        ser_json_timedelta='iso8601',
+    )
+
     commit: str | None = None
-    timestamp: datetime = Field(default_factory=datetime.utcnow)
+    timestamp: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     scope: ScopeInfo
     features: list[FeatureSummary]
     impacts: ImpactSummary
     refs: ReferenceSummary
 
-    class Config:
-        json_encoders = {
-            datetime: lambda v: v.isoformat(),
-            Path: lambda v: str(v),
-        }
+    @field_serializer('timestamp')
+    def serialize_datetime(self, dt: datetime, _info) -> str:
+        return dt.isoformat()
 
 
 class RedactionEvent(BaseModel):
     """PHI/PII redaction audit event."""
 
-    timestamp: datetime = Field(default_factory=datetime.utcnow)
+    timestamp: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     event: Literal["phi_detected", "pii_detected", "redaction_applied"]
     doc_id: str
     redactions: list[dict[str, Any]]
@@ -207,6 +209,8 @@ class RedactionEvent(BaseModel):
 
 class ReviewResult(BaseModel):
     """Result of a doc-intelligence review."""
+
+    model_config = ConfigDict()
 
     success: bool
     scope: ScopeInfo
@@ -216,7 +220,6 @@ class ReviewResult(BaseModel):
     duration_ms: float = Field(ge=0)
     redactions: list[RedactionEvent] = Field(default_factory=list)
 
-    class Config:
-        json_encoders = {
-            Path: lambda v: str(v),
-        }
+    @field_serializer('outputs')
+    def serialize_outputs(self, outputs: dict[str, Path], _info) -> dict[str, str]:
+        return {k: str(v) for k, v in outputs.items()}

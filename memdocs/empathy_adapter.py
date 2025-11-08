@@ -7,7 +7,7 @@ and stores them in git-committed memory.
 
 import json
 import yaml
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
@@ -95,7 +95,7 @@ class EmpathyAdapter:
         # Create document index
         doc_index = DocumentIndex(
             commit=commit,
-            timestamp=datetime.utcnow(),
+            timestamp=datetime.now(timezone.utc),
             scope=scope,
             features=features,
             impacts=impacts,

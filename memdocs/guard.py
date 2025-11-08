@@ -14,7 +14,7 @@ Detects and redacts sensitive information:
 import json
 import re
 from dataclasses import dataclass
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
@@ -145,7 +145,7 @@ class Guard:
             return
 
         audit_entry = {
-            "timestamp": datetime.utcnow().isoformat(),
+            "timestamp": datetime.now(timezone.utc).isoformat(),
             "event": "redaction_applied",
             "doc_id": doc_id,
             "redactions": [

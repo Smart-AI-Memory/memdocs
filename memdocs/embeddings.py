@@ -45,11 +45,28 @@ class LocalEmbedder:
 
         self.model_name = model_name
         self.cache_dir = cache_dir or Path.home() / ".cache" / "memdocs"
-        self.cache_dir.mkdir(parents=True, exist_ok=True)
+
+        try:
+            self.cache_dir.mkdir(parents=True, exist_ok=True)
+        except (PermissionError, OSError) as e:
+            raise RuntimeError(
+                f"Failed to create cache directory at {self.cache_dir}: {e}. "
+                "Check permissions or set cache_dir to a writable location."
+            ) from e
 
         # Load model (downloads on first run, then cached)
-        self.model = SentenceTransformer(model_name, cache_folder=str(self.cache_dir))
-        self.dimension = self.model.get_sentence_embedding_dimension()
+        try:
+            self.model = SentenceTransformer(model_name, cache_folder=str(self.cache_dir))
+            self.dimension = self.model.get_sentence_embedding_dimension()
+        except Exception as e:
+            raise RuntimeError(
+                f"Failed to load embedding model '{model_name}': {e}. "
+                "This may be due to:\n"
+                "  - Network issues (model download failed)\n"
+                "  - Insufficient disk space\n"
+                "  - Invalid model name\n"
+                "Install with: pip install 'memdocs[embeddings]'"
+            ) from e
 
     def embed_documents(self, texts: list[str]) -> list[list[float]]:
         """Generate embeddings for documents.

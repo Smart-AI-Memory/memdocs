@@ -91,7 +91,7 @@ refs:
 
 Generate the YAML now:"""
 
-    def __init__(self, api_key: str | None = None, model: str = "claude-sonnet-4"):
+    def __init__(self, api_key: str | None = None, model: str = "claude-sonnet-4-5-20250929"):
         """Initialize summarizer.
 
         Args:
@@ -100,7 +100,10 @@ Generate the YAML now:"""
         """
         self.api_key = api_key or os.environ.get("ANTHROPIC_API_KEY")
         if not self.api_key:
-            raise ValueError("Anthropic API key required (ANTHROPIC_API_KEY env var)")
+            raise ValueError(
+                "Anthropic API key required. Set ANTHROPIC_API_KEY environment variable "
+                "or pass api_key parameter. Get your key at: https://console.anthropic.com/"
+            )
 
         self.client = anthropic.Anthropic(api_key=self.api_key)
         self.model = model
@@ -265,10 +268,18 @@ Symbols:
 
         # Parse refs
         refs_dict = parsed.get("refs", {})
+
+        # Use actual files from context, or parse from refs_dict if context is empty
+        if context.files:
+            files_changed = [f.path for f in context.files]
+        else:
+            from pathlib import Path
+            files_changed = [Path(f) for f in refs_dict.get("files_changed", [])]
+
         refs = ReferenceSummary(
             pr=refs_dict.get("pr"),
             issues=refs_dict.get("issues", []),
-            files_changed=[context.files[0].path for _ in refs_dict.get("files_changed", [])],
+            files_changed=files_changed,
             commits=refs_dict.get("commits", []),
         )
 
