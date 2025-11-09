@@ -2,6 +2,7 @@
 Init command - Initialize MemDocs in the current project.
 """
 
+import json
 import os
 import sys
 from pathlib import Path
@@ -12,19 +13,136 @@ from memdocs import cli_output as out
 from memdocs.security import PathValidator
 
 
+def _detect_source_directory(cwd: Path) -> str:
+    """Detect the main source directory for the project."""
+    common_dirs = ["src", "lib", "app", "pkg", cwd.name]
+
+    for dir_name in common_dirs:
+        if (cwd / dir_name).is_dir():
+            return f"{dir_name}/"
+
+    # Default to current directory
+    return "./"
+
+
+def _setup_mcp_infrastructure(cwd: Path) -> None:
+    """Set up VS Code tasks and settings for MCP auto-start."""
+    vscode_dir = cwd / ".vscode"
+    tasks_file = vscode_dir / "tasks.json"
+    settings_file = vscode_dir / "settings.json"
+
+    # Create .vscode directory
+    out.step("Setting up VS Code MCP integration")
+    vscode_dir.mkdir(exist_ok=True)
+
+    # Detect source directory
+    source_dir = _detect_source_directory(cwd)
+
+    # Create tasks.json
+    tasks_config = {
+        "version": "2.0.0",
+        "tasks": [
+            {
+                "label": "MemDocs MCP Server",
+                "type": "shell",
+                "command": "memdocs",
+                "args": ["serve", "--mcp"],
+                "isBackground": True,
+                "problemMatcher": [],
+                "runOptions": {
+                    "runOn": "folderOpen"
+                },
+                "presentation": {
+                    "echo": False,
+                    "reveal": "never",
+                    "focus": False,
+                    "panel": "shared",
+                    "showReuseMessage": False,
+                    "clear": False
+                }
+            },
+            {
+                "label": "Update MemDocs Memory",
+                "type": "shell",
+                "command": "memdocs",
+                "args": ["review", "--path", source_dir],
+                "presentation": {
+                    "echo": True,
+                    "reveal": "always",
+                    "focus": False,
+                    "panel": "shared"
+                }
+            },
+            {
+                "label": "Export MemDocs for Cursor",
+                "type": "shell",
+                "command": "memdocs",
+                "args": ["export", "cursor"],
+                "presentation": {
+                    "echo": True,
+                    "reveal": "always",
+                    "focus": False,
+                    "panel": "shared"
+                }
+            },
+            {
+                "label": "MemDocs Stats",
+                "type": "shell",
+                "command": "memdocs",
+                "args": ["stats"],
+                "presentation": {
+                    "echo": True,
+                    "reveal": "always",
+                    "focus": True,
+                    "panel": "shared"
+                }
+            }
+        ]
+    }
+
+    tasks_file.write_text(json.dumps(tasks_config, indent=2), encoding="utf-8")
+    out.success(f"Created [green]{tasks_file}[/green]")
+
+    # Create settings.json for auto-start
+    settings_config = {
+        "task.autoDetect": "on",
+        "task.allowAutomaticTasks": "on"
+    }
+
+    # Merge with existing settings if they exist
+    if settings_file.exists():
+        try:
+            existing_settings = json.loads(settings_file.read_text(encoding="utf-8"))
+            existing_settings.update(settings_config)
+            settings_config = existing_settings
+        except json.JSONDecodeError:
+            pass  # Use new settings if existing file is invalid
+
+    settings_file.write_text(json.dumps(settings_config, indent=2), encoding="utf-8")
+    out.success(f"Created [green]{settings_file}[/green]")
+
+    out.success("MCP auto-start configured for VS Code/Cursor")
+
+
 @click.command()
 @click.option(
     "--force",
     is_flag=True,
     help="Reinitialize even if already initialized",
 )
-def init(force: bool) -> None:
+@click.option(
+    "--with-mcp",
+    is_flag=True,
+    help="Setup VS Code tasks for MCP auto-start",
+)
+def init(force: bool, with_mcp: bool) -> None:
     """Initialize MemDocs in the current project.
 
     Examples:
 
         memdocs init
         memdocs init --force
+        memdocs init --with-mcp
     """
     try:
         out.print_header("MemDocs Initialization")
@@ -110,6 +228,11 @@ exclude:
         config_path.write_text(default_config, encoding="utf-8")
         out.success(f"Configuration created: [green]{config_path}[/green]")
 
+        # Set up MCP infrastructure if requested
+        if with_mcp:
+            out.console.print()
+            _setup_mcp_infrastructure(cwd)
+
         # Create .gitignore entry suggestion
         gitignore_path = Path(".gitignore")
         gitignore_entry = (
@@ -139,15 +262,30 @@ exclude:
         table.add_row(str(docs_dir), "Documentation output directory")
         table.add_row(str(memory_dir), "Memory storage directory")
 
+        if with_mcp:
+            table.add_row(".vscode/tasks.json", "VS Code tasks for MCP")
+            table.add_row(".vscode/settings.json", "VS Code auto-start settings")
+
         out.print_table(table)
 
         # Next steps
         out.console.print()
-        out.panel(
-            """1. Set your API key: [cyan]export ANTHROPIC_API_KEY="your-key"[/cyan]
+
+        if with_mcp:
+            next_steps = """1. Set your API key: [cyan]export ANTHROPIC_API_KEY="your-key"[/cyan]
 2. Document a file: [cyan]memdocs review --path src/main.py[/cyan]
 3. Query memory: [cyan]memdocs query "authentication"[/cyan]
-4. View stats: [cyan]memdocs stats[/cyan]""",
+4. View stats: [cyan]memdocs stats[/cyan]
+5. Open in VS Code/Cursor - MCP server will auto-start! 🚀"""
+        else:
+            next_steps = """1. Set your API key: [cyan]export ANTHROPIC_API_KEY="your-key"[/cyan]
+2. Document a file: [cyan]memdocs review --path src/main.py[/cyan]
+3. Query memory: [cyan]memdocs query "authentication"[/cyan]
+4. View stats: [cyan]memdocs stats[/cyan]
+5. Optional: Setup MCP server: [cyan]memdocs init --with-mcp[/cyan]"""
+
+        out.panel(
+            next_steps,
             title="Next Steps",
             style="blue",
         )
