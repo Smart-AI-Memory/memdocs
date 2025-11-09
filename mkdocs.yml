@@ -1,0 +1,84 @@
+site_name: MemDocs
+site_description: Persistent Memory for AI Projects
+site_author: Smart AI Memory
+site_url: https://smartaimemory.github.io/memdocs
+
+repo_name: Smart-AI-Memory/memdocs
+repo_url: https://github.com/Smart-AI-Memory/memdocs
+edit_uri: edit/main/docs/
+
+theme:
+  name: material
+  palette:
+    # Light mode
+    - scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    # Dark mode
+    - scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - navigation.instant
+    - navigation.tracking
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+    - content.code.annotate
+  icon:
+    repo: fontawesome/brands/github
+
+nav:
+  - Home: index.md
+  - Getting Started:
+      - Quick Start: getting-started.md
+      - Installation: installation.md
+      - Configuration: configuration.md
+  - Reference:
+      - CLI Commands: cli-reference.md
+      - Architecture: architecture.md
+  - Guides:
+      - GitHub Actions: guides/github-actions.md
+      - Cursor Integration: guides/cursor-integration.md
+  - Contributing: contributing.md
+  - Changelog: changelog.md
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.tabbed:
+      alternate_style: true
+  - tables
+  - attr_list
+  - md_in_html
+  - toc:
+      permalink: true
+
+plugins:
+  - search
+  - social
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/Smart-AI-Memory/memdocs
+    - icon: fontawesome/brands/python
+      link: https://pypi.org/project/memdocs/
+
+copyright: Copyright &copy; 2025 Smart AI Memory
