@@ -6,11 +6,53 @@ import json
 import os
 import sys
 from pathlib import Path
+from typing import Optional
 
 import click
 
 from memdocs import cli_output as out
 from memdocs.security import PathValidator
+
+
+def _detect_project_type(cwd: Path) -> dict[str, any]:
+    """Detect project type and return metadata."""
+    project_info: dict[str, any] = {
+        "type": "unknown",
+        "language": None,
+        "source_dir": None,
+        "has_git": False,
+        "has_vscode": False,
+        "has_jetbrains": False,
+    }
+
+    # Check version control
+    project_info["has_git"] = (cwd / ".git").exists()
+
+    # Check IDEs
+    project_info["has_vscode"] = (cwd / ".vscode").exists()
+    project_info["has_jetbrains"] = (cwd / ".idea").exists()
+
+    # Detect language and type
+    if (cwd / "setup.py").exists() or (cwd / "pyproject.toml").exists():
+        project_info["type"] = "python"
+        project_info["language"] = "Python"
+    elif (cwd / "package.json").exists():
+        project_info["type"] = "javascript"
+        project_info["language"] = "JavaScript/TypeScript"
+    elif (cwd / "go.mod").exists():
+        project_info["type"] = "go"
+        project_info["language"] = "Go"
+    elif (cwd / "Cargo.toml").exists():
+        project_info["type"] = "rust"
+        project_info["language"] = "Rust"
+    elif (cwd / "pom.xml").exists() or (cwd / "build.gradle").exists():
+        project_info["type"] = "java"
+        project_info["language"] = "Java"
+    elif (cwd / "Gemfile").exists():
+        project_info["type"] = "ruby"
+        project_info["language"] = "Ruby"
+
+    return project_info
 
 
 def _detect_source_directory(cwd: Path) -> str:
@@ -135,16 +177,23 @@ def _setup_mcp_infrastructure(cwd: Path) -> None:
     is_flag=True,
     help="Skip VS Code MCP auto-start setup",
 )
-def init(force: bool, no_mcp: bool) -> None:
+@click.option(
+    "--interactive/--no-interactive",
+    default=None,
+    help="Interactive mode (auto-detects TTY if not specified)",
+)
+def init(force: bool, no_mcp: bool, interactive: Optional[bool]) -> None:
     """Initialize MemDocs in the current project.
 
     MCP auto-start is enabled by default for VS Code/Cursor integration.
+    Interactive mode will ask questions if TTY is available.
 
     Examples:
 
-        memdocs init              # With MCP (default)
-        memdocs init --no-mcp     # Skip MCP setup
-        memdocs init --force      # Reinitialize
+        memdocs init                  # With MCP (default)
+        memdocs init --no-mcp         # Skip MCP setup
+        memdocs init --force          # Reinitialize
+        memdocs init --interactive    # Ask questions
     """
     try:
         out.print_header("MemDocs Initialization")
@@ -154,6 +203,39 @@ def init(force: bool, no_mcp: bool) -> None:
         if not os.access(cwd, os.W_OK):
             out.error("Current directory is not writable")
             sys.exit(1)
+
+        # Detect project info
+        project_info = _detect_project_type(cwd)
+
+        # Show project detection
+        if project_info["language"]:
+            out.info(f"Detected: {project_info['language']} project")
+
+        # Auto-detect interactive mode based on TTY
+        if interactive is None:
+            interactive = sys.stdin.isatty() and sys.stdout.isatty()
+
+        # Interactive prompts (only if not already set via flags)
+        if interactive and not no_mcp:
+            out.console.print()
+            out.info("[bold]MCP Integration Setup[/bold]")
+            out.console.print(
+                "MCP enables instant AI context in VS Code/Cursor.\n"
+                "The server auto-starts when you open the project."
+            )
+
+            try:
+                # Ask about MCP unless --no-mcp was explicitly passed
+                setup_mcp = click.confirm(
+                    "\nSet up MCP auto-start for VS Code/Cursor?",
+                    default=True,
+                )
+                if not setup_mcp:
+                    no_mcp = True
+            except click.Abort:
+                out.console.print()
+                out.info("Using default: MCP enabled")
+                no_mcp = False
 
         config_path = Path(".memdocs.yml")
         docs_dir = Path(".memdocs/docs")

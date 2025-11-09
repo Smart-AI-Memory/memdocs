@@ -20,6 +20,7 @@ from memdocs.cli_modules.commands import (  # noqa: E402
     review,
     serve,
     stats,
+    update_config,
 )
 
 # Import classes that tests need to patch (for backward compatibility)
@@ -43,6 +44,7 @@ __all__ = [
     "serve",
     "stats",
     "Summarizer",
+    "update_config",
 ]
 
 
@@ -62,6 +64,7 @@ main.add_command(query)
 main.add_command(serve)
 main.add_command(doctor)
 main.add_command(stats)
+main.add_command(update_config)
 main.add_command(cleanup)
 
 
