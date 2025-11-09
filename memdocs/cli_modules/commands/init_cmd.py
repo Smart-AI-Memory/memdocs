@@ -131,18 +131,20 @@ def _setup_mcp_infrastructure(cwd: Path) -> None:
     help="Reinitialize even if already initialized",
 )
 @click.option(
-    "--with-mcp",
+    "--no-mcp",
     is_flag=True,
-    help="Setup VS Code tasks for MCP auto-start",
+    help="Skip VS Code MCP auto-start setup",
 )
-def init(force: bool, with_mcp: bool) -> None:
+def init(force: bool, no_mcp: bool) -> None:
     """Initialize MemDocs in the current project.
+
+    MCP auto-start is enabled by default for VS Code/Cursor integration.
 
     Examples:
 
-        memdocs init
-        memdocs init --force
-        memdocs init --with-mcp
+        memdocs init              # With MCP (default)
+        memdocs init --no-mcp     # Skip MCP setup
+        memdocs init --force      # Reinitialize
     """
     try:
         out.print_header("MemDocs Initialization")
@@ -228,8 +230,8 @@ exclude:
         config_path.write_text(default_config, encoding="utf-8")
         out.success(f"Configuration created: [green]{config_path}[/green]")
 
-        # Set up MCP infrastructure if requested
-        if with_mcp:
+        # Set up MCP infrastructure by default (unless --no-mcp)
+        if not no_mcp:
             out.console.print()
             _setup_mcp_infrastructure(cwd)
 
@@ -262,7 +264,7 @@ exclude:
         table.add_row(str(docs_dir), "Documentation output directory")
         table.add_row(str(memory_dir), "Memory storage directory")
 
-        if with_mcp:
+        if not no_mcp:
             table.add_row(".vscode/tasks.json", "VS Code tasks for MCP")
             table.add_row(".vscode/settings.json", "VS Code auto-start settings")
 
@@ -271,24 +273,40 @@ exclude:
         # Next steps
         out.console.print()
 
-        if with_mcp:
-            next_steps = """1. Set your API key: [cyan]export ANTHROPIC_API_KEY="your-key"[/cyan]
-2. Document a file: [cyan]memdocs review --path src/main.py[/cyan]
-3. Query memory: [cyan]memdocs query "authentication"[/cyan]
-4. View stats: [cyan]memdocs stats[/cyan]
-5. Open in VS Code/Cursor - MCP server will auto-start! 🚀"""
-        else:
-            next_steps = """1. Set your API key: [cyan]export ANTHROPIC_API_KEY="your-key"[/cyan]
-2. Document a file: [cyan]memdocs review --path src/main.py[/cyan]
-3. Query memory: [cyan]memdocs query "authentication"[/cyan]
-4. View stats: [cyan]memdocs stats[/cyan]
-5. Optional: Setup MCP server: [cyan]memdocs init --with-mcp[/cyan]"""
+        if not no_mcp:
+            # Show enhanced quick-start with MCP
+            out.panel(
+                """[bold green]🚀 Quick Start[/bold green]
 
-        out.panel(
-            next_steps,
-            title="Next Steps",
-            style="blue",
-        )
+[bold]1.[/bold] Set your API key:
+   [cyan]export ANTHROPIC_API_KEY="your-key"[/cyan]
+
+[bold]2.[/bold] Open in VS Code/Cursor:
+   [cyan]code .[/cyan]
+   MCP server will auto-start! ⚡
+
+[bold]3.[/bold] Document your code:
+   [cyan]memdocs review --path src/[/cyan]
+
+[bold]4.[/bold] Your AI assistant now has instant context!
+   Try asking about your codebase in Claude/Cursor.
+
+[dim]Check setup:[/dim] [cyan]memdocs doctor[/cyan]""",
+                title="You're All Set!",
+                style="green",
+            )
+        else:
+            # Minimal setup without MCP
+            out.panel(
+                """1. Set your API key: [cyan]export ANTHROPIC_API_KEY="your-key"[/cyan]
+2. Document a file: [cyan]memdocs review --path src/main.py[/cyan]
+3. Query memory: [cyan]memdocs query "authentication"[/cyan]
+4. View stats: [cyan]memdocs stats[/cyan]
+
+[dim]Want MCP auto-start?[/dim] [cyan]memdocs init --force[/cyan]""",
+                title="Next Steps",
+                style="blue",
+            )
 
     except Exception as e:
         out.console.print()

@@ -13,6 +13,7 @@ from memdocs import __version__  # noqa: E402
 # Import commands from modular structure
 from memdocs.cli_modules.commands import (  # noqa: E402
     cleanup,
+    doctor,
     export,
     init,
     query,
@@ -30,6 +31,7 @@ from memdocs.summarize import Summarizer  # noqa: E402
 # Re-export for backward compatibility with tests
 __all__ = [
     "cleanup",
+    "doctor",
     "export",
     "Extractor",
     "init",
@@ -58,6 +60,7 @@ main.add_command(review)
 main.add_command(export)
 main.add_command(query)
 main.add_command(serve)
+main.add_command(doctor)
 main.add_command(stats)
 main.add_command(cleanup)
 
