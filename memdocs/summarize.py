@@ -25,7 +25,15 @@ DEFAULT_MAX_TOKENS = 4096  # Default max tokens for Claude API response (schema 
 
 
 class Summarizer:
-    """AI-powered documentation summarizer."""
+    """AI-powered documentation summarizer.
+
+    Attributes:
+        api_key: Anthropic API key
+        model: Claude model name
+        max_tokens: Maximum tokens for API responses
+        client: Anthropic API client
+        rate_limiter: Rate limiter for API calls
+    """
 
     PROMPT_TEMPLATE = """You are a technical documentation AI generating machine-readable docs.
 
@@ -94,12 +102,13 @@ refs:
 
 Generate the YAML now:"""
 
-    def __init__(self, api_key: str | None = None, model: str = "claude-sonnet-4-5-20250929"):
+    def __init__(self, api_key: str | None = None, model: str = "claude-sonnet-4-5-20250929", max_tokens: int = DEFAULT_MAX_TOKENS):
         """Initialize summarizer.
 
         Args:
             api_key: Anthropic API key (defaults to ANTHROPIC_API_KEY env var)
             model: Claude model to use
+            max_tokens: Maximum tokens for Claude API response (default: 4096)
         """
         self.api_key = api_key or os.environ.get("ANTHROPIC_API_KEY")
 
@@ -114,6 +123,9 @@ Generate the YAML now:"""
             self.model = InputValidator.validate_model_name(model)
         except Exception as e:
             raise ValueError(str(e)) from e
+
+        # Store max_tokens
+        self.max_tokens = max_tokens
 
         self.client = anthropic.Anthropic(api_key=self.api_key)
 
@@ -144,7 +156,7 @@ Generate the YAML now:"""
         # Call Claude
         response = self.client.messages.create(
             model=self.model,
-            max_tokens=DEFAULT_MAX_TOKENS,
+            max_tokens=self.max_tokens,
             messages=[
                 {
                     "role": "user",

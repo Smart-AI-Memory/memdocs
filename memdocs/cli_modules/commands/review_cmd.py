@@ -169,7 +169,7 @@ def review(
 
         # Summarize with AI
         with out.spinner("Generating documentation with Claude Sonnet 4.5"):
-            summarizer = Summarizer(model=doc_config.ai.model)
+            summarizer = Summarizer(model=doc_config.ai.model, max_tokens=doc_config.ai.max_tokens)
             doc_index, markdown_summary = summarizer.summarize(context, scope)
 
         out.success("Documentation generated")
