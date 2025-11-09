@@ -29,9 +29,9 @@
   - Test error handling and edge cases
   - Integration test with Claude Desktop (optional)
 
-- [ ] **workflows/empathy_sync.py (0% → 75%)**:
+- [ ] **wizards/empathy_sync.py (0% → 75%)**:
   - Mock Empathy API calls
-  - Test sync workflow end-to-end
+  - Test sync wizard end-to-end
   - Test conflict resolution
   - Test rollback on failure
 

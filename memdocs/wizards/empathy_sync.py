@@ -1,7 +1,7 @@
 """
-Empathy-DocInt Sync Workflow
+Empathy-DocInt Sync Wizard
 
-Automated workflow to run Empathy Framework analysis and store results in DocInt.
+Automated wizard to run Empathy Framework analysis and store results in DocInt.
 Can be triggered by:
 - Git hooks (pre-commit, post-commit)
 - GitHub Actions
@@ -22,9 +22,9 @@ sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 from memdocs.empathy_adapter import adapt_empathy_to_memdocs
 
 
-class EmpathySyncWorkflow:
+class EmpathySyncWizard:
     """
-    Workflow to sync Empathy Framework analysis to DocInt storage.
+    Wizard to sync Empathy Framework analysis to DocInt storage.
 
     Supports:
     - File-level analysis (default)
@@ -40,7 +40,7 @@ class EmpathySyncWorkflow:
         api_key: str | None = None,
     ):
         """
-        Initialize workflow.
+        Initialize wizard.
 
         Args:
             empathy_service_url: URL of Empathy Framework API
@@ -299,7 +299,7 @@ class EmpathySyncWorkflow:
 
 # CLI Interface
 async def main():
-    """CLI entry point for empathy-sync workflow."""
+    """CLI entry point for empathy-sync wizard."""
     import argparse
 
     parser = argparse.ArgumentParser(
@@ -353,8 +353,8 @@ async def main():
 
     args = parser.parse_args()
 
-    # Create workflow
-    workflow = EmpathySyncWorkflow(
+    # Create wizard
+    wizard = EmpathySyncWizard(
         empathy_service_url=args.api_url,
         memdocs_root=Path(".memdocs"),
     )
@@ -362,17 +362,17 @@ async def main():
     # Execute based on mode
     if args.file:
         print(f"Analyzing file: {args.file}")
-        result = await workflow.analyze_file(args.file, args.language, args.wizard, args.tier)
+        result = await wizard.analyze_file(args.file, args.language, args.wizard, args.tier)
         print("✓ Analysis complete. Stored in .memdocs/")
 
     elif args.module:
         print(f"Analyzing module: {args.module}")
-        results = await workflow.analyze_module(args.module, args.language, args.wizard, args.tier)
+        results = await wizard.analyze_module(args.module, args.language, args.wizard, args.tier)
         print(f"✓ Analyzed {len(results)} files. Stored in .memdocs/")
 
     elif args.changed:
         print("Analyzing changed files...")
-        results = await workflow.analyze_changed_files(
+        results = await wizard.analyze_changed_files(
             args.since, args.language, args.wizard, args.tier
         )
         print(f"✓ Analyzed {len(results)} changed files. Stored in .memdocs/")

@@ -73,7 +73,7 @@ pip install memdocs
 - VSCode extension
 - JetBrains plugin
 - Automatic PR summary generation
-- Improved Empathy sync workflows
+- Improved Empathy sync wizards
 
 ### [2.2.0] - Q2 2026 (Planned)
 - Optional semantic search with embeddings

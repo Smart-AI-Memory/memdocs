@@ -239,7 +239,7 @@ memdocs/
 │   ├── embeddings.py    # Vector embeddings
 │   ├── search.py        # Vector search
 │   ├── index.py         # Memory indexing
-│   └── workflows/       # High-level workflows
+│   └── wizards/         # High-level wizards
 ├── tests/
 │   ├── unit/            # Unit tests
 │   ├── integration/     # Integration tests

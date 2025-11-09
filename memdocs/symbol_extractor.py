@@ -455,7 +455,7 @@ def extract_and_save_symbols(
     """
     Extract symbols and save to YAML file.
 
-    **Complete workflow:**
+    **Process steps:**
     1. Detect or use provided language
     2. Parse source file with appropriate parser
     3. Extract all symbols (functions, classes, methods)
