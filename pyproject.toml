@@ -95,7 +95,7 @@ Changelog = "https://github.com/Deep-Study-AI/memdocs/blob/main/CHANGELOG.md"
 [tool.setuptools.packages.find]
 where = ["."]
 include = ["memdocs*"]
-exclude = ["tests*", "examples*", "docs*"]
+exclude = ["tests*", "examples*", "docs*", "memdocs.wizards*"]
 
 [tool.black]
 line-length = 100
