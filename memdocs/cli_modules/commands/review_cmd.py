@@ -2,6 +2,7 @@
 Review command - Review code and generate documentation.
 """
 
+import subprocess
 import sys
 import time
 from pathlib import Path
@@ -12,6 +13,64 @@ from memdocs import cli_output as out
 from memdocs.cli_modules.utils import _write_docs, _write_memory, load_config
 from memdocs.guard import create_guard_from_config
 from memdocs.security import ConfigValidator
+
+
+def _get_git_changed_files(since: str | None = None) -> list[Path]:
+    """Get list of changed files from git.
+
+    Args:
+        since: Git revision to compare against (e.g., 'HEAD~5', 'main', commit hash)
+               If None, gets all modified/staged files
+
+    Returns:
+        List of Path objects for changed files
+    """
+    try:
+        if since:
+            # Get files changed since specific revision
+            result = subprocess.run(
+                ["git", "diff", "--name-only", f"{since}...HEAD"],
+                capture_output=True,
+                text=True,
+                check=True,
+            )
+        else:
+            # Get modified + staged files (working tree changes)
+            result = subprocess.run(
+                ["git", "diff", "--name-only", "HEAD"],
+                capture_output=True,
+                text=True,
+                check=True,
+            )
+
+        # Convert to Path objects, filter out deleted files
+        files = []
+        for line in result.stdout.strip().split("\n"):
+            if line:
+                file_path = Path(line.strip())
+                if file_path.exists():
+                    files.append(file_path)
+
+        return files
+    except subprocess.CalledProcessError as e:
+        out.error(f"Git command failed: {e}")
+        sys.exit(1)
+    except FileNotFoundError:
+        out.error("Git is not installed or not in PATH")
+        sys.exit(1)
+
+
+def _is_git_repo() -> bool:
+    """Check if current directory is a git repository."""
+    try:
+        subprocess.run(
+            ["git", "rev-parse", "--git-dir"],
+            capture_output=True,
+            check=True,
+        )
+        return True
+    except (subprocess.CalledProcessError, FileNotFoundError):
+        return False
 
 
 def _get_cli_classes():
@@ -31,6 +90,16 @@ def _get_cli_classes():
     "--repo",
     is_flag=True,
     help="Review entire repository (use sparingly)",
+)
+@click.option(
+    "--changed",
+    is_flag=True,
+    help="Review only git-modified files (requires git)",
+)
+@click.option(
+    "--since",
+    type=str,
+    help="Review files changed since git revision (e.g., HEAD~5, main)",
 )
 @click.option(
     "--on",
@@ -83,6 +152,8 @@ def review(
     ctx: click.Context,
     path: tuple[Path, ...],
     repo: bool,
+    changed: bool,
+    since: str | None,
     event: str,
     emit: str,
     rules: str,
@@ -104,6 +175,13 @@ def review(
 
         # Repository-wide (with force)
         memdocs review --repo . --force
+
+        # Review only changed files (git-aware)
+        memdocs review --changed
+
+        # Review files changed since specific revision
+        memdocs review --since HEAD~5
+        memdocs review --since main
     """
     start_time = time.time()
 
@@ -119,8 +197,8 @@ def review(
             doc_config.policies.max_files_without_force = validated_max_files
         if escalate_on:
             # Validate and sanitize escalation rules
-            rules = [rule.strip() for rule in escalate_on.split(",") if rule.strip()]
-            doc_config.policies.escalate_on = rules
+            escalation_rules = [rule.strip() for rule in escalate_on.split(",") if rule.strip()]
+            doc_config.policies.escalate_on = escalation_rules
         if output_dir:
             doc_config.outputs.docs_dir = output_dir / "docs"
             doc_config.outputs.memory_dir = output_dir / "memory"
@@ -128,10 +206,29 @@ def review(
         # Determine paths
         if repo:
             paths = [Path(".")]
+        elif changed or since:
+            # Git-aware mode
+            if not _is_git_repo():
+                out.error("Not a git repository. --changed and --since require git.")
+                sys.exit(1)
+
+            git_files = _get_git_changed_files(since=since)
+
+            if not git_files:
+                if since:
+                    out.warning(f"No files changed since {since}")
+                else:
+                    out.warning("No modified files found in git")
+                out.info("Nothing to review")
+                return
+
+            paths = git_files
+            out.info(f"Found {len(git_files)} changed file(s) from git")
+
         elif path:
             paths = list(path)
         else:
-            out.error("Must specify --path or --repo")
+            out.error("Must specify --path, --repo, --changed, or --since")
             sys.exit(1)
 
         # Get CLI classes (lazy import)

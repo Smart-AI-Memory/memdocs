@@ -19,6 +19,7 @@ from memdocs.cli_modules.commands import (  # noqa: E402
     query,
     review,
     serve,
+    setup_hooks,
     stats,
     update_config,
 )
@@ -42,6 +43,7 @@ __all__ = [
     "query",
     "review",
     "serve",
+    "setup_hooks",
     "stats",
     "Summarizer",
     "update_config",
@@ -63,6 +65,7 @@ main.add_command(export)
 main.add_command(query)
 main.add_command(serve)
 main.add_command(doctor)
+main.add_command(setup_hooks)
 main.add_command(stats)
 main.add_command(update_config)
 main.add_command(cleanup)
