@@ -9,6 +9,8 @@ import json
 from pathlib import Path
 from typing import Any, cast
 
+import tiktoken
+
 # Configuration constants
 DEFAULT_EMBEDDING_BATCH_SIZE = 32  # Batch size for embedding generation
 
@@ -107,28 +109,64 @@ class LocalEmbedder:
 def chunk_document(text: str, max_tokens: int = 512, overlap: int = 50) -> list[str]:
     """Split document into chunks for embedding.
 
+    Uses tiktoken for accurate token counting to ensure chunks respect token limits.
+    This is important for embedding models that have strict token limits (e.g., 512 tokens).
+
     Args:
-        text: Document text
-        max_tokens: Maximum tokens per chunk (model limit)
-        overlap: Tokens to overlap between chunks (for continuity)
+        text: Document text to chunk
+        max_tokens: Maximum tokens per chunk (model limit, default: 512)
+        overlap: Tokens to overlap between chunks for continuity (default: 50)
 
     Returns:
-        List of text chunks
+        List of text chunks, each respecting max_tokens limit
+
+    Raises:
+        ValueError: If max_tokens <= overlap (would create infinite loop)
+
+    Example:
+        >>> text = "Long document text..."
+        >>> chunks = chunk_document(text, max_tokens=512, overlap=50)
+        >>> # Each chunk has <= 512 tokens with 50 token overlap
     """
-    # Simple word-based chunking (good enough for v1.1)
-    # TODO v2: Use tiktoken for precise token counting
-    words = text.split()
+    if max_tokens <= overlap:
+        raise ValueError(
+            f"max_tokens ({max_tokens}) must be greater than overlap ({overlap})"
+        )
+
+    # Use cl100k_base encoding (used by OpenAI's text-embedding-ada-002 and similar models)
+    # This encoding is also suitable for sentence-transformers models as an approximation
+    try:
+        encoding = tiktoken.get_encoding("cl100k_base")
+    except Exception:
+        # Fallback to a default encoding if cl100k_base is not available
+        encoding = tiktoken.get_encoding("p50k_base")
+
+    # Encode entire text into tokens
+    tokens = encoding.encode(text)
+
+    if not tokens:
+        return []
+
     chunks = []
+    start_idx = 0
 
-    # Approximate: 1 token ≈ 0.75 words
-    words_per_chunk = int(max_tokens * 0.75)
-    overlap_words = int(overlap * 0.75)
+    while start_idx < len(tokens):
+        # Calculate end index for this chunk
+        end_idx = min(start_idx + max_tokens, len(tokens))
 
-    i = 0
-    while i < len(words):
-        chunk_words = words[i : i + words_per_chunk]
-        chunks.append(" ".join(chunk_words))
-        i += words_per_chunk - overlap_words
+        # Extract chunk tokens
+        chunk_tokens = tokens[start_idx:end_idx]
+
+        # Decode tokens back to text
+        chunk_text = encoding.decode(chunk_tokens)
+        chunks.append(chunk_text)
+
+        # Move start index forward, accounting for overlap
+        # For the last chunk, we're done
+        if end_idx >= len(tokens):
+            break
+
+        start_idx += max_tokens - overlap
 
     return chunks
 
