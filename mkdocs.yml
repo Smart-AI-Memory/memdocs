@@ -49,6 +49,7 @@ nav:
       - CLI Commands: cli-reference.md
       - Architecture: architecture.md
   - Guides:
+      - MCP Server Setup: guides/mcp-setup.md
       - GitHub Actions: guides/github-actions.md
       - Cursor Integration: guides/cursor-integration.md
   - Contributing: contributing.md
