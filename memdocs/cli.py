@@ -17,6 +17,7 @@ from memdocs.cli_modules.commands import (  # noqa: E402
     init,
     query,
     review,
+    serve,
     stats,
 )
 
@@ -37,6 +38,7 @@ __all__ = [
     "PolicyEngine",
     "query",
     "review",
+    "serve",
     "stats",
     "Summarizer",
 ]
@@ -55,6 +57,7 @@ main.add_command(init)
 main.add_command(review)
 main.add_command(export)
 main.add_command(query)
+main.add_command(serve)
 main.add_command(stats)
 main.add_command(cleanup)
 
