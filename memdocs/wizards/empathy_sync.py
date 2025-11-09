@@ -159,11 +159,11 @@ class EmpathySyncWizard:
     def _is_local_empathy(self) -> bool:
         """Check if Empathy Framework is available locally."""
         try:
-            # Try to import EmpathyService
-            from app.backend.services.empathy_service import EmpathyService
-
-            return True
-        except ImportError:
+            # Check if EmpathyService module is available
+            import importlib.util
+            spec = importlib.util.find_spec("app.backend.services.empathy_service")
+            return spec is not None
+        except (ImportError, ModuleNotFoundError):
             return False
 
     async def _analyze_local(
@@ -362,7 +362,7 @@ async def main():
     # Execute based on mode
     if args.file:
         print(f"Analyzing file: {args.file}")
-        result = await wizard.analyze_file(args.file, args.language, args.wizard, args.tier)
+        await wizard.analyze_file(args.file, args.language, args.wizard, args.tier)
         print("✓ Analysis complete. Stored in .memdocs/")
 
     elif args.module:

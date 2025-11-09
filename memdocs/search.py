@@ -9,8 +9,6 @@ import json
 from pathlib import Path
 from typing import Any, cast
 
-import numpy as np
-
 
 class LocalVectorSearch:
     """Local vector similarity search using FAISS.
@@ -80,6 +78,14 @@ class LocalVectorSearch:
         if not embeddings:
             return []
 
+        # Import numpy (only needed for embeddings feature)
+        try:
+            import numpy as np
+        except ImportError:
+            raise ImportError(
+                "numpy not installed. " "Install with: pip install 'memdocs[embeddings]'"
+            ) from None
+
         # Convert to numpy array
         vectors = np.array(embeddings).astype("float32")
 
@@ -89,7 +95,7 @@ class LocalVectorSearch:
 
         # Store metadata
         indices = list(range(start_idx, start_idx + len(embeddings)))
-        for idx, doc in zip(indices, documents):
+        for idx, doc in zip(indices, documents, strict=False):
             self.metadata[str(idx)] = doc
 
         # Save to disk (git-committable)
@@ -116,6 +122,14 @@ class LocalVectorSearch:
         if self.index.ntotal == 0:
             return []
 
+        # Import numpy (only needed for embeddings feature)
+        try:
+            import numpy as np
+        except ImportError:
+            raise ImportError(
+                "numpy not installed. " "Install with: pip install 'memdocs[embeddings]'"
+            ) from None
+
         # Convert to numpy array
         query = np.array([query_embedding]).astype("float32")
 
@@ -129,7 +143,7 @@ class LocalVectorSearch:
 
         # Build results
         results = []
-        for idx, similarity in zip(indices[0], similarities):
+        for idx, similarity in zip(indices[0], similarities, strict=False):
             if idx == -1:  # FAISS returns -1 for empty slots
                 continue
 

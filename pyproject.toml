@@ -42,6 +42,7 @@ dependencies = [
     "tiktoken>=0.7.0",           # Token counting
     "python-dotenv>=1.0.0",      # Environment variables
     "rich>=13.0.0",              # Beautiful terminal formatting
+    "tomli>=2.0.0; python_version < '3.11'",  # TOML parsing (backport)
 ]
 
 [project.optional-dependencies]

@@ -9,7 +9,7 @@ Responsibilities:
 
 import json
 import re
-import tomllib
+import sys
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -17,8 +17,17 @@ import git
 from pygments import lexers
 from pygments.util import ClassNotFound
 
+# Python 3.11+ has tomllib built-in, earlier versions need tomli
+if sys.version_info >= (3, 11):
+    import tomllib
+else:
+    try:
+        import tomli as tomllib
+    except ImportError:
+        tomllib = None  # type: ignore
+
 from memdocs.schemas import Symbol, SymbolKind
-from memdocs.security import InputValidator, ConfigValidator
+from memdocs.security import InputValidator
 
 # Configuration constants
 MAX_FILE_SIZE_MB = 10  # Maximum file size to process (10MB)

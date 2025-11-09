@@ -18,7 +18,7 @@ from memdocs.schemas import (
     ReferenceSummary,
     ScopeInfo,
 )
-from memdocs.security import InputValidator, RateLimiter, ConfigValidator
+from memdocs.security import InputValidator, RateLimiter
 
 # Configuration constants
 DEFAULT_MAX_TOKENS = 4096  # Default max tokens for Claude API response (schema default)

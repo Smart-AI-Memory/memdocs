@@ -383,16 +383,9 @@ class SymbolExtractor:
         Returns:
             List of ExtractedSymbol objects
         """
-        try:
-            from tree_sitter import Language, Parser
-
-            # Try to load TypeScript language
-            # This requires tree-sitter-typescript to be built
-            # TODO: Add tree-sitter setup instructions
-            return []
-        except ImportError:
-            # tree-sitter not installed - return empty list
-            return []
+        # TODO: Implement TypeScript extraction with tree-sitter
+        # Requires: tree-sitter-typescript to be built
+        return []
 
     def _extract_javascript_symbols(self, code: str) -> list[ExtractedSymbol]:
         """
@@ -406,13 +399,9 @@ class SymbolExtractor:
         Returns:
             List of ExtractedSymbol objects
         """
-        try:
-            from tree_sitter import Language, Parser
-
-            # TODO: Implement JavaScript extraction
-            return []
-        except ImportError:
-            return []
+        # TODO: Implement JavaScript extraction with tree-sitter
+        # Requires: tree-sitter-javascript to be built
+        return []
 
 
 def extract_symbols_for_memdocs(

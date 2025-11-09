@@ -184,8 +184,10 @@ def validate_file_path(path: Path, must_exist: bool = True) -> None:
         raise FileNotFoundError(path)
 
 
-def validate_config_version(version: int, supported: list[int] = [1]) -> None:
+def validate_config_version(version: int, supported: list[int] = None) -> None:
     """Validate configuration version."""
+    if supported is None:
+        supported = [1]
     if version not in supported:
         raise ConfigurationError(
             f"Unsupported configuration version: {version}. "
