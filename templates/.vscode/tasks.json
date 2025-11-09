@@ -1,0 +1,60 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "MemDocs MCP Server",
+      "type": "shell",
+      "command": "memdocs",
+      "args": ["serve", "--mcp"],
+      "isBackground": true,
+      "problemMatcher": [],
+      "runOptions": {
+        "runOn": "folderOpen"
+      },
+      "presentation": {
+        "echo": false,
+        "reveal": "never",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": false,
+        "clear": false
+      }
+    },
+    {
+      "label": "Update MemDocs Memory",
+      "type": "shell",
+      "command": "memdocs",
+      "args": ["review", "--path", "src/"],
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      }
+    },
+    {
+      "label": "Export MemDocs for Cursor",
+      "type": "shell",
+      "command": "memdocs",
+      "args": ["export", "cursor"],
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      }
+    },
+    {
+      "label": "MemDocs Stats",
+      "type": "shell",
+      "command": "memdocs",
+      "args": ["stats"],
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": true,
+        "panel": "shared"
+      }
+    }
+  ]
+}
