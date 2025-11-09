@@ -127,6 +127,23 @@ memdocs review --path src/main.py
 - **Automatic indexing**: Updates as you document
 - **No cloud lock-in**: Everything runs locally
 
+### 🔌 MCP Server (Model Context Protocol)
+
+- **Real-time memory serving**: Serve memory to AI assistants via MCP
+- **Claude Desktop integration**: Auto-loaded context in Claude Desktop
+- **Cursor/Continue.dev support**: Works with MCP-compatible tools
+- **Query-based context**: AI requests exactly what it needs
+- **Auto-start**: Automatically detect and serve memory when opening projects
+
+**Quick setup for Claude Desktop:**
+```bash
+# Start MCP server
+memdocs serve --mcp
+
+# Or auto-start in VS Code (add to .vscode/tasks.json)
+# See docs/guides/mcp-setup.md for details
+```
+
 ### 🔗 Empathy Framework Integration
 
 - Works seamlessly with [Empathy](https://github.com/Deep-Study-AI/empathy) framework
