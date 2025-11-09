@@ -173,3 +173,260 @@ def greet():
         assert context is not None
         assert context.lines_of_code == 0
         assert len(context.symbols) == 0
+
+    def test_parse_requirements_txt(self, temp_repo: Path):
+        """Test parsing requirements.txt."""
+        req_file = temp_repo / "requirements.txt"
+        content = """
+# Core dependencies
+anthropic>=0.34.0
+click>=8.1.0
+
+# Data processing
+pydantic>=2.0.0
+pyyaml>=6.0
+
+# Comments and empty lines should be ignored
+"""
+        req_file.write_text(content)
+
+        # Create a Python file to trigger dependency parsing
+        py_file = temp_repo / "test.py"
+        py_file.write_text("print('hello')")
+
+        extractor = Extractor(repo_path=temp_repo)
+        context = extractor.extract_file_context(Path("test.py"))
+
+        assert context is not None
+        assert "anthropic>=0.34.0" in context.dependencies
+        assert "click>=8.1.0" in context.dependencies
+        assert "pydantic>=2.0.0" in context.dependencies
+        assert "pyyaml>=6.0" in context.dependencies
+        # Should not include comments or empty lines
+        assert len([d for d in context.dependencies if d.startswith("#")]) == 0
+
+    def test_parse_requirements_txt_with_flags(self, temp_repo: Path):
+        """Test parsing requirements.txt with special flags."""
+        req_file = temp_repo / "requirements.txt"
+        content = """
+-e git+https://github.com/user/repo.git#egg=package
+--index-url https://pypi.org/simple
+requests>=2.28.0
+-r other-requirements.txt
+numpy>=1.24.0
+"""
+        req_file.write_text(content)
+
+        py_file = temp_repo / "test.py"
+        py_file.write_text("print('hello')")
+
+        extractor = Extractor(repo_path=temp_repo)
+        context = extractor.extract_file_context(Path("test.py"))
+
+        assert context is not None
+        # Should include regular dependencies
+        assert "requests>=2.28.0" in context.dependencies
+        assert "numpy>=1.24.0" in context.dependencies
+        # Should skip flags and special directives
+        assert not any(d.startswith("-") for d in context.dependencies)
+
+    def test_parse_pyproject_toml_pep621(self, temp_repo: Path):
+        """Test parsing pyproject.toml with PEP 621 format."""
+        toml_file = temp_repo / "pyproject.toml"
+        content = """
+[project]
+name = "test-project"
+version = "1.0.0"
+dependencies = [
+    "anthropic>=0.34.0",
+    "click>=8.1.0",
+    "pydantic>=2.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4.0",
+    "black>=24.0.0",
+]
+"""
+        toml_file.write_text(content)
+
+        py_file = temp_repo / "test.py"
+        py_file.write_text("print('hello')")
+
+        extractor = Extractor(repo_path=temp_repo)
+        context = extractor.extract_file_context(Path("test.py"))
+
+        assert context is not None
+        assert "anthropic>=0.34.0" in context.dependencies
+        assert "click>=8.1.0" in context.dependencies
+        assert "pydantic>=2.0.0" in context.dependencies
+
+    def test_parse_pyproject_toml_poetry(self, temp_repo: Path):
+        """Test parsing pyproject.toml with Poetry format."""
+        toml_file = temp_repo / "pyproject.toml"
+        content = """
+[tool.poetry]
+name = "test-project"
+version = "1.0.0"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+anthropic = ">=0.34.0"
+click = "^8.1.0"
+pydantic = {version = "^2.0.0", extras = ["email"]}
+
+[tool.poetry.dev-dependencies]
+pytest = "^7.4.0"
+"""
+        toml_file.write_text(content)
+
+        py_file = temp_repo / "test.py"
+        py_file.write_text("print('hello')")
+
+        extractor = Extractor(repo_path=temp_repo)
+        context = extractor.extract_file_context(Path("test.py"))
+
+        assert context is not None
+        # Should include dependencies but not the python version
+        assert any("anthropic" in d for d in context.dependencies)
+        assert any("click" in d for d in context.dependencies)
+        assert any("pydantic" in d for d in context.dependencies)
+        assert not any("python" in d.lower() and d.startswith("python") for d in context.dependencies)
+
+    def test_parse_package_json(self, temp_repo: Path):
+        """Test parsing package.json."""
+        pkg_file = temp_repo / "package.json"
+        content = """
+{
+  "name": "test-project",
+  "version": "1.0.0",
+  "dependencies": {
+    "react": "^18.0.0",
+    "express": "^4.18.0",
+    "lodash": "^4.17.21"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0",
+    "jest": "^29.0.0"
+  }
+}
+"""
+        pkg_file.write_text(content)
+
+        # Create a JavaScript file to trigger dependency parsing
+        js_file = temp_repo / "test.js"
+        js_file.write_text("console.log('hello');")
+
+        extractor = Extractor(repo_path=temp_repo)
+        context = extractor.extract_file_context(Path("test.js"))
+
+        assert context is not None
+        assert "react@^18.0.0" in context.dependencies
+        assert "express@^4.18.0" in context.dependencies
+        assert "lodash@^4.17.21" in context.dependencies
+        assert "typescript@^5.0.0" in context.dependencies
+        assert "jest@^29.0.0" in context.dependencies
+
+    def test_parse_package_json_typescript(self, temp_repo: Path):
+        """Test parsing package.json for TypeScript files."""
+        pkg_file = temp_repo / "package.json"
+        content = """
+{
+  "name": "test-project",
+  "dependencies": {
+    "@types/node": "^20.0.0",
+    "axios": "^1.4.0"
+  }
+}
+"""
+        pkg_file.write_text(content)
+
+        ts_file = temp_repo / "test.ts"
+        ts_file.write_text("const x: number = 42;")
+
+        extractor = Extractor(repo_path=temp_repo)
+        context = extractor.extract_file_context(Path("test.ts"))
+
+        assert context is not None
+        assert "@types/node@^20.0.0" in context.dependencies
+        assert "axios@^1.4.0" in context.dependencies
+
+    def test_parse_dependencies_no_files(self, temp_repo: Path):
+        """Test dependency parsing when no package files exist."""
+        py_file = temp_repo / "test.py"
+        py_file.write_text("print('hello')")
+
+        extractor = Extractor(repo_path=temp_repo)
+        context = extractor.extract_file_context(Path("test.py"))
+
+        assert context is not None
+        assert context.dependencies == []
+
+    def test_parse_dependencies_invalid_json(self, temp_repo: Path):
+        """Test dependency parsing with invalid JSON."""
+        pkg_file = temp_repo / "package.json"
+        pkg_file.write_text("{ invalid json }")
+
+        js_file = temp_repo / "test.js"
+        js_file.write_text("console.log('hello');")
+
+        extractor = Extractor(repo_path=temp_repo)
+        context = extractor.extract_file_context(Path("test.js"))
+
+        # Should handle error gracefully
+        assert context is not None
+        assert context.dependencies == []
+
+    def test_parse_dependencies_invalid_toml(self, temp_repo: Path):
+        """Test dependency parsing with invalid TOML."""
+        toml_file = temp_repo / "pyproject.toml"
+        toml_file.write_text("[invalid toml without closing bracket")
+
+        py_file = temp_repo / "test.py"
+        py_file.write_text("print('hello')")
+
+        extractor = Extractor(repo_path=temp_repo)
+        context = extractor.extract_file_context(Path("test.py"))
+
+        # Should handle error gracefully
+        assert context is not None
+        assert context.dependencies == []
+
+    def test_parse_dependencies_both_sources(self, temp_repo: Path):
+        """Test dependency parsing with both requirements.txt and pyproject.toml."""
+        req_file = temp_repo / "requirements.txt"
+        req_file.write_text("requests>=2.28.0\n")
+
+        toml_file = temp_repo / "pyproject.toml"
+        content = """
+[project]
+dependencies = [
+    "anthropic>=0.34.0",
+]
+"""
+        toml_file.write_text(content)
+
+        py_file = temp_repo / "test.py"
+        py_file.write_text("print('hello')")
+
+        extractor = Extractor(repo_path=temp_repo)
+        context = extractor.extract_file_context(Path("test.py"))
+
+        assert context is not None
+        # Should include dependencies from both files
+        assert "requests>=2.28.0" in context.dependencies
+        assert "anthropic>=0.34.0" in context.dependencies
+        # Should deduplicate if the same dependency appears in both
+        assert len(context.dependencies) == len(set(context.dependencies))
+
+    def test_parse_dependencies_unknown_language(self, temp_repo: Path):
+        """Test dependency parsing for unknown language."""
+        txt_file = temp_repo / "test.txt"
+        txt_file.write_text("Just some text")
+
+        extractor = Extractor(repo_path=temp_repo)
+        context = extractor.extract_file_context(Path("test.txt"))
+
+        assert context is not None
+        assert context.dependencies == []

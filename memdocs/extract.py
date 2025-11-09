@@ -7,7 +7,9 @@ Responsibilities:
 - Gather metadata (commit info, file stats, dependencies)
 """
 
+import json
 import re
+import tomllib
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -172,13 +174,16 @@ class Extractor:
         # Extract imports
         imports = self._extract_imports(content, language)
 
+        # Extract dependencies from project files
+        dependencies = self._parse_dependencies(self.repo_path, language)
+
         return FileContext(
             path=file_path,
             language=language,
             lines_of_code=lines_of_code,
             symbols=symbols,
             imports=imports,
-            dependencies=[],  # TODO: Parse package.json, requirements.txt, etc.
+            dependencies=dependencies,
         )
 
     def extract_context(self, paths: list[Path], commit: str | None = None) -> ExtractedContext:
@@ -436,3 +441,140 @@ class Extractor:
                 imports.append(match.group(1))
 
         return list(set(imports))  # Deduplicate
+
+    def _parse_dependencies(self, repo_root: Path, language: str) -> list[str]:
+        """Parse project dependencies from package files.
+
+        Args:
+            repo_root: Repository root directory
+            language: Programming language
+
+        Returns:
+            List of dependency strings
+        """
+        dependencies: list[str] = []
+
+        if language in ("Python", "Python 3"):
+            # Try requirements.txt
+            deps = self._parse_requirements_txt(repo_root)
+            if deps:
+                dependencies.extend(deps)
+
+            # Try pyproject.toml
+            deps = self._parse_pyproject_toml(repo_root)
+            if deps:
+                dependencies.extend(deps)
+
+        elif language in ("TypeScript", "JavaScript"):
+            # Try package.json
+            deps = self._parse_package_json(repo_root)
+            if deps:
+                dependencies.extend(deps)
+
+        return list(set(dependencies))  # Deduplicate
+
+    def _parse_requirements_txt(self, repo_root: Path) -> list[str]:
+        """Parse dependencies from requirements.txt.
+
+        Args:
+            repo_root: Repository root directory
+
+        Returns:
+            List of dependency strings
+        """
+        req_file = repo_root / "requirements.txt"
+        if not req_file.exists():
+            return []
+
+        try:
+            content = req_file.read_text(encoding="utf-8")
+            dependencies: list[str] = []
+
+            for line in content.splitlines():
+                line = line.strip()
+                # Skip empty lines and comments
+                if not line or line.startswith("#"):
+                    continue
+                # Skip -e (editable) installs and other flags
+                if line.startswith("-"):
+                    continue
+                dependencies.append(line)
+
+            return dependencies
+        except (OSError, UnicodeDecodeError):
+            return []
+
+    def _parse_pyproject_toml(self, repo_root: Path) -> list[str]:
+        """Parse dependencies from pyproject.toml.
+
+        Args:
+            repo_root: Repository root directory
+
+        Returns:
+            List of dependency strings
+        """
+        toml_file = repo_root / "pyproject.toml"
+        if not toml_file.exists():
+            return []
+
+        try:
+            content = toml_file.read_bytes()
+            data = tomllib.loads(content.decode("utf-8"))
+            dependencies: list[str] = []
+
+            # Check [project.dependencies] (PEP 621)
+            if "project" in data and "dependencies" in data["project"]:
+                deps = data["project"]["dependencies"]
+                if isinstance(deps, list):
+                    dependencies.extend(deps)
+
+            # Check [tool.poetry.dependencies] (Poetry)
+            if "tool" in data and "poetry" in data["tool"]:
+                poetry = data["tool"]["poetry"]
+                if "dependencies" in poetry:
+                    deps = poetry["dependencies"]
+                    if isinstance(deps, dict):
+                        # Poetry uses dict format: {"package": "version"}
+                        for pkg, version in deps.items():
+                            if pkg != "python":  # Skip python version requirement
+                                if isinstance(version, str):
+                                    dependencies.append(f"{pkg}{version}" if version else pkg)
+                                elif isinstance(version, dict):
+                                    # Handle complex dependency specs
+                                    dependencies.append(pkg)
+
+            return dependencies
+        except (OSError, UnicodeDecodeError, tomllib.TOMLDecodeError):
+            return []
+
+    def _parse_package_json(self, repo_root: Path) -> list[str]:
+        """Parse dependencies from package.json.
+
+        Args:
+            repo_root: Repository root directory
+
+        Returns:
+            List of dependency strings
+        """
+        pkg_file = repo_root / "package.json"
+        if not pkg_file.exists():
+            return []
+
+        try:
+            content = pkg_file.read_text(encoding="utf-8")
+            data = json.loads(content)
+            dependencies: list[str] = []
+
+            # Get regular dependencies
+            if "dependencies" in data and isinstance(data["dependencies"], dict):
+                for pkg, version in data["dependencies"].items():
+                    dependencies.append(f"{pkg}@{version}")
+
+            # Get dev dependencies
+            if "devDependencies" in data and isinstance(data["devDependencies"], dict):
+                for pkg, version in data["devDependencies"].items():
+                    dependencies.append(f"{pkg}@{version}")
+
+            return dependencies
+        except (OSError, UnicodeDecodeError, json.JSONDecodeError):
+            return []
