@@ -8,6 +8,7 @@ from unittest.mock import MagicMock, patch
 import pytest
 from click.testing import CliRunner
 
+from memdocs import __version__
 from memdocs.cli import export, main
 
 
@@ -29,7 +30,7 @@ class TestCLI:
         """Test --version flag."""
         result = cli_runner.invoke(main, ["--version"])
         assert result.exit_code == 0
-        assert "2.0.0" in result.output
+        assert __version__ in result.output
 
     def test_export_command_no_docs(self, cli_runner: CliRunner, temp_repo: Path):
         """Test export command when no docs exist."""
