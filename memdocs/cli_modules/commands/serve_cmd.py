@@ -9,7 +9,7 @@ import sys
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from pathlib import Path
 from typing import Any
-from urllib.parse import parse_qs, urlparse
+from urllib.parse import urlparse
 
 import click
 
@@ -19,7 +19,7 @@ from memdocs import cli_output as out
 class MemDocsHTTPHandler(BaseHTTPRequestHandler):
     """HTTP handler for MemDocs MCP server."""
 
-    def log_message(self, format: str, *args: Any) -> None:
+    def log_message(self, format: str, *args: Any) -> None:  # noqa: A002
         """Override to use our logger."""
         if self.server.verbose:  # type: ignore
             out.info(f"{self.address_string()} - {format % args}")
@@ -110,8 +110,8 @@ class MemDocsHTTPHandler(BaseHTTPRequestHandler):
 
     def _get_stats(self) -> dict[str, Any]:
         """Get memory statistics."""
-        docs_dir = getattr(self.server, "docs_dir")  # type: ignore
-        memory_dir = getattr(self.server, "memory_dir")  # type: ignore
+        docs_dir = self.server.docs_dir  # type: ignore
+        memory_dir = self.server.memory_dir  # type: ignore
 
         stats: dict[str, Any] = {
             "docs_dir": str(docs_dir),

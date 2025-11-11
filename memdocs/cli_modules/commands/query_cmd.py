@@ -43,8 +43,8 @@ def query(query: str, k: int, memory_dir: Path) -> None:
         out.print_header("MemDocs Query")
         out.step(f'Searching for: [cyan]"{query}"[/cyan]')
 
-        MemoryIndexer = _get_memory_indexer()
-        indexer = MemoryIndexer(memory_dir=memory_dir, use_embeddings=True)
+        memory_indexer_class = _get_memory_indexer()
+        indexer = memory_indexer_class(memory_dir=memory_dir, use_embeddings=True)
 
         if not indexer.use_embeddings:
             out.error("Embeddings not available")

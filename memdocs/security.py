@@ -319,11 +319,11 @@ class ConfigValidator:
         return scope
 
     @staticmethod
-    def validate_output_format(format: str) -> str:
+    def validate_output_format(output_format: str) -> str:
         """Validate output format.
 
         Args:
-            format: Output format to validate
+            output_format: Output format to validate
 
         Returns:
             Validated format
@@ -332,11 +332,11 @@ class ConfigValidator:
             ValueError: If format is invalid
         """
         valid_formats = ["json", "yaml", "markdown"]
-        if format not in valid_formats:
+        if output_format not in valid_formats:
             raise ValueError(
-                f"Invalid format '{format}'. Valid formats: {', '.join(valid_formats)}"
+                f"Invalid format '{output_format}'. Valid formats: {', '.join(valid_formats)}"
             )
-        return format
+        return output_format
 
     @staticmethod
     def validate_positive_int(value: int, name: str, min_value: int = 1) -> int:

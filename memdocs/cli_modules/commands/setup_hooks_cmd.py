@@ -2,7 +2,6 @@
 Setup-hooks command - Install git hooks for automatic memory updates.
 """
 
-import os
 import subprocess
 import sys
 from pathlib import Path

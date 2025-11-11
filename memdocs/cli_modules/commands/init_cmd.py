@@ -6,7 +6,7 @@ import json
 import os
 import sys
 from pathlib import Path
-from typing import Optional
+from typing import Any
 
 import click
 
@@ -14,9 +14,9 @@ from memdocs import cli_output as out
 from memdocs.security import PathValidator
 
 
-def _detect_project_type(cwd: Path) -> dict[str, any]:
+def _detect_project_type(cwd: Path) -> dict[str, Any]:
     """Detect project type and return metadata."""
-    project_info: dict[str, any] = {
+    project_info: dict[str, Any] = {
         "type": "unknown",
         "language": None,
         "source_dir": None,
@@ -182,7 +182,7 @@ def _setup_mcp_infrastructure(cwd: Path) -> None:
     default=None,
     help="Interactive mode (auto-detects TTY if not specified)",
 )
-def init(force: bool, no_mcp: bool, interactive: Optional[bool]) -> None:
+def init(force: bool, no_mcp: bool, interactive: bool | None) -> None:
     """Initialize MemDocs in the current project.
 
     MCP auto-start is enabled by default for VS Code/Cursor integration.

@@ -232,21 +232,21 @@ def review(
             sys.exit(1)
 
         # Get CLI classes (lazy import)
-        Extractor, MemoryIndexer, PolicyEngine, Summarizer = _get_cli_classes()
+        extractor_class, memory_indexer_class, policy_engine_class, summarizer_class = _get_cli_classes()
 
         out.print_header("MemDocs Review")
         out.step(f"Reviewing {len(paths)} path(s) for [cyan]{event}[/cyan] event")
 
         # Extract context
         with out.spinner(f"Extracting context from {len(paths)} path(s)"):
-            extractor = Extractor(repo_path=Path("."))
+            extractor = extractor_class(repo_path=Path("."))
             context = extractor.extract_context(paths)
 
         out.success(f"Extracted context from {len(context.files)} files")
 
         # Apply policy
         out.step("Determining scope")
-        policy_engine = PolicyEngine(doc_config)
+        policy_engine = policy_engine_class(doc_config)
         scope = policy_engine.determine_scope(paths, context, force=force)
 
         # Show warnings
@@ -266,7 +266,7 @@ def review(
 
         # Summarize with AI
         with out.spinner("Generating documentation with Claude Sonnet 4.5"):
-            summarizer = Summarizer(model=doc_config.ai.model, max_tokens=doc_config.ai.max_tokens)
+            summarizer = summarizer_class(model=doc_config.ai.model, max_tokens=doc_config.ai.max_tokens)
             doc_index, markdown_summary = summarizer.summarize(context, scope)
 
         out.success("Documentation generated")
@@ -293,7 +293,7 @@ def review(
 
             # Generate embeddings (optional, v1.1)
             try:
-                indexer = MemoryIndexer(
+                indexer = memory_indexer_class(
                     memory_dir=doc_config.outputs.memory_dir, use_embeddings=True
                 )
 

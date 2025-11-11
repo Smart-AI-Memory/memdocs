@@ -32,11 +32,12 @@ def _get_memory_indexer():
 )
 @click.option(
     "--format",
+    "output_format",
     type=click.Choice(["table", "json"]),
     default="table",
     help="Output format",
 )
-def stats(docs_dir: Path, memory_dir: Path, format: str) -> None:
+def stats(docs_dir: Path, memory_dir: Path, output_format: str) -> None:
     """Show memory and documentation statistics.
 
     Examples:
@@ -77,14 +78,14 @@ def stats(docs_dir: Path, memory_dir: Path, format: str) -> None:
         # Embedding index stats
         index_stats = None
         try:
-            MemoryIndexer = _get_memory_indexer()
-            indexer = MemoryIndexer(memory_dir=memory_dir, use_embeddings=True)
+            memory_indexer_class = _get_memory_indexer()
+            indexer = memory_indexer_class(memory_dir=memory_dir, use_embeddings=True)
             if indexer.use_embeddings:
                 index_stats = indexer.get_stats()
         except Exception:
             pass
 
-        if format == "json":
+        if output_format == "json":
             # JSON output
             output = {
                 "docs": docs_stats,
