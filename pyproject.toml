@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "memdocs"
-version = "2.0.0-beta"
+version = "2.0.4"
 description = "Persistent memory management for AI projects - Git-native documentation intelligence"
 authors = [{name = "Patrick Roebuck", email = "patrick.roebuck@smartaimemory.com"}]
 license = {text = "Apache-2.0"}
@@ -20,7 +20,7 @@ keywords = [
     "developer-tools"
 ]
 classifiers = [
-    "Development Status :: 4 - Beta",
+    "Development Status :: 5 - Production/Stable",
     "Intended Audience :: Developers",
     "License :: OSI Approved :: Apache Software License",
     "Programming Language :: Python :: 3",
@@ -91,11 +91,11 @@ all = [
 memdocs = "memdocs.cli:main"
 
 [project.urls]
-Homepage = "https://github.com/Deep-Study-AI/memdocs"
-Documentation = "https://docs.deepstudyai.com/memdocs"
-Repository = "https://github.com/Deep-Study-AI/memdocs"
-Issues = "https://github.com/Deep-Study-AI/memdocs/issues"
-Changelog = "https://github.com/Deep-Study-AI/memdocs/blob/main/CHANGELOG.md"
+Homepage = "https://github.com/Smart-AI-Memory/memdocs"
+Documentation = "https://docs.smartaimemory.com/memdocs"
+Repository = "https://github.com/Smart-AI-Memory/memdocs"
+Issues = "https://github.com/Smart-AI-Memory/memdocs/issues"
+Changelog = "https://github.com/Smart-AI-Memory/memdocs/blob/main/CHANGELOG.md"
 
 [tool.setuptools.packages.find]
 where = ["."]
