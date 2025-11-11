@@ -120,7 +120,7 @@ ignore = [
 
 [tool.ruff.lint.per-file-ignores]
 "__init__.py" = ["F401"]  # Unused imports
-"tests/**/*.py" = ["F841", "PT011"]  # Unused variables and broad pytest.raises in tests
+"tests/**/*.py" = ["F841", "PT011", "I001", "F401", "A004"]  # Test style: unused vars, broad raises, import order, unused imports, shadowing
 
 [tool.mypy]
 python_version = "3.10"
