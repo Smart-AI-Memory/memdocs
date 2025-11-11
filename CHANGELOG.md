@@ -95,4 +95,4 @@ For questions, issues, or feature requests:
 - **GitHub Issues**: https://github.com/Deep-Study-AI/memdocs/issues
 - **Documentation**: https://docs.deepstudyai.com/memdocs
 - **Discord**: https://discord.gg/deepstudyai
-- **Email**: patrick.roebuck@deepstudyai.com
+- **Email**: patrick.roebuck@pm.me
