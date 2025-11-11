@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "memdocs"
-version = "2.0.7"
+version = "2.0.8"
 description = "Persistent memory management for AI projects - Git-native documentation intelligence"
 authors = [{name = "Patrick Roebuck", email = "patrick.roebuck@smartaimemory.com"}]
 license = {text = "Apache-2.0"}
@@ -120,7 +120,7 @@ ignore = [
 
 [tool.ruff.lint.per-file-ignores]
 "__init__.py" = ["F401"]  # Unused imports
-"tests/**/*.py" = ["F841", "PT011", "I001", "F401", "A004"]  # Test style: unused vars, broad raises, import order, unused imports, shadowing
+"tests/**/*.py" = ["F841", "PT011", "I001", "F401", "A004", "N806"]  # Test style: unused vars, broad raises, import order, unused imports, shadowing, variable naming
 
 [tool.mypy]
 python_version = "3.10"
