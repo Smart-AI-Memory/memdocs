@@ -66,7 +66,7 @@ class APIError(MemDocsError):
             return "Check your API key and internet connection"
 
 
-class FileNotFoundError(MemDocsError):
+class FileNotFoundError(MemDocsError):  # noqa: A001
     """Requested file or directory not found."""
 
     def __init__(self, path: Path, context: str | None = None):

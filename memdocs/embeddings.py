@@ -41,7 +41,7 @@ class LocalEmbedder:
         try:
             from sentence_transformers import SentenceTransformer
         except ImportError:
-            raise ImportError(
+            raise ImportError(  # noqa: B904
                 "sentence-transformers not installed. "
                 "Install with: pip install 'memdocs[embeddings]'"
             )

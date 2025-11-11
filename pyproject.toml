@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "memdocs"
-version = "2.0.5"
+version = "2.0.6"
 description = "Persistent memory management for AI projects - Git-native documentation intelligence"
 authors = [{name = "Patrick Roebuck", email = "patrick.roebuck@smartaimemory.com"}]
 license = {text = "Apache-2.0"}
@@ -109,11 +109,18 @@ include = '\.pyi?$'
 
 [tool.ruff]
 line-length = 100
-select = ["E", "F", "W", "I", "N", "UP", "B", "A", "C4", "PT"]
-ignore = ["E501"]  # Line too long (handled by black)
 
-[tool.ruff.per-file-ignores]
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "N", "UP", "B", "A", "C4", "PT"]
+ignore = [
+    "E501",   # Line too long (handled by black)
+    "B904",   # Exception chaining (would change error handling behavior)
+    "B005",   # Strip with multi-character strings (false positive)
+]
+
+[tool.ruff.lint.per-file-ignores]
 "__init__.py" = ["F401"]  # Unused imports
+"tests/**/*.py" = ["F841", "PT011"]  # Unused variables and broad pytest.raises in tests
 
 [tool.mypy]
 python_version = "3.10"
