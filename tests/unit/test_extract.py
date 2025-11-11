@@ -292,7 +292,9 @@ pytest = "^7.4.0"
         assert any("anthropic" in d for d in context.dependencies)
         assert any("click" in d for d in context.dependencies)
         assert any("pydantic" in d for d in context.dependencies)
-        assert not any("python" in d.lower() and d.startswith("python") for d in context.dependencies)
+        assert not any(
+            "python" in d.lower() and d.startswith("python") for d in context.dependencies
+        )
 
     def test_parse_package_json(self, temp_repo: Path):
         """Test parsing package.json."""

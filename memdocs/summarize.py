@@ -102,7 +102,12 @@ refs:
 
 Generate the YAML now:"""
 
-    def __init__(self, api_key: str | None = None, model: str = "claude-sonnet-4-5-20250929", max_tokens: int = DEFAULT_MAX_TOKENS):
+    def __init__(
+        self,
+        api_key: str | None = None,
+        model: str = "claude-sonnet-4-5-20250929",
+        max_tokens: int = DEFAULT_MAX_TOKENS,
+    ):
         """Initialize summarizer.
 
         Args:

@@ -44,7 +44,7 @@ class PathValidator:
                 except ValueError:
                     raise SecurityError(
                         f"Attempts to escape base directory '{base_dir}'. Path traversal attacks are not allowed.",
-                        path
+                        path,
                     )
 
             # Check for suspicious patterns
@@ -52,10 +52,7 @@ class PathValidator:
             if ".." in path_str:
                 # resolve() should handle this, but double-check
                 if ".." in str(abs_path.relative_to(abs_path.anchor)):
-                    raise SecurityError(
-                        "Contains suspicious '..' traversal sequences",
-                        path
-                    )
+                    raise SecurityError("Contains suspicious '..' traversal sequences", path)
 
             # Check for null bytes (path injection)
             if "\x00" in path_str:
@@ -95,7 +92,7 @@ class PathValidator:
         allowed_str = ", ".join(str(d) for d in allowed_dirs)
         raise SecurityError(
             f"Not within allowed directories: {allowed_str}. Writing to arbitrary locations is not permitted.",
-            path
+            path,
         )
 
 
@@ -313,9 +310,7 @@ class ConfigValidator:
         """
         valid_scopes = ["file", "module", "repo"]
         if scope not in valid_scopes:
-            raise ValueError(
-                f"Invalid scope '{scope}'. Valid scopes: {', '.join(valid_scopes)}"
-            )
+            raise ValueError(f"Invalid scope '{scope}'. Valid scopes: {', '.join(valid_scopes)}")
         return scope
 
     @staticmethod

@@ -91,17 +91,15 @@ def _setup_mcp_infrastructure(cwd: Path) -> None:
                 "args": ["serve", "--mcp"],
                 "isBackground": True,
                 "problemMatcher": [],
-                "runOptions": {
-                    "runOn": "folderOpen"
-                },
+                "runOptions": {"runOn": "folderOpen"},
                 "presentation": {
                     "echo": False,
                     "reveal": "never",
                     "focus": False,
                     "panel": "shared",
                     "showReuseMessage": False,
-                    "clear": False
-                }
+                    "clear": False,
+                },
             },
             {
                 "label": "Update MemDocs Memory",
@@ -112,8 +110,8 @@ def _setup_mcp_infrastructure(cwd: Path) -> None:
                     "echo": True,
                     "reveal": "always",
                     "focus": False,
-                    "panel": "shared"
-                }
+                    "panel": "shared",
+                },
             },
             {
                 "label": "Export MemDocs for Cursor",
@@ -124,8 +122,8 @@ def _setup_mcp_infrastructure(cwd: Path) -> None:
                     "echo": True,
                     "reveal": "always",
                     "focus": False,
-                    "panel": "shared"
-                }
+                    "panel": "shared",
+                },
             },
             {
                 "label": "MemDocs Stats",
@@ -136,20 +134,17 @@ def _setup_mcp_infrastructure(cwd: Path) -> None:
                     "echo": True,
                     "reveal": "always",
                     "focus": True,
-                    "panel": "shared"
-                }
-            }
-        ]
+                    "panel": "shared",
+                },
+            },
+        ],
     }
 
     tasks_file.write_text(json.dumps(tasks_config, indent=2), encoding="utf-8")
     out.success(f"Created [green]{tasks_file}[/green]")
 
     # Create settings.json for auto-start
-    settings_config = {
-        "task.autoDetect": "on",
-        "task.allowAutomaticTasks": "on"
-    }
+    settings_config = {"task.autoDetect": "on", "task.allowAutomaticTasks": "on"}
 
     # Merge with existing settings if they exist
     if settings_file.exists():

@@ -14,6 +14,7 @@ from memdocs import cli_output as out
 def _get_memory_indexer():
     """Lazy import to avoid circular dependency."""
     from memdocs import cli
+
     return cli.MemoryIndexer
 
 

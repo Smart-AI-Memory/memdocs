@@ -100,6 +100,7 @@ class TestPathValidator:
 
     def test_validate_path_runtime_error(self, tmp_path: Path, monkeypatch):
         """Test handling of RuntimeError during path resolution."""
+
         # Create a mock path that will raise RuntimeError on resolve
         class FailingPath(Path):
             def resolve(self, strict=False):

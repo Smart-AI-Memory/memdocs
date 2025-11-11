@@ -336,7 +336,7 @@ class TestCLI:
         mock_extractor_class,
         mock_summarizer_class,
         cli_runner: CliRunner,
-        temp_repo: Path
+        temp_repo: Path,
     ):
         """Test review command with mocked dependencies."""
         from datetime import datetime, timezone

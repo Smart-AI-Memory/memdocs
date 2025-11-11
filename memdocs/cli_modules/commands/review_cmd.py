@@ -76,6 +76,7 @@ def _is_git_repo() -> bool:
 def _get_cli_classes():
     """Lazy import to avoid circular dependency."""
     from memdocs import cli
+
     return cli.Extractor, cli.MemoryIndexer, cli.PolicyEngine, cli.Summarizer
 
 
@@ -191,9 +192,7 @@ def review(
 
         # Override config with CLI args (with validation)
         if max_files:
-            validated_max_files = ConfigValidator.validate_positive_int(
-                max_files, "max_files"
-            )
+            validated_max_files = ConfigValidator.validate_positive_int(max_files, "max_files")
             doc_config.policies.max_files_without_force = validated_max_files
         if escalate_on:
             # Validate and sanitize escalation rules
@@ -232,7 +231,9 @@ def review(
             sys.exit(1)
 
         # Get CLI classes (lazy import)
-        extractor_class, memory_indexer_class, policy_engine_class, summarizer_class = _get_cli_classes()
+        extractor_class, memory_indexer_class, policy_engine_class, summarizer_class = (
+            _get_cli_classes()
+        )
 
         out.print_header("MemDocs Review")
         out.step(f"Reviewing {len(paths)} path(s) for [cyan]{event}[/cyan] event")
@@ -266,7 +267,9 @@ def review(
 
         # Summarize with AI
         with out.spinner("Generating documentation with Claude Sonnet 4.5"):
-            summarizer = summarizer_class(model=doc_config.ai.model, max_tokens=doc_config.ai.max_tokens)
+            summarizer = summarizer_class(
+                model=doc_config.ai.model, max_tokens=doc_config.ai.max_tokens
+            )
             doc_index, markdown_summary = summarizer.summarize(context, scope)
 
         out.success("Documentation generated")

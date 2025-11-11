@@ -257,7 +257,7 @@ async def serve_mcp() -> None:
 
     # Use secure temporary file for logging
     log_file = tempfile.NamedTemporaryFile(
-        mode='w', prefix='memdocs-mcp-', suffix='.log', delete=False
+        mode="w", prefix="memdocs-mcp-", suffix=".log", delete=False
     )
     logging.basicConfig(level=logging.INFO, filename=log_file.name)
 

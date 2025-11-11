@@ -28,16 +28,20 @@ class TestDocIntMCPServer:
     @pytest.fixture
     def mcp_server(self, temp_memdocs_dir: Path) -> DocIntMCPServer:
         """Create MCP server instance with mocked embedder."""
-        with patch("memdocs.mcp_server.LocalEmbedder"), \
-             patch("memdocs.mcp_server.LocalVectorSearch"):
+        with (
+            patch("memdocs.mcp_server.LocalEmbedder"),
+            patch("memdocs.mcp_server.LocalVectorSearch"),
+        ):
             server = DocIntMCPServer(repo_path=temp_memdocs_dir)
             server.search_enabled = False  # Disable for most tests
             return server
 
     def test_initialization(self, temp_memdocs_dir: Path):
         """Test MCP server initialization."""
-        with patch("memdocs.mcp_server.LocalEmbedder"), \
-             patch("memdocs.mcp_server.LocalVectorSearch"):
+        with (
+            patch("memdocs.mcp_server.LocalEmbedder"),
+            patch("memdocs.mcp_server.LocalVectorSearch"),
+        ):
             server = DocIntMCPServer(repo_path=temp_memdocs_dir)
 
             assert server.repo_path == temp_memdocs_dir
@@ -351,9 +355,11 @@ class TestMCPServerProtocol:
 
         # We can't easily test the full serve_mcp() due to stdio_server,
         # but we can test the server setup and tool registration
-        with patch("memdocs.mcp_server.LocalEmbedder"), \
-             patch("memdocs.mcp_server.LocalVectorSearch"), \
-             patch("os.environ.get", return_value=str(temp_memdocs_dir)):
+        with (
+            patch("memdocs.mcp_server.LocalEmbedder"),
+            patch("memdocs.mcp_server.LocalVectorSearch"),
+            patch("os.environ.get", return_value=str(temp_memdocs_dir)),
+        ):
 
             # Create a test server to check tool registration
             server = Server("memdocs-test")
@@ -362,6 +368,7 @@ class TestMCPServerProtocol:
             @server.list_tools()
             async def list_tools():
                 from mcp.types import Tool
+
                 return [
                     Tool(
                         name="search_memory",
@@ -407,8 +414,10 @@ class TestMCPServerProtocol:
         """Test call_tool with search_memory."""
         from mcp.types import TextContent
 
-        with patch("memdocs.mcp_server.LocalEmbedder"), \
-             patch("memdocs.mcp_server.LocalVectorSearch"):
+        with (
+            patch("memdocs.mcp_server.LocalEmbedder"),
+            patch("memdocs.mcp_server.LocalVectorSearch"),
+        ):
 
             server_instance = DocIntMCPServer(repo_path=temp_memdocs_dir)
             server_instance.search_enabled = False
@@ -435,8 +444,10 @@ class TestMCPServerProtocol:
         """Test call_tool with get_symbols."""
         from mcp.types import TextContent
 
-        with patch("memdocs.mcp_server.LocalEmbedder"), \
-             patch("memdocs.mcp_server.LocalVectorSearch"):
+        with (
+            patch("memdocs.mcp_server.LocalEmbedder"),
+            patch("memdocs.mcp_server.LocalVectorSearch"),
+        ):
 
             server_instance = DocIntMCPServer(repo_path=temp_memdocs_dir)
 
@@ -461,8 +472,10 @@ class TestMCPServerProtocol:
         """Test call_tool with get_documentation."""
         from mcp.types import TextContent
 
-        with patch("memdocs.mcp_server.LocalEmbedder"), \
-             patch("memdocs.mcp_server.LocalVectorSearch"):
+        with (
+            patch("memdocs.mcp_server.LocalEmbedder"),
+            patch("memdocs.mcp_server.LocalVectorSearch"),
+        ):
 
             server_instance = DocIntMCPServer(repo_path=temp_memdocs_dir)
 
@@ -487,8 +500,10 @@ class TestMCPServerProtocol:
         """Test call_tool with get_summary."""
         from mcp.types import TextContent
 
-        with patch("memdocs.mcp_server.LocalEmbedder"), \
-             patch("memdocs.mcp_server.LocalVectorSearch"):
+        with (
+            patch("memdocs.mcp_server.LocalEmbedder"),
+            patch("memdocs.mcp_server.LocalVectorSearch"),
+        ):
 
             server_instance = DocIntMCPServer(repo_path=temp_memdocs_dir)
 
@@ -511,8 +526,10 @@ class TestMCPServerProtocol:
         """Test call_tool with query_analysis."""
         from mcp.types import TextContent
 
-        with patch("memdocs.mcp_server.LocalEmbedder"), \
-             patch("memdocs.mcp_server.LocalVectorSearch"):
+        with (
+            patch("memdocs.mcp_server.LocalEmbedder"),
+            patch("memdocs.mcp_server.LocalVectorSearch"),
+        ):
 
             server_instance = DocIntMCPServer(repo_path=temp_memdocs_dir)
 
@@ -539,14 +556,22 @@ class TestMCPServerProtocol:
         """Test call_tool with unknown tool name."""
         from mcp.types import TextContent
 
-        with patch("memdocs.mcp_server.LocalEmbedder"), \
-             patch("memdocs.mcp_server.LocalVectorSearch"):
+        with (
+            patch("memdocs.mcp_server.LocalEmbedder"),
+            patch("memdocs.mcp_server.LocalVectorSearch"),
+        ):
 
             server_instance = DocIntMCPServer(repo_path=temp_memdocs_dir)
 
             # Simulate call_tool behavior
             async def call_tool(name: str, arguments: dict):
-                if name not in ["search_memory", "get_symbols", "get_documentation", "get_summary", "query_analysis"]:
+                if name not in [
+                    "search_memory",
+                    "get_symbols",
+                    "get_documentation",
+                    "get_summary",
+                    "query_analysis",
+                ]:
                     error_msg = f"Unknown tool: {name}"
                     return [TextContent(type="text", text=json.dumps({"error": error_msg}))]
                 return []
@@ -565,8 +590,10 @@ class TestMCPServerProtocol:
         """Test call_tool exception handling."""
         from mcp.types import TextContent
 
-        with patch("memdocs.mcp_server.LocalEmbedder"), \
-             patch("memdocs.mcp_server.LocalVectorSearch"):
+        with (
+            patch("memdocs.mcp_server.LocalEmbedder"),
+            patch("memdocs.mcp_server.LocalVectorSearch"),
+        ):
 
             server_instance = DocIntMCPServer(repo_path=temp_memdocs_dir)
 
@@ -609,14 +636,17 @@ class TestMCPServerProtocol:
 
         # The module should be runnable with asyncio.run(serve_mcp())
         # We can't test this directly without mocking stdio, but we can verify the structure
-        with patch("memdocs.mcp_server.stdio_server"), \
-             patch("memdocs.mcp_server.LocalEmbedder"), \
-             patch("memdocs.mcp_server.LocalVectorSearch"), \
-             patch("os.environ.get", return_value="."):
+        with (
+            patch("memdocs.mcp_server.stdio_server"),
+            patch("memdocs.mcp_server.LocalEmbedder"),
+            patch("memdocs.mcp_server.LocalVectorSearch"),
+            patch("os.environ.get", return_value="."),
+        ):
 
             # Import and verify module structure
             import importlib
             import memdocs.mcp_server
+
             importlib.reload(memdocs.mcp_server)
 
             # Verify key components exist
@@ -724,8 +754,10 @@ class TestMCPServerIntegration:
 
     def test_full_workflow_get_all_data(self, populated_memdocs_dir: Path):
         """Test retrieving all data from a populated MCP server."""
-        with patch("memdocs.mcp_server.LocalEmbedder"), \
-             patch("memdocs.mcp_server.LocalVectorSearch"):
+        with (
+            patch("memdocs.mcp_server.LocalEmbedder"),
+            patch("memdocs.mcp_server.LocalVectorSearch"),
+        ):
 
             server = DocIntMCPServer(repo_path=populated_memdocs_dir)
 
@@ -780,8 +812,10 @@ class TestMCPServerIntegration:
         with open(auth_dir / "summary.md", "w") as f:
             f.write("# Auth Analysis\n\nSecurity improvements needed.")
 
-        with patch("memdocs.mcp_server.LocalEmbedder"), \
-             patch("memdocs.mcp_server.LocalVectorSearch"):
+        with (
+            patch("memdocs.mcp_server.LocalEmbedder"),
+            patch("memdocs.mcp_server.LocalVectorSearch"),
+        ):
 
             server = DocIntMCPServer(repo_path=populated_memdocs_dir)
 
@@ -826,11 +860,13 @@ class TestMCPServerIntegration:
         # Mock server run to avoid actually starting the server
         mock_server_run = AsyncMock()
 
-        with patch("memdocs.mcp_server.stdio_server", return_value=MockStdioServer()), \
-             patch("memdocs.mcp_server.LocalEmbedder"), \
-             patch("memdocs.mcp_server.LocalVectorSearch"), \
-             patch("os.environ.get", return_value=str(populated_memdocs_dir)), \
-             patch("memdocs.mcp_server.Server") as MockServer:
+        with (
+            patch("memdocs.mcp_server.stdio_server", return_value=MockStdioServer()),
+            patch("memdocs.mcp_server.LocalEmbedder"),
+            patch("memdocs.mcp_server.LocalVectorSearch"),
+            patch("os.environ.get", return_value=str(populated_memdocs_dir)),
+            patch("memdocs.mcp_server.Server") as MockServer,
+        ):
 
             # Mock Server instance
             mock_server_instance = MagicMock()
@@ -878,6 +914,7 @@ class TestMCPServerIntegration:
                     nonlocal list_tools_func
                     list_tools_func = func
                     return func
+
                 return decorator
 
             def call_tool(self):
@@ -885,6 +922,7 @@ class TestMCPServerIntegration:
                     nonlocal call_tool_func
                     call_tool_func = func
                     return func
+
                 return decorator
 
             def create_initialization_options(self):
@@ -902,13 +940,15 @@ class TestMCPServerIntegration:
             async def __aexit__(self, *args):
                 return None
 
-        with patch("memdocs.mcp_server.stdio_server", return_value=MockStdioServer()), \
-             patch("memdocs.mcp_server.LocalEmbedder"), \
-             patch("memdocs.mcp_server.LocalVectorSearch"), \
-             patch("os.environ.get", return_value=str(populated_memdocs_dir)), \
-             patch("memdocs.mcp_server.Server", MockServerClass), \
-             patch("logging.info"), \
-             patch("logging.error"):
+        with (
+            patch("memdocs.mcp_server.stdio_server", return_value=MockStdioServer()),
+            patch("memdocs.mcp_server.LocalEmbedder"),
+            patch("memdocs.mcp_server.LocalVectorSearch"),
+            patch("os.environ.get", return_value=str(populated_memdocs_dir)),
+            patch("memdocs.mcp_server.Server", MockServerClass),
+            patch("logging.info"),
+            patch("logging.error"),
+        ):
 
             from memdocs.mcp_server import serve_mcp
 
@@ -924,6 +964,7 @@ class TestMCPServerIntegration:
 
             # Test list_tools function
             from mcp.types import Tool
+
             tools = await list_tools_func()
             assert isinstance(tools, list)
             assert len(tools) == 5

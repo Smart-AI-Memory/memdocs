@@ -91,9 +91,7 @@ class SymbolExtractor:
             # Additional languages can be added here
         }
 
-    def extract_from_file(
-        self, file_path: Path, language: Language | None = None
-    ) -> list[Symbol]:
+    def extract_from_file(self, file_path: Path, language: Language | None = None) -> list[Symbol]:
         """
         Extract symbols from a source file.
 
@@ -404,9 +402,7 @@ class SymbolExtractor:
         return []
 
 
-def extract_symbols_for_memdocs(
-    file_path: Path, language: Language | None = None
-) -> SymbolsOutput:
+def extract_symbols_for_memdocs(file_path: Path, language: Language | None = None) -> SymbolsOutput:
     """
     Convenience function to extract symbols in DocInt format.
 

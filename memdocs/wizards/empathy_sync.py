@@ -161,6 +161,7 @@ class EmpathySyncWizard:
         try:
             # Check if EmpathyService module is available
             import importlib.util
+
             spec = importlib.util.find_spec("app.backend.services.empathy_service")
             return spec is not None
         except (ImportError, ModuleNotFoundError):

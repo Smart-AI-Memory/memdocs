@@ -210,9 +210,7 @@ def serve(
     """
     # Check if memory exists
     if not docs_dir.exists() and not memory_dir.exists():
-        out.warning(
-            "No MemDocs memory found. Run 'memdocs review' first to generate memory."
-        )
+        out.warning("No MemDocs memory found. Run 'memdocs review' first to generate memory.")
         out.info("Starting server anyway for testing...")
 
     # Daemon mode

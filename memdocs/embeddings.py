@@ -129,9 +129,7 @@ def chunk_document(text: str, max_tokens: int = 512, overlap: int = 50) -> list[
         >>> # Each chunk has <= 512 tokens with 50 token overlap
     """
     if max_tokens <= overlap:
-        raise ValueError(
-            f"max_tokens ({max_tokens}) must be greater than overlap ({overlap})"
-        )
+        raise ValueError(f"max_tokens ({max_tokens}) must be greater than overlap ({overlap})")
 
     # Use cl100k_base encoding (used by OpenAI's text-embedding-ada-002 and similar models)
     # This encoding is also suitable for sentence-transformers models as an approximation

@@ -74,7 +74,8 @@ class TestChunkDocumentTokenCounting:
 
     def test_chunk_code_text(self):
         """Test chunking programming code."""
-        code = '''
+        code = (
+            '''
 def calculate_fibonacci(n):
     """Calculate the nth Fibonacci number."""
     if n <= 1:
@@ -92,7 +93,9 @@ class DataProcessor:
 
     def map(self, transform):
         return [transform(item) for item in self.data]
-''' * 10  # Repeat to ensure multiple chunks
+'''
+            * 10
+        )  # Repeat to ensure multiple chunks
 
         chunks = chunk_document(code, max_tokens=200, overlap=30)
 
@@ -108,11 +111,14 @@ class DataProcessor:
     def test_chunk_accurate_vs_old_approximation(self):
         """Test that tiktoken gives more accurate results than word approximation."""
         # Text with varying token-to-word ratios
-        text = """
+        text = (
+            """
         This is a test. Some words are single tokens, but compound-words and
         special-characters create different token counts than simple word counts.
         The old approximation of 1 token ≈ 0.75 words was inaccurate.
-        """ * 50
+        """
+            * 50
+        )
 
         max_tokens = 100
         chunks = chunk_document(text, max_tokens=max_tokens, overlap=20)
@@ -173,7 +179,8 @@ class DataProcessor:
 
     def test_chunk_with_markdown(self):
         """Test chunking markdown documentation."""
-        markdown = """
+        markdown = (
+            """
 # Main Title
 
 ## Section 1
@@ -196,7 +203,9 @@ More content with [links](https://example.com) and `inline code`.
 | Column 1 | Column 2 |
 |----------|----------|
 | Data 1   | Data 2   |
-""" * 20  # Repeat for multiple chunks
+"""
+            * 20
+        )  # Repeat for multiple chunks
 
         chunks = chunk_document(markdown, max_tokens=256, overlap=30)
 
