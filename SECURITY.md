@@ -14,7 +14,7 @@ We release patches for security vulnerabilities for the following versions:
 
 **Please do not report security vulnerabilities through public GitHub issues.**
 
-Instead, please report them via email to: **security@deepstudyai.com**
+Instead, please report them via email to: **patrick.roebuck@pm.me**
 
 You should receive a response within 48 hours. If for some reason you do not, please follow up via email to ensure we received your original message.
 
@@ -77,7 +77,7 @@ We aim to disclose vulnerabilities within 90 days of receiving the report, or so
 
 ## Comments on this Policy
 
-If you have suggestions on how this policy could be improved, please submit a pull request or email security@deepstudyai.com.
+If you have suggestions on how this policy could be improved, please submit a pull request or email patrick.roebuck@pm.me.
 
 ## Known Security Considerations
 
@@ -101,7 +101,7 @@ If you have suggestions on how this policy could be improved, please submit a pu
 
 ## Security Contact
 
-- **Email**: security@deepstudyai.com
+- **Email**: patrick.roebuck@pm.me
 - **PGP Key**: (Coming soon)
 
 Thank you for helping keep MemDocs and our users safe!
