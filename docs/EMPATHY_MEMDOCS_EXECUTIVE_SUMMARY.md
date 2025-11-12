@@ -238,7 +238,7 @@ export ANTHROPIC_API_KEY="your-key"
 - **MemDocs**: https://github.com/Smart-AI-Memory/memdocs
 - **Empathy**: https://github.com/Smart-AI-Memory/empathy
 - **Full Analysis**: [EMPATHY_MEMDOCS_SYNERGY.md](EMPATHY_MEMDOCS_SYNERGY.md)
-- **Contact**: patrick.roebuck@smartaimemory.com
+- **Contact**: patrick.roebuck@pm.me
 
 ---
 

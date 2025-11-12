@@ -850,7 +850,7 @@ python
 - **MemDocs**: https://github.com/Smart-AI-Memory/memdocs
 - **Empathy**: https://github.com/Smart-AI-Memory/empathy
 - **Docs**: https://github.com/Smart-AI-Memory/memdocs/tree/main/docs
-- **Contact**: patrick.roebuck@smartaimemory.com
+- **Contact**: patrick.roebuck@pm.me
 
 ---
 
@@ -922,4 +922,4 @@ If you use this framework in your research or product:
 
 **License**: Apache 2.0 (this document)
 **Projects**: Fair Source 0.9 (free for ≤5 employees, $99/dev/year for 6+)
-**Contact**: patrick.roebuck@smartaimemory.com
+**Contact**: patrick.roebuck@pm.me

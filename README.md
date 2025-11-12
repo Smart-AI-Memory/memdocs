@@ -730,8 +730,8 @@ Apache License 2.0 - See [LICENSE](LICENSE) for details.
 - **Issues**: [GitHub Issues](https://github.com/Smart-AI-Memory/memdocs/issues)
 - **Discussions**: [GitHub Discussions](https://github.com/Smart-AI-Memory/memdocs/discussions)
 - **Discord**: Coming soon
-- **Contact**: patrick.roebuck@smartaimemory.com
-- **Enterprise inquiries**: patrick.roebuck@smartaimemory.com
+- **Contact**: patrick.roebuck@pm.me
+- **Enterprise inquiries**: patrick.roebuck@pm.me
 
 ### 📚 Additional Resources
 

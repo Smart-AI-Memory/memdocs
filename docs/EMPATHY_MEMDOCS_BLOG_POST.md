@@ -341,7 +341,7 @@ We're at an inflection point in AI-human collaboration.
 
 **Enterprise licensing**: $99/developer/year (6+ employees)
 
-**Questions?** patrick.roebuck@smartaimemory.com
+**Questions?** patrick.roebuck@pm.me
 
 ---
 
