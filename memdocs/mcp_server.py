@@ -2,6 +2,10 @@
 MCP (Model Context Protocol) server for Claude Desktop integration.
 
 Enables Claude Desktop to query project memory stored in .memdocs/
+via semantic search, symbol lookup, and documentation retrieval.
+
+This is MemDocs' flagship feature - allowing AI assistants to autonomously
+query git-committed memory without file system access.
 """
 
 import json

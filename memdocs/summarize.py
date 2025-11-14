@@ -1,7 +1,9 @@
 """
-AI-powered summarization using Claude.
+AI-powered summarization using Claude Sonnet 4.5.
 
-Generates structured documentation from extracted code context.
+Generates structured YAML documentation from extracted code context,
+transforming git diffs and AST symbols into human-readable summaries
+with risk analysis, impact tracking, and feature descriptions.
 """
 
 import os

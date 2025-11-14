@@ -1,8 +1,11 @@
 """
-Local vector search using FAISS.
+Local vector search using FAISS (Facebook AI Similarity Search).
 
-Zero-cost alternative to Pinecone ($70-200/month).
-Index stored in .memdocs/memory/ (git-committed).
+Zero-cost alternative to Pinecone ($70-200/month → $0).
+Index stored in .memdocs/memory/ (git-committed, version-controlled).
+
+Provides fast L2 distance similarity search for semantic code queries.
+Works offline with no external dependencies or API latency.
 """
 
 import json

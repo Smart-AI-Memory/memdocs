@@ -58,8 +58,9 @@ dmypy.json
 .env.local
 .env.*.local
 
-# MemDocs output (for testing)
-.memdocs/
+# MemDocs output
+# NOTE: Committing .memdocs/ to demonstrate dogfooding
+# .memdocs/  # Uncomment to exclude from git (for testing only)
 *.memdocs.yml.backup
 
 # Distribution

@@ -1,11 +1,14 @@
 """
-Policy engine for scope determination and escalation rules.
+Policy engine for intelligent scope determination and escalation.
 
-Determines when to expand scope from file → module → repo based on:
+Automatically expands documentation scope from file → module → repo based on:
 - Security-sensitive paths (auth/*, security/*)
-- Cross-module dependencies
-- Public API changes
-- File count thresholds
+- Cross-module dependencies and import chains
+- Public API signature changes
+- File count thresholds (configurable)
+
+Ensures critical changes get comprehensive documentation while keeping
+costs low for routine single-file updates.
 """
 
 from pathlib import Path

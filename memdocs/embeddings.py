@@ -1,8 +1,10 @@
 """
 Local embeddings generation using sentence-transformers.
 
-Zero-cost alternative to OpenAI embeddings API.
-Model downloads once (~90MB), runs 100% locally.
+Zero-cost alternative to OpenAI embeddings API ($0.13/1M tokens → $0).
+Model downloads once (~90MB), runs 100% locally for privacy-first operation.
+
+Enables semantic search over code documentation without external API dependencies.
 """
 
 import json

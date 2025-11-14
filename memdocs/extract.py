@@ -1,10 +1,13 @@
 """
 Extract context from git diffs, code files, and repository metadata.
 
+Core extraction engine that powers MemDocs documentation generation.
+
 Responsibilities:
 - Parse git diffs to identify changed files
 - Extract code symbols (functions, classes) using AST parsing
 - Gather metadata (commit info, file stats, dependencies)
+- Support multi-language symbol extraction (Python, TypeScript, JavaScript)
 """
 
 import json
