@@ -1,0 +1,68 @@
+{
+  "commit": "1b02247",
+  "timestamp": "2025-11-14T04:32:39.920923+00:00",
+  "scope": {
+    "paths": [
+      "memdocs/mcp_server.py",
+      "memdocs/extract.py",
+      "memdocs/embeddings.py",
+      "memdocs/search.py",
+      "memdocs/summarize.py",
+      "memdocs/policy.py"
+    ],
+    "level": "module",
+    "file_count": 6,
+    "escalated": false,
+    "escalation_reason": null
+  },
+  "features": [
+    {
+      "id": "feat-001",
+      "title": "Enhanced module docstrings for core engine components",
+      "description": "Added comprehensive module-level documentation to 6 core MemDocs modules (mcp_server, extract, embeddings, search, summarize, policy) describing their purpose, capabilities, and architectural role. Clarifies flagship MCP integration, multi-language symbol extraction, zero-cost local embeddings, FAISS-based vector search, Claude-powered summarization, and intelligent scope escalation.",
+      "risk": [
+        "documentation_only"
+      ],
+      "tags": [
+        "documentation",
+        "developer_experience",
+        "maintainability"
+      ]
+    },
+    {
+      "id": "feat-002",
+      "title": "Dogfooding: Committed .memdocs/ directory for self-documentation",
+      "description": "Modified .gitignore to allow committing .memdocs/ directory, demonstrating MemDocs usage on its own codebase with git-committed memories.",
+      "risk": [
+        "repository_size"
+      ],
+      "tags": [
+        "meta",
+        "dogfooding",
+        "gitignore"
+      ]
+    }
+  ],
+  "impacts": {
+    "apis": [],
+    "breaking_changes": [],
+    "tests_added": 0,
+    "tests_modified": 0,
+    "migration_required": false
+  },
+  "refs": {
+    "pr": null,
+    "issues": [],
+    "files_changed": [
+      "memdocs/embeddings.py",
+      "memdocs/extract.py",
+      "memdocs/search.py",
+      "memdocs/mcp_server.py",
+      "memdocs/summarize.py",
+      "memdocs/policy.py"
+    ],
+    "commits": [
+      "1b02247"
+    ]
+  }
+}

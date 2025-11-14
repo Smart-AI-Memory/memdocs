@@ -1,0 +1,276 @@
+{
+  "0": {
+    "doc_id": "588a035",
+    "chunk_index": 0,
+    "chunk_text": "# Core schema definitions for MemDocs v2.0.0 memory system **Commit:** 588a035 **Scope:** File-level **Date:** 2025-11-08 ## Summary - Core schema definitions for MemDocs v2.0.0 memory system Defines ",
+    "file_paths": [
+      "memdocs/schemas.py"
+    ],
+    "features": [
+      "Core schema definitions for MemDocs v2.0.0 memory system",
+      "ScopeLevel enum for hierarchical context management",
+      "EventType enum for memory event classification",
+      "PHIMode enum for privacy guard configuration",
+      "SymbolKind enum for code entity classification",
+      "PolicyConfig dataclass for system behavior configuration"
+    ],
+    "timestamp": "2025-11-08T12:38:34.919493+00:00"
+  },
+  "1": {
+    "doc_id": "79b58a1",
+    "chunk_index": 0,
+    "chunk_text": "# No functional changes to memdocs/security.py module\n\n**Commit:** 79b58a1\n**Scope:** Module-level\n**Date:** 2025-11-09\n\n## Summary\n\n- No functional changes to memdocs/security.py module\n  Security mo",
+    "file_paths": [
+      "memdocs/security.py"
+    ],
+    "features": [
+      "No functional changes to memdocs/security.py module"
+    ],
+    "timestamp": "2025-11-09T18:45:37.637280+00:00"
+  },
+  "2": {
+    "doc_id": "204f56a",
+    "chunk_index": 0,
+    "chunk_text": "# Add GitHub Actions workflow for automated PyPI publishing via Trusted Publishers\n\n**Commit:** 204f56a\n**Scope:** Repo-level\n**Date:** 2025-11-14\n\n## Summary\n\n- Add GitHub Actions workflow for automa",
+    "file_paths": [
+      "memdocs/empathy_adapter.py",
+      "memdocs/wizards/__init__.py",
+      "memdocs/wizards/empathy_sync.py"
+    ],
+    "features": [
+      "Add GitHub Actions workflow for automated PyPI publishing via Trusted Publishers"
+    ],
+    "timestamp": "2025-11-14T04:19:59.073433+00:00"
+  },
+  "3": {
+    "doc_id": "204f56a",
+    "chunk_index": 0,
+    "chunk_text": "# Add GitHub Actions trusted publisher workflow for PyPI\n\n**Commit:** 204f56a\n**Scope:** Repo-level\n**Date:** 2025-11-14\n\n## Summary\n\n- Add GitHub Actions trusted publisher workflow for PyPI\n  Impleme",
+    "file_paths": [
+      "memdocs/cli.py",
+      "memdocs/cli_output.py",
+      "memdocs/cli_modules"
+    ],
+    "features": [
+      "Add GitHub Actions trusted publisher workflow for PyPI"
+    ],
+    "timestamp": "2025-11-14T04:20:06.329184+00:00"
+  },
+  "4": {
+    "doc_id": "204f56a",
+    "chunk_index": 0,
+    "chunk_text": "# Add GitHub Actions workflow for automated PyPI publishing via Trusted Publishers\n\n**Commit:** 204f56a\n**Scope:** Module-level\n**Date:** 2025-11-14\n\n## Summary\n\n- Add GitHub Actions workflow for auto",
+    "file_paths": [
+      "/Users/patrickroebuck/projects/memdocs/memdocs/mcp_server.py",
+      "/Users/patrickroebuck/projects/memdocs/memdocs/search.py",
+      "/Users/patrickroebuck/projects/memdocs/memdocs/embeddings.py"
+    ],
+    "features": [
+      "Add GitHub Actions workflow for automated PyPI publishing via Trusted Publishers"
+    ],
+    "timestamp": "2025-11-14T04:20:49.701538+00:00"
+  },
+  "5": {
+    "doc_id": "204f56a",
+    "chunk_index": 0,
+    "chunk_text": "# Add GitHub Actions workflow for automated PyPI publishing via OIDC\n\n**Commit:** 204f56a\n**Scope:** Module-level\n**Date:** 2025-11-14\n\n## Summary\n\n- Add GitHub Actions workflow for automated PyPI pub",
+    "file_paths": [
+      "memdocs/extract.py",
+      "memdocs/summarize.py",
+      "memdocs/symbol_extractor.py"
+    ],
+    "features": [
+      "Add GitHub Actions workflow for automated PyPI publishing via OIDC"
+    ],
+    "timestamp": "2025-11-14T04:20:50.594264+00:00"
+  },
+  "6": {
+    "doc_id": "204f56a",
+    "chunk_index": 0,
+    "chunk_text": "# Add GitHub Actions workflow for automated PyPI publishing via OIDC\n\n**Commit:** 204f56a\n**Scope:** Module-level\n**Date:** 2025-11-14\n\n## Summary\n\n- Add GitHub Actions workflow for automated PyPI pub",
+    "file_paths": [
+      "memdocs/policy.py",
+      "memdocs/guard.py",
+      "memdocs/exceptions.py",
+      "memdocs/index.py"
+    ],
+    "features": [
+      "Add GitHub Actions workflow for automated PyPI publishing via OIDC"
+    ],
+    "timestamp": "2025-11-14T04:20:51.416344+00:00"
+  },
+  "7": {
+    "doc_id": "204f56a",
+    "chunk_index": 0,
+    "chunk_text": "# Add Trusted Publisher workflow for automated PyPI publishing\n\n**Commit:** 204f56a\n**Scope:** File-level\n**Date:** 2025-11-14\n\n## Summary\n\n- Add Trusted Publisher workflow for automated PyPI publishi",
+    "file_paths": [
+      "memdocs/empathy_adapter.py"
+    ],
+    "features": [
+      "Add Trusted Publisher workflow for automated PyPI publishing"
+    ],
+    "timestamp": "2025-11-14T04:20:52.215874+00:00"
+  },
+  "8": {
+    "doc_id": "204f56a",
+    "chunk_index": 0,
+    "chunk_text": "# Add GitHub Actions Trusted Publisher workflow for automated PyPI releases\n\n**Commit:** 204f56a\n**Scope:** File-level\n**Date:** 2025-11-14\n\n## Summary\n\n- Add GitHub Actions Trusted Publisher workflow",
+    "file_paths": [
+      "memdocs/wizards/empathy_sync.py"
+    ],
+    "features": [
+      "Add GitHub Actions Trusted Publisher workflow for automated PyPI releases"
+    ],
+    "timestamp": "2025-11-14T04:21:08.616508+00:00"
+  },
+  "9": {
+    "doc_id": "204f56a",
+    "chunk_index": 0,
+    "chunk_text": "# Add GitHub Actions OIDC-based PyPI publishing workflow\n\n**Commit:** 204f56a\n**Scope:** Module-level\n**Date:** 2025-11-14\n\n## Summary\n\n- Add GitHub Actions OIDC-based PyPI publishing workflow\n  Autom",
+    "file_paths": [
+      "memdocs/mcp_server.py",
+      "memdocs/search.py",
+      "memdocs/embeddings.py"
+    ],
+    "features": [
+      "Add GitHub Actions OIDC-based PyPI publishing workflow"
+    ],
+    "timestamp": "2025-11-14T04:21:16.677756+00:00"
+  },
+  "10": {
+    "doc_id": "204f56a",
+    "chunk_index": 0,
+    "chunk_text": "# Add GitHub Actions workflow for automated PyPI publishing via Trusted Publishers\n\n**Commit:** 204f56a\n**Scope:** Module-level\n**Date:** 2025-11-14\n\n## Summary\n\n- Add GitHub Actions workflow for auto",
+    "file_paths": [
+      "/Users/patrickroebuck/projects/memdocs/memdocs/extract.py",
+      "/Users/patrickroebuck/projects/memdocs/memdocs/summarize.py",
+      "/Users/patrickroebuck/projects/memdocs/memdocs/symbol_extractor.py"
+    ],
+    "features": [
+      "Add GitHub Actions workflow for automated PyPI publishing via Trusted Publishers"
+    ],
+    "timestamp": "2025-11-14T04:21:17.365515+00:00"
+  },
+  "11": {
+    "doc_id": "204f56a",
+    "chunk_index": 0,
+    "chunk_text": "# CI/CD: Automated PyPI publishing via GitHub OIDC Trusted Publishers\n\n**Commit:** 204f56a\n**Scope:** File-level\n**Date:** 2025-11-14\n\n## Summary\n\n- CI/CD: Automated PyPI publishing via GitHub OIDC Tr",
+    "file_paths": [
+      "memdocs/empathy_adapter.py"
+    ],
+    "features": [
+      "CI/CD: Automated PyPI publishing via GitHub OIDC Trusted Publishers"
+    ],
+    "timestamp": "2025-11-14T04:21:45.911796+00:00"
+  },
+  "12": {
+    "doc_id": "204f56a",
+    "chunk_index": 0,
+    "chunk_text": "# Add GitHub Actions trusted publisher workflow for automated PyPI releases\n\n**Commit:** 204f56a\n**Scope:** Module-level\n**Date:** 2025-11-14\n\n## Summary\n\n- Add GitHub Actions trusted publisher workfl",
+    "file_paths": [
+      "memdocs/mcp_server.py",
+      "memdocs/search.py",
+      "memdocs/embeddings.py"
+    ],
+    "features": [
+      "Add GitHub Actions trusted publisher workflow for automated PyPI releases"
+    ],
+    "timestamp": "2025-11-14T04:21:48.429458+00:00"
+  },
+  "13": {
+    "doc_id": "204f56a",
+    "chunk_index": 0,
+    "chunk_text": "# Add GitHub Actions workflow for automated PyPI publishing via OIDC\n\n**Commit:** 204f56a\n**Scope:** Module-level\n**Date:** 2025-11-14\n\n## Summary\n\n- Add GitHub Actions workflow for automated PyPI pub",
+    "file_paths": [
+      "memdocs/policy.py",
+      "memdocs/guard.py",
+      "memdocs/exceptions.py",
+      "memdocs/index.py"
+    ],
+    "features": [
+      "Add GitHub Actions workflow for automated PyPI publishing via OIDC"
+    ],
+    "timestamp": "2025-11-14T04:21:51.372784+00:00"
+  },
+  "14": {
+    "doc_id": "204f56a",
+    "chunk_index": 0,
+    "chunk_text": "# Add GitHub Actions workflow for PyPI trusted publisher deployment\n\n**Commit:** 204f56a\n**Scope:** File-level\n**Date:** 2025-11-14\n\n## Summary\n\n- Add GitHub Actions workflow for PyPI trusted publishe",
+    "file_paths": [
+      "/Users/patrickroebuck/projects/memdocs/memdocs/extract.py"
+    ],
+    "features": [
+      "Add GitHub Actions workflow for PyPI trusted publisher deployment"
+    ],
+    "timestamp": "2025-11-14T04:22:10.198642+00:00"
+  },
+  "15": {
+    "doc_id": "204f56a",
+    "chunk_index": 0,
+    "chunk_text": "# Added CI/CD workflow for automated PyPI publishing via Trusted Publishers\n\n**Commit:** 204f56a\n**Scope:** File-level\n**Date:** 2025-11-14\n\n## Summary\n\n- Added CI/CD workflow for automated PyPI publi",
+    "file_paths": [
+      "memdocs/empathy_adapter.py"
+    ],
+    "features": [
+      "Added CI/CD workflow for automated PyPI publishing via Trusted Publishers"
+    ],
+    "timestamp": "2025-11-14T04:22:23.077104+00:00"
+  },
+  "16": {
+    "doc_id": "204f56a",
+    "chunk_index": 0,
+    "chunk_text": "# Add trusted publisher workflow for PyPI automated publishing\n\n**Commit:** 204f56a\n**Scope:** File-level\n**Date:** 2025-11-14\n\n## Summary\n\n- Add trusted publisher workflow for PyPI automated publishi",
+    "file_paths": [
+      "/Users/patrickroebuck/projects/memdocs/memdocs/summarize.py"
+    ],
+    "features": [
+      "Add trusted publisher workflow for PyPI automated publishing"
+    ],
+    "timestamp": "2025-11-14T04:22:32.983544+00:00"
+  },
+  "17": {
+    "doc_id": "204f56a",
+    "chunk_index": 0,
+    "chunk_text": "# Added PyPI Trusted Publisher workflow for automated releases\n\n**Commit:** 204f56a\n**Scope:** File-level\n**Date:** 2025-11-14\n\n## Summary\n\n- Added PyPI Trusted Publisher workflow for automated releas",
+    "file_paths": [
+      "/Users/patrickroebuck/projects/memdocs/memdocs/symbol_extractor.py"
+    ],
+    "features": [
+      "Added PyPI Trusted Publisher workflow for automated releases"
+    ],
+    "timestamp": "2025-11-14T04:22:51.068904+00:00"
+  },
+  "18": {
+    "doc_id": "204f56a",
+    "chunk_index": 0,
+    "chunk_text": "# Add GitHub Actions Trusted Publisher workflow for PyPI releases\n\n**Commit:** 204f56a\n**Scope:** Module-level\n**Date:** 2025-11-14\n\n## Summary\n\n- Add GitHub Actions Trusted Publisher workflow for PyP",
+    "file_paths": [
+      "memdocs/policy.py",
+      "memdocs/guard.py",
+      "memdocs/exceptions.py",
+      "memdocs/index.py"
+    ],
+    "features": [
+      "Add GitHub Actions Trusted Publisher workflow for PyPI releases"
+    ],
+    "timestamp": "2025-11-14T04:22:58.259161+00:00"
+  },
+  "19": {
+    "doc_id": "1b02247",
+    "chunk_index": 0,
+    "chunk_text": "# Enhanced module docstrings for core engine components\n\n**Commit:** 1b02247\n**Scope:** Module-level\n**Date:** 2025-11-14\n\n## Summary\n\n- Enhanced module docstrings for core engine components\n  Added c",
+    "file_paths": [
+      "memdocs/mcp_server.py",
+      "memdocs/extract.py",
+      "memdocs/embeddings.py",
+      "memdocs/search.py",
+      "memdocs/summarize.py",
+      "memdocs/policy.py"
+    ],
+    "features": [
+      "Enhanced module docstrings for core engine components",
+      "Dogfooding: Committed .memdocs/ directory for self-documentation"
+    ],
+    "timestamp": "2025-11-14T04:32:39.920923+00:00"
+  }
+}

@@ -1,0 +1,396 @@
+symbols:
+- doc: null
+  file: memdocs/embeddings.py
+  kind: class
+  line: 20
+  methods:
+  - __init__
+  name: LocalEmbedder
+  signature: null
+- doc: Generate embeddings for documents.
+  file: memdocs/embeddings.py
+  kind: function
+  line: 76
+  methods: null
+  name: embed_documents
+  signature: 'def embed_documents(self, texts: list[str])'
+- doc: Generate embedding for a single query.
+  file: memdocs/embeddings.py
+  kind: function
+  line: 98
+  methods: null
+  name: embed_query
+  signature: 'def embed_query(self, query: str)'
+- doc: Split document into chunks for embedding.
+  file: memdocs/embeddings.py
+  kind: function
+  line: 111
+  methods: null
+  name: chunk_document
+  signature: 'def chunk_document(text: str, max_tokens: int = 512, overlap: int =
+    50)'
+- doc: Load embeddings from file.
+  file: memdocs/embeddings.py
+  kind: function
+  line: 197
+  methods: null
+  name: load_embeddings
+  signature: 'def load_embeddings(embeddings_file: Path)'
+- doc: null
+  file: memdocs/extract.py
+  kind: class
+  line: 40
+  methods:
+  - __init__
+  - extract_diff
+  name: GitDiff
+  signature: null
+- doc: null
+  file: memdocs/extract.py
+  kind: class
+  line: 54
+  methods:
+  - __init__
+  - extract_diff
+  name: FileContext
+  signature: null
+- doc: null
+  file: memdocs/extract.py
+  kind: class
+  line: 66
+  methods:
+  - __init__
+  - extract_diff
+  name: ExtractedContext
+  signature: null
+- doc: null
+  file: memdocs/extract.py
+  kind: class
+  line: 74
+  methods:
+  - __init__
+  - extract_diff
+  name: Extractor
+  signature: null
+- doc: Initialize extractor.
+  file: memdocs/extract.py
+  kind: function
+  line: 77
+  methods: null
+  name: __init__
+  signature: 'def __init__(self, repo_path: Path = Path(".")'
+- doc: Extract git diff information.
+  file: memdocs/extract.py
+  kind: function
+  line: 90
+  methods: null
+  name: extract_diff
+  signature: 'def extract_diff(self, commit: str | None = None)'
+- doc: Extract context from a single file.
+  file: memdocs/extract.py
+  kind: function
+  line: 145
+  methods: null
+  name: extract_file_context
+  signature: 'def extract_file_context(self, file_path: Path)'
+- doc: Extract complete context for given paths.
+  file: memdocs/extract.py
+  kind: function
+  line: 201
+  methods: null
+  name: extract_context
+  signature: 'def extract_context(self, paths: list[Path], commit: str | None = None)'
+- doc: Expand paths to individual files.
+  file: memdocs/extract.py
+  kind: function
+  line: 226
+  methods: null
+  name: _expand_paths
+  signature: 'def _expand_paths(self, paths: list[Path])'
+- doc: Find code files in directory recursively.
+  file: memdocs/extract.py
+  kind: function
+  line: 248
+  methods: null
+  name: _find_code_files
+  signature: 'def _find_code_files(self, directory: Path)'
+- doc: Expand glob pattern to files.
+  file: memdocs/extract.py
+  kind: function
+  line: 279
+  methods: null
+  name: _glob_files
+  signature: 'def _glob_files(self, pattern: Path)'
+- doc: Extract symbols from code.
+  file: memdocs/extract.py
+  kind: function
+  line: 295
+  methods: null
+  name: _extract_symbols
+  signature: 'def _extract_symbols(self, file_path: Path, content: str, language:
+    str)'
+- doc: Extract Python symbols using regex.
+  file: memdocs/extract.py
+  kind: function
+  line: 317
+  methods: null
+  name: _extract_python_symbols
+  signature: 'def _extract_python_symbols(self, file_path: Path, content: str)'
+- doc: Extract TypeScript/JavaScript symbols.
+  file: memdocs/extract.py
+  kind: function
+  line: 375
+  methods: null
+  name: _extract_typescript_symbols
+  signature: 'def _extract_typescript_symbols(self, file_path: Path, content: str)'
+- doc: Extract method names from class definition.
+  file: memdocs/extract.py
+  kind: function
+  line: 420
+  methods: null
+  name: _extract_class_methods
+  signature: 'def _extract_class_methods(self, class_lines: list[str])'
+- doc: Extract import statements.
+  file: memdocs/extract.py
+  kind: function
+  line: 436
+  methods: null
+  name: _extract_imports
+  signature: 'def _extract_imports(self, content: str, language: str)'
+- doc: Parse project dependencies from package files.
+  file: memdocs/extract.py
+  kind: function
+  line: 457
+  methods: null
+  name: _parse_dependencies
+  signature: 'def _parse_dependencies(self, repo_root: Path, language: str)'
+- doc: Parse dependencies from requirements.txt.
+  file: memdocs/extract.py
+  kind: function
+  line: 488
+  methods: null
+  name: _parse_requirements_txt
+  signature: 'def _parse_requirements_txt(self, repo_root: Path)'
+- doc: Parse dependencies from pyproject.toml.
+  file: memdocs/extract.py
+  kind: function
+  line: 519
+  methods: null
+  name: _parse_pyproject_toml
+  signature: 'def _parse_pyproject_toml(self, repo_root: Path)'
+- doc: Parse dependencies from package.json.
+  file: memdocs/extract.py
+  kind: function
+  line: 562
+  methods: null
+  name: _parse_package_json
+  signature: 'def _parse_package_json(self, repo_root: Path)'
+- doc: null
+  file: memdocs/search.py
+  kind: class
+  line: 16
+  methods:
+  - __init__
+  - add_embeddings
+  name: LocalVectorSearch
+  signature: null
+- doc: Remove vectors by indices (for incremental updates).
+  file: memdocs/search.py
+  kind: function
+  line: 165
+  methods: null
+  name: remove_by_indices
+  signature: 'def remove_by_indices(self, indices: list[int])'
+- doc: Rebuild index excluding deleted entries.
+  file: memdocs/search.py
+  kind: function
+  line: 181
+  methods: null
+  name: rebuild_index
+  signature: def rebuild_index(self)
+- doc: Save index and metadata to disk (git-committable).
+  file: memdocs/search.py
+  kind: function
+  line: 216
+  methods: null
+  name: save
+  signature: def save(self)
+- doc: Load metadata from disk.
+  file: memdocs/search.py
+  kind: function
+  line: 225
+  methods: null
+  name: _load_metadata
+  signature: def _load_metadata(self)
+- doc: Get index statistics.
+  file: memdocs/search.py
+  kind: function
+  line: 233
+  methods: null
+  name: get_stats
+  signature: def get_stats(self)
+- doc: null
+  file: memdocs/mcp_server.py
+  kind: class
+  line: 27
+  methods:
+  - __init__
+  - search_memory
+  name: DocIntMCPServer
+  signature: null
+- doc: Initialize MCP server.
+  file: memdocs/mcp_server.py
+  kind: function
+  line: 36
+  methods: null
+  name: __init__
+  signature: 'def __init__(self, repo_path: Path = Path(".")'
+- doc: Search project memory using natural language.
+  file: memdocs/mcp_server.py
+  kind: function
+  line: 60
+  methods: null
+  name: search_memory
+  signature: 'def search_memory(self, query: str, k: int = 5)'
+- doc: Get code symbols from memory.
+  file: memdocs/mcp_server.py
+  kind: function
+  line: 95
+  methods: null
+  name: get_symbols
+  signature: 'def get_symbols(self, file_path: str | None = None)'
+- doc: Get generated documentation.
+  file: memdocs/mcp_server.py
+  kind: function
+  line: 121
+  methods: null
+  name: get_documentation
+  signature: 'def get_documentation(self, doc_id: str | None = None)'
+- doc: Get human-readable summary.
+  file: memdocs/mcp_server.py
+  kind: function
+  line: 147
+  methods: null
+  name: get_summary
+  signature: def get_summary(self)
+- doc: null
+  file: memdocs/summarize.py
+  kind: class
+  line: 29
+  methods: []
+  name: Summarizer
+  signature: null
+- doc: Return string representation with masked API key for security.
+  file: memdocs/summarize.py
+  kind: function
+  line: 142
+  methods: null
+  name: __repr__
+  signature: def __repr__(self)
+- doc: Generate documentation summary from context.
+  file: memdocs/summarize.py
+  kind: function
+  line: 147
+  methods: null
+  name: summarize
+  signature: 'def summarize(self, context: ExtractedContext, scope: ScopeInfo)'
+- doc: Build prompt for Claude.
+  file: memdocs/summarize.py
+  kind: function
+  line: 199
+  methods: null
+  name: _build_prompt
+  signature: 'def _build_prompt(self, context: ExtractedContext, scope: ScopeInfo)'
+- doc: Extract YAML from Claude's response.
+  file: memdocs/summarize.py
+  kind: function
+  line: 254
+  methods: null
+  name: _extract_yaml
+  signature: 'def _extract_yaml(self, text: str)'
+- doc: Generate human-readable markdown summary.
+  file: memdocs/summarize.py
+  kind: function
+  line: 339
+  methods: null
+  name: _generate_markdown
+  signature: 'def _generate_markdown(self, doc_index: DocumentIndex, context: ExtractedContext)'
+- doc: null
+  file: memdocs/policy.py
+  kind: class
+  line: 20
+  methods:
+  - __init__
+  - determine_scope
+  name: PolicyEngine
+  signature: null
+- doc: Initialize policy engine.
+  file: memdocs/policy.py
+  kind: function
+  line: 23
+  methods: null
+  name: __init__
+  signature: 'def __init__(self, config: DocIntConfig)'
+- doc: Infer scope level from requested paths.
+  file: memdocs/policy.py
+  kind: function
+  line: 73
+  methods: null
+  name: _infer_scope_from_paths
+  signature: 'def _infer_scope_from_paths(self, paths: list[Path])'
+- doc: Check if path is a directory or glob pattern.
+  file: memdocs/policy.py
+  kind: function
+  line: 96
+  methods: null
+  name: _is_directory_pattern
+  signature: 'def _is_directory_pattern(self, path: Path)'
+- doc: Check if all paths are in the same module (directory).
+  file: memdocs/policy.py
+  kind: function
+  line: 107
+  methods: null
+  name: _are_paths_in_same_module
+  signature: 'def _are_paths_in_same_module(self, paths: list[Path])'
+- doc: Determine if scope should be escalated.
+  file: memdocs/policy.py
+  kind: function
+  line: 122
+  methods: null
+  name: _should_escalate
+  signature: 'def _should_escalate(self, context: ExtractedContext)'
+- doc: Check if changes touch security-sensitive paths.
+  file: memdocs/policy.py
+  kind: function
+  line: 150
+  methods: null
+  name: _touches_security_paths
+  signature: 'def _touches_security_paths(self, context: ExtractedContext)'
+- doc: Check if changes span multiple modules.
+  file: memdocs/policy.py
+  kind: function
+  line: 168
+  methods: null
+  name: _has_cross_module_changes
+  signature: 'def _has_cross_module_changes(self, context: ExtractedContext)'
+- doc: Check if public API is modified.
+  file: memdocs/policy.py
+  kind: function
+  line: 185
+  methods: null
+  name: _modifies_public_api
+  signature: 'def _modifies_public_api(self, context: ExtractedContext)'
+- doc: Escalate scope to next level.
+  file: memdocs/policy.py
+  kind: function
+  line: 210
+  methods: null
+  name: _escalate_scope
+  signature: 'def _escalate_scope(self, current_scope: ScopeLevel)'
+- doc: Validate scope against policies.
+  file: memdocs/policy.py
+  kind: function
+  line: 226
+  methods: null
+  name: validate_scope
+  signature: 'def validate_scope(self, scope: ScopeInfo)'
