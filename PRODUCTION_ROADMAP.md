@@ -29,12 +29,6 @@
   - Test error handling and edge cases
   - Integration test with Claude Desktop (optional)
 
-- [ ] **wizards/empathy_sync.py (0% → 75%)**:
-  - Mock Empathy API calls
-  - Test sync wizard end-to-end
-  - Test conflict resolution
-  - Test rollback on failure
-
 #### Medium Priority:
 - [ ] Increase extract.py: 80% → 90%
 - [ ] Increase symbol_extractor.py: 79% → 90%

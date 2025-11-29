@@ -239,7 +239,7 @@ memdocs/
 │   ├── embeddings.py    # Vector embeddings
 │   ├── search.py        # Vector search
 │   ├── index.py         # Memory indexing
-│   └── wizards/         # High-level wizards
+│   └── empathy_adapter.py  # Empathy Framework integration
 ├── tests/
 │   ├── unit/            # Unit tests
 │   ├── integration/     # Integration tests
