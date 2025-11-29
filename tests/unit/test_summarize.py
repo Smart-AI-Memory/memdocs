@@ -88,18 +88,12 @@ class TestSummarizerInit:
 
     def test_init_with_custom_model(self):
         """Test initialization with custom model."""
-        summarizer = Summarizer(
-            api_key=TEST_API_KEY,
-            model="claude-3-5-sonnet-20241022"
-        )
+        summarizer = Summarizer(api_key=TEST_API_KEY, model="claude-3-5-sonnet-20241022")
         assert summarizer.model == "claude-3-5-sonnet-20241022"
 
     def test_init_with_custom_max_tokens(self):
         """Test initialization with custom max_tokens."""
-        summarizer = Summarizer(
-            api_key=TEST_API_KEY,
-            max_tokens=8192
-        )
+        summarizer = Summarizer(api_key=TEST_API_KEY, max_tokens=8192)
         assert summarizer.max_tokens == 8192
 
     def test_init_with_invalid_model_raises(self):
@@ -312,7 +306,9 @@ class TestBuildPrompt:
         assert "file9.py" in prompt
         assert "and 5 more files" in prompt
 
-    def test_build_prompt_includes_yaml_instructions(self, summarizer, sample_context, sample_scope):
+    def test_build_prompt_includes_yaml_instructions(
+        self, summarizer, sample_context, sample_scope
+    ):
         """Test that prompt includes YAML instructions."""
         prompt = summarizer._build_prompt(sample_context, sample_scope)
 
@@ -406,7 +402,9 @@ class TestBuildDocumentIndex:
         assert 123 in doc_index.refs.issues
         assert "abc123" in doc_index.refs.commits
 
-    def test_build_document_index_uses_context_files(self, summarizer, sample_context, sample_scope):
+    def test_build_document_index_uses_context_files(
+        self, summarizer, sample_context, sample_scope
+    ):
         """Test that files_changed comes from context."""
         parsed = yaml.safe_load(SAMPLE_YAML_RESPONSE)
         doc_index = summarizer._build_document_index(parsed, sample_context, sample_scope)
@@ -532,7 +530,9 @@ class TestGenerateMarkdown:
         assert "Add login feature" in markdown
         assert "Implements user authentication" in markdown
 
-    def test_generate_markdown_changes(self, summarizer, sample_doc_index, sample_context_with_diff):
+    def test_generate_markdown_changes(
+        self, summarizer, sample_doc_index, sample_context_with_diff
+    ):
         """Test changes section with diff."""
         markdown = summarizer._generate_markdown(sample_doc_index, sample_context_with_diff)
 
@@ -655,7 +655,9 @@ class TestSummarize:
             assert isinstance(result[0], DocumentIndex)
             assert isinstance(result[1], str)
 
-    def test_summarize_calls_api_correctly(self, mock_anthropic_response, sample_context, sample_scope):
+    def test_summarize_calls_api_correctly(
+        self, mock_anthropic_response, sample_context, sample_scope
+    ):
         """Test that API is called with correct parameters."""
         with patch("memdocs.summarize.anthropic.Anthropic") as mock_client_class:
             mock_client = MagicMock()
@@ -707,7 +709,9 @@ class TestSummarize:
             with pytest.raises(ValueError, match="Unexpected content block type"):
                 summarizer.summarize(sample_context, sample_scope)
 
-    def test_summarize_checks_rate_limit(self, mock_anthropic_response, sample_context, sample_scope):
+    def test_summarize_checks_rate_limit(
+        self, mock_anthropic_response, sample_context, sample_scope
+    ):
         """Test that rate limiter is checked before API call."""
         with patch("memdocs.summarize.anthropic.Anthropic") as mock_client_class:
             mock_client = MagicMock()
@@ -834,7 +838,7 @@ class TestEdgeCases:
                 diff=GitDiff(
                     commit="abc123",
                     author="Test <test@test.com>",
-                    message="Fix bug with `code` and <html> & \"quotes\"",
+                    message='Fix bug with `code` and <html> & "quotes"',
                     timestamp=datetime.now(timezone.utc).isoformat(),
                     added_files=[],
                     modified_files=[],

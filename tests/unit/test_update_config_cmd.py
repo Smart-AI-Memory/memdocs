@@ -54,9 +54,7 @@ class TestUpdateConfigCommand:
         (vscode_dir / "tasks.json").write_text("{}")
 
         runner = CliRunner()
-        with patch(
-            "memdocs.cli_modules.commands.update_config_cmd._setup_mcp_infrastructure"
-        ):
+        with patch("memdocs.cli_modules.commands.update_config_cmd._setup_mcp_infrastructure"):
             # User says no to overwrite
             result = runner.invoke(update_config, ["--mcp"], input="n\n")
             assert "cancelled" in result.output.lower()
@@ -120,9 +118,7 @@ class TestUpdateConfigCommand:
         (vscode_dir / "settings.json").write_text("{}")
 
         runner = CliRunner()
-        with patch(
-            "memdocs.cli_modules.commands.update_config_cmd._setup_mcp_infrastructure"
-        ):
+        with patch("memdocs.cli_modules.commands.update_config_cmd._setup_mcp_infrastructure"):
             result = runner.invoke(update_config, ["--mcp"], input="n\n")
             assert "tasks.json" in result.output
             assert "settings.json" in result.output
