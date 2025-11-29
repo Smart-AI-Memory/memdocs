@@ -99,16 +99,15 @@ class TestPathValidator:
         validated = PathValidator.validate_path(test_path)
         assert validated.is_absolute()
 
-    @pytest.mark.skip(reason="Path subclassing incompatible across Python versions")
     def test_validate_path_runtime_error(self, tmp_path: Path, monkeypatch):
         """Test handling of RuntimeError during path resolution."""
+        from unittest.mock import MagicMock
 
         # Create a mock path that will raise RuntimeError on resolve
-        class FailingPath(Path):
-            def resolve(self, strict=False):
-                raise RuntimeError("Simulated runtime error")
-
-        failing_path = FailingPath(tmp_path / "test.py")
+        failing_path = MagicMock(spec=Path)
+        failing_path.resolve.side_effect = RuntimeError("Simulated runtime error")
+        # Make it look like a valid path for type checks
+        failing_path.__class__ = Path
 
         with pytest.raises(ValueError, match="Invalid path"):
             PathValidator.validate_path(failing_path)
