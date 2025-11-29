@@ -348,7 +348,7 @@ def main():
         print("  2. Set API key: export ANTHROPIC_API_KEY='sk-ant-...'")
         print("  3. Initialize: memdocs init")
         print("  4. Review code: memdocs review --path src/")
-        print("  5. Read docs: https://github.com/Deep-Study-AI/memdocs")
+        print("  5. Read docs: https://github.com/Smart-AI-Memory/memdocs")
         print()
 
     except Exception as e:

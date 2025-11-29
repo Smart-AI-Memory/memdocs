@@ -726,7 +726,7 @@ Apache License 2.0 - See [LICENSE](LICENSE) for details.
 
 ## 💬 Support & Community
 
-- **Documentation**: Coming soon to https://docs.deepstudyai.com/memdocs
+- **Documentation**: Coming soon to https://www.smartaimemory.com/docs/memdocs
 - **Issues**: [GitHub Issues](https://github.com/Smart-AI-Memory/memdocs/issues)
 - **Discussions**: [GitHub Discussions](https://github.com/Smart-AI-Memory/memdocs/discussions)
 - **Discord**: Coming soon
@@ -744,7 +744,7 @@ Apache License 2.0 - See [LICENSE](LICENSE) for details.
 
 ## 🙏 Acknowledgments
 
-**Created by**: Patrick Roebuck ([Deep Study AI, LLC](https://deepstudyai.com))
+**Created by**: Patrick Roebuck ([Smart AI Memory](https://www.smartaimemory.com))
 
 **Powered by**:
 - [Claude Sonnet 4.5](https://www.anthropic.com/claude) by Anthropic

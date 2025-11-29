@@ -5,6 +5,27 @@ All notable changes to MemDocs will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.1.1] - 2025-11-29
+
+### Added
+- **Enterprise Security Documentation**: SOC 2 Type II compliance checklist, HIPAA readiness guide, data residency documentation
+- **Air-Gapped Deployment Guide**: Complete offline installation instructions for secure environments
+- **Comprehensive API Reference**: Full documentation for all public modules and interfaces
+- **New Unit Tests**: Test coverage increased from 78% to 86%
+  - `doctor_cmd.py` coverage: 18% → 100%
+  - `setup_hooks_cmd.py` coverage: 19% → 100%
+  - `update_config_cmd.py` coverage: 17% → 96%
+
+### Changed
+- **Focused Core Architecture**: Removed wizards module to concentrate on core competencies (git-native memory, cross-conversation LLM memory, enterprise security)
+- Wizards now maintained in separate domain-specific archives (healthcare, software development, general business)
+
+### Fixed
+- CI formatting issues with Black code formatter
+- Test assertion handling for terminal line-wrapping differences
+
+---
+
 ## [2.0.0] - 2025-11-07
 
 ### Added
@@ -68,23 +89,20 @@ pip install memdocs
 
 ## Upcoming Releases
 
-### [2.1.0] - Q1 2026 (Planned)
+### [2.2.0] - Q1 2026 (Planned)
 - Multi-language support (Go, Rust, Java, C++)
 - VSCode extension
 - JetBrains plugin
 - Automatic PR summary generation
-- Improved Empathy sync wizards
 
-### [2.2.0] - Q2 2026 (Planned)
+### [2.3.0] - Q2 2026 (Planned)
 - Optional semantic search with embeddings
 - Memory compression (summarize old memories)
 - Team analytics dashboard
-- Enhanced privacy features (HIPAA/GDPR compliance)
 
 ### [3.0.0] - Q3 2026 (Planned)
 - MemDocs Cloud (optional hosted version)
 - Enterprise features (SSO, audit logs, access control)
-- Advanced Empathy integration (Level 5 predictions)
 - Real-time collaboration features
 
 ---
@@ -92,7 +110,5 @@ pip install memdocs
 ## Support
 
 For questions, issues, or feature requests:
-- **GitHub Issues**: https://github.com/Deep-Study-AI/memdocs/issues
-- **Documentation**: https://docs.deepstudyai.com/memdocs
-- **Discord**: https://discord.gg/deepstudyai
+- **GitHub Issues**: https://github.com/Smart-AI-Memory/memdocs/issues
 - **Email**: patrick.roebuck@pm.me

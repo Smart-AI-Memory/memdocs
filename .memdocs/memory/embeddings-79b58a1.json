@@ -391,7 +391,7 @@
     "doc_id": "79b58a1",
     "chunk_count": 1,
     "chunks": [
-      "# No functional changes to memdocs/security.py module\n\n**Commit:** 79b58a1\n**Scope:** Module-level\n**Date:** 2025-11-09\n\n## Summary\n\n- No functional changes to memdocs/security.py module\n  Security module unchanged despite commit metadata referencing email update. Commit modified only pyproject.toml for branding alignment (deepstudyai.com \u2192 smartaimemory.com). PathValidator and InputValidator classes remain unmodified.\n\n## Changes\n\n\n**Modified:** 1 files\n- pyproject.toml\n\n## Risks\n\n- metadata_mismatch\n\n## References\n\n- Commit: 79b58a1"
+      "# No functional changes to memdocs/security.py module\n\n**Commit:** 79b58a1\n**Scope:** Module-level\n**Date:** 2025-11-09\n\n## Summary\n\n- No functional changes to memdocs/security.py module\n  Security module unchanged despite commit metadata referencing email update. Commit modified only pyproject.toml for branding alignment (smartaimemory.com \u2192 smartaimemory.com). PathValidator and InputValidator classes remain unmodified.\n\n## Changes\n\n\n**Modified:** 1 files\n- pyproject.toml\n\n## Risks\n\n- metadata_mismatch\n\n## References\n\n- Commit: 79b58a1"
     ]
   },
   "dimension": 384,
