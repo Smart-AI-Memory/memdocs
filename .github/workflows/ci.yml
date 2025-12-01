@@ -51,10 +51,11 @@ jobs:
           python -c "import xml.etree.ElementTree as ET; tree = ET.parse('coverage.xml'); coverage = float(tree.getroot().attrib['line-rate']) * 100; print(f'Coverage: {coverage:.1f}%'); exit(0 if coverage >= 65 else 1)"
 
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v4
+        uses: codecov/codecov-action@v5
         with:
-          file: ./coverage.xml
+          files: ./coverage.xml
           fail_ci_if_error: false
+          verbose: true
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
