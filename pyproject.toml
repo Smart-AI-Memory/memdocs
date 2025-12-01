@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "memdocs"
-version = "2.1.2"
+version = "2.1.3"
 description = "Persistent memory management for AI projects - Git-native documentation intelligence"
 authors = [{name = "Patrick Roebuck", email = "patrick.roebuck@smartaimemory.com"}]
 license = {text = "Apache-2.0"}
