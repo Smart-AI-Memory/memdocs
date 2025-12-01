@@ -74,3 +74,4 @@ dmypy.json
 *.tmp
 *.temp
 .cache/
+coverage.xml
