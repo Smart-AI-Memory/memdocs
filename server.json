@@ -1,0 +1,37 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-10-17/server.schema.json",
+  "name": "io.github.silversurfer562/memdocs",
+  "description": "Git-native project memory for AI assistants with enterprise-grade audit compliance",
+  "repository": {
+    "url": "https://github.com/Smart-AI-Memory/memdocs",
+    "source": "github"
+  },
+  "version": "2.1.4",
+  "packages": [
+    {
+      "registryType": "pypi",
+      "identifier": "memdocs",
+      "version": "2.1.4",
+      "runtimeHint": "uvx",
+      "transport": {
+        "type": "stdio"
+      },
+      "environmentVariables": [
+        {
+          "name": "PROJECT_ROOT",
+          "description": "Root directory of the project to track",
+          "isRequired": false,
+          "format": "string",
+          "isSecret": false
+        },
+        {
+          "name": "ANTHROPIC_API_KEY",
+          "description": "API key for Claude AI operations (summarization, analysis)",
+          "isRequired": true,
+          "format": "string",
+          "isSecret": true
+        }
+      ]
+    }
+  ]
+}
