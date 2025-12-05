@@ -75,3 +75,6 @@ dmypy.json
 *.temp
 .cache/
 coverage.xml
+
+# MCP Registry tokens
+.mcpregistry_*
