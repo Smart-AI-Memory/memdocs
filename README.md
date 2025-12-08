@@ -239,7 +239,7 @@ VS Code + Claude Code (latest) + MemDocs + Empathy = 10x+ Productivity
 ```bash
 # Install VS Code: https://code.visualstudio.com
 # Install Claude Code extension in VS Code: https://claude.ai/claude-code
-pip install empathy[full]>=1.6.0  # Empathy 1.6.0+ includes MemDocs
+pip install empathy-framework[full]>=1.6.0  # Empathy 1.6.0+ includes MemDocs
 cd your-project/
 memdocs init  # Auto-configures MCP for Claude Code
 empathy-os configure
@@ -252,7 +252,7 @@ code .  # Open in VS Code - MCP server auto-starts!
 
 ### 🔗 Empathy Framework Integration: Level 4-5 AI Collaboration
 
-**MemDocs unlocks Level 4 Anticipatory Empathy** when integrated with the [Empathy Framework](https://github.com/Smart-AI-Memory/empathy).
+**MemDocs unlocks Level 4 Anticipatory Empathy** when integrated with the [Empathy Framework](https://github.com/Smart-AI-Memory/empathy-framework).
 
 **The Five Levels of AI Collaboration:**
 
@@ -277,7 +277,7 @@ code .  # Open in VS Code - MCP server auto-starts!
 - **[Technical Analysis](docs/EMPATHY_MEMDOCS_SYNERGY.md)**: 21-page deep-dive comparing five empathy frameworks
 
 **Integration features:**
-- ✅ Works seamlessly with [Empathy](https://github.com/Smart-AI-Memory/empathy) framework (1.6.0+)
+- ✅ Works seamlessly with [Empathy](https://github.com/Smart-AI-Memory/empathy-framework) framework (1.6.0+)
 - ✅ Supports Level 4 Anticipatory Empathy workflows
 - ✅ Bidirectional sync (MemDocs ↔ Empathy)
 - ✅ Trust-building behaviors powered by persistent memory
@@ -440,7 +440,7 @@ memdocs review --path src/new-feature/
 
 **Result**: Reviewers get structured context automatically.
 
-### 4. Empathy Framework Integration
+### 5. Empathy Framework Integration
 
 ```python
 from memdocs.empathy_adapter import adapt_empathy_to_memdocs
@@ -740,7 +740,7 @@ Apache License 2.0 - See [LICENSE](LICENSE) for details.
 - **[Blog Post](docs/EMPATHY_MEMDOCS_BLOG_POST.md)**: Why Your AI Assistant Can't Predict Tomorrow's Problems (And How to Fix It)
 - **[Executive Summary](docs/EMPATHY_MEMDOCS_EXECUTIVE_SUMMARY.md)**: 1-page overview for presentations and investor pitches
 - **[Technical Deep-Dive](docs/EMPATHY_MEMDOCS_SYNERGY.md)**: Comprehensive analysis comparing five empathy frameworks
-- **[Empathy Framework](https://github.com/Smart-AI-Memory/empathy)**: Full five-level AI collaboration system
+- **[Empathy Framework](https://github.com/Smart-AI-Memory/empathy-framework)**: Full five-level AI collaboration system
 
 ---
 

@@ -230,7 +230,7 @@ memdocs review --path src/
 # Install VS Code: https://code.visualstudio.com
 # Install Claude Code extension in VS Code: https://claude.ai/claude-code
 
-pip install empathy[full]>=1.6.0  # Empathy 1.6.0+ includes MemDocs
+pip install empathy-framework[full]>=1.6.0  # Empathy 1.6.0+ includes MemDocs
 cd your-project/
 memdocs init
 empathy-os configure

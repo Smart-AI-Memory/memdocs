@@ -421,7 +421,7 @@ async def anticipate_compliance_audit():
 
 ```bash
 # Install Empathy Framework
-pip install empathy[full]  # Includes MemDocs integration
+pip install empathy-framework[full]  # Includes MemDocs integration
 
 # Or install separately
 pip install empathy
@@ -626,7 +626,7 @@ VS Code + Claude Code (latest) + MemDocs + Empathy = 10x+ Productivity
 # https://claude.ai/claude-code
 
 # Install the stack (Empathy 1.6.0+)
-pip install empathy[full]>=1.6.0  # Includes MemDocs
+pip install empathy-framework[full]>=1.6.0  # Includes MemDocs
 
 # Initialize in your project
 cd your-project/
@@ -744,7 +744,7 @@ When you run `memdocs init`, it automatically configures:
 # CLI: https://claude.ai/claude-code
 
 # 2. Install the stack (Empathy 1.6.0+)
-pip install empathy[full]>=1.6.0
+pip install empathy-framework[full]>=1.6.0
 
 # 3. Initialize in your project
 cd your-project/
@@ -785,7 +785,7 @@ code .
 
 ```bash
 # Install (Empathy 1.6.0+)
-pip install empathy[full]>=1.6.0
+pip install empathy-framework[full]>=1.6.0
 pip install memdocs
 
 # Initialize
@@ -907,7 +907,7 @@ If you use this framework in your research or product:
   title = {Empathy + MemDocs: Five-Level AI Collaboration System},
   year = {2025},
   publisher = {Smart-AI-Memory},
-  url = {https://github.com/Smart-AI-Memory/empathy},
+  url = {https://github.com/Smart-AI-Memory/empathy-framework},
   license = {Fair-Source-0.9}
 }
 ```

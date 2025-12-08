@@ -147,7 +147,7 @@ VS Code + Claude Code (latest) + MemDocs + Empathy = 10x+ Productivity
 ```bash
 # Install VS Code: https://code.visualstudio.com
 # Install Claude Code extension in VS Code: https://claude.ai/claude-code
-pip install empathy[full]>=1.6.0  # Empathy 1.6.0+ includes MemDocs
+pip install empathy-framework[full]>=1.6.0  # Empathy 1.6.0+ includes MemDocs
 cd your-project/
 memdocs init  # Auto-configures MCP for Claude Code
 empathy-os configure
@@ -207,7 +207,7 @@ code .  # Open in VS Code - MCP server auto-starts!
 ### Installation
 
 ```bash
-pip install empathy[full]  # Includes MemDocs
+pip install empathy-framework[full]  # Includes MemDocs
 cd your-project/
 memdocs init
 export ANTHROPIC_API_KEY="your-key"

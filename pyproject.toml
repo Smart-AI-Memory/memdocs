@@ -71,7 +71,7 @@ embeddings = [
 ]
 
 empathy = [
-    "empathy>=1.0.0",            # Empathy framework integration
+    "empathy-framework>=1.0.0",  # Empathy framework integration
 ]
 
 mcp = [
